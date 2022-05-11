@@ -2,9 +2,10 @@
   "name": "metastudio",
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.0",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
+    "@openzeppelin/hardhat-upgrades": "^1.17.0",
     "@typechain/ethers-v5": "^7.0.1",
     "@typechain/hardhat": "^2.3.0",
     "@types/chai": "^4.2.21",
@@ -22,7 +23,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "ethereum-waffle": "^3.0.0",
-    "ethers": "^5.0.0",
+    "ethers": "^5.6.5",
     "hardhat": "^2.9.3",
     "hardhat-gas-reporter": "^1.0.4",
     "prettier": "^2.3.2",
@@ -36,5 +37,8 @@
   "engines": {
     "npm": "^8.9.0",
     "node": "^16.9.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.6.0"
   }
 }
