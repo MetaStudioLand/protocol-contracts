@@ -1,6 +1,6 @@
-# Installing devenv
+# Configuring DEV Env
 
-## Node 16
+## Installing Node 16
 
 Install `nvm` (Node Version Manager) Check the following [link](https://github.com/nvm-sh/nvm) for latest version
 
@@ -9,7 +9,7 @@ After installing nvm, use it to install the latest 16th version of `node`
 ```shell
 nvm install 16
 ```
-## Yarn 3 and tools
+## Installing Yarn 3 and tools
 
 ```shell
 npm install -g yarn
@@ -17,6 +17,13 @@ yarn set version berry
 
 yarn plugin import interactive-tools 
 ```
+
+## How to upgrade dependencies
+
+```shell
+yarn upgrade-interactive
+```
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.

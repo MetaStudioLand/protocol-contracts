@@ -1,7 +1,7 @@
-import { ethers, upgrades } from "hardhat";
+import { ethers, upgrades, network } from "hardhat";
 import { expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 
 // `describe` is a Mocha function that allows you to organize your tests. It's
 // not actually needed, but having your tests organized makes debugging them
@@ -10,7 +10,7 @@ import { Contract } from "ethers";
 // `describe` receives the name of a section of your test suite, and a callback.
 // The callback must define the tests of that section. This callback can't be
 // an async function.
-describe("ERC20MetastudioSMV contract", function () {
+describe("ERC20MetastudioSMV Proxy contract", function () {
   // Mocha has four functions that let you hook into the test runner's
   // lifecyle. These are: `before`, `beforeEach`, `after`, `afterEach`.
 
@@ -20,6 +20,7 @@ describe("ERC20MetastudioSMV contract", function () {
   // A common pattern is to declare some variables, and assign them in the
   // `before` and `beforeEach` callbacks.
 
+  let isFirstTest = true;
   let proxyContract: Contract;
   let logicalContract: Contract;
   let owner: SignerWithAddress;
@@ -29,6 +30,9 @@ describe("ERC20MetastudioSMV contract", function () {
 
   // `beforeEach` will run before each test, re-deploying the contract (Proxied) every time.
   beforeEach(async function () {
+    // Reset the local Network (blockchain)
+    await network.provider.send("hardhat_reset");
+
     // Gettings addresses
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
@@ -45,14 +49,31 @@ describe("ERC20MetastudioSMV contract", function () {
       .to.emit(proxyContract, "OwnershipTransferred")
       .withArgs("0x0000000000000000000000000000000000000000", owner.address);
 
+    // Getting implementation contract
     logicalContract = await ethers.getContractAt(
       "ERC20MetastudioSMV",
       await upgrades.erc1967.getImplementationAddress(proxyContract.address)
     );
-    console.log(`logicalContract address: ${logicalContract.address}`);
+
+    // Le propriétaire du Logical Contract should be "Nobody" (VoidSigner) => no transaction can be issued by it
+    expect(await logicalContract.owner()).to.equal(
+      "0x0000000000000000000000000000000000000000"
+    );
+
+    if (isFirstTest) {
+      isFirstTest = false;
+      console.log(`Deployed:
+        * Proxy address: ${proxyContract.address} 
+        * Proxy Contract's owner address: ${await proxyContract.owner()} 
+        * Proxy Admin Contract address: ${await upgrades.erc1967.getAdminAddress(proxyContract.address)} 
+        * Logical Contract address: ${logicalContract.address} 
+        * Logical Contract's owner address: ${await logicalContract.owner()}`);
+    }
   });
 
-  // You can nest describe calls to create subsections.
+  /*
+   * Test to verify good deployement (owner and co)
+   */
   describe("Deployment", function () {
     it("Should set the right Proxy's owner", async function () {
       // This test expects the owner variable stored in the contract to be equal
@@ -70,10 +91,45 @@ describe("ERC20MetastudioSMV contract", function () {
       const ownerBalance = await proxyContract.balanceOf(owner.address);
       expect(await proxyContract.totalSupply())
         .to.equal(ownerBalance)
-        .to.equal("5000000000000000000000000000"); // 5000000000.000000000000000000
+        .to.equal(BigNumber.from("5000000000000000000000000000")); // 5000000000.000000000000000000
     });
   });
+
   /*
+   * Test for every impossible task done on Logical Contract
+   */
+  describe("Failing when called on Logical Contract", function () {
+    it("Transfert: Should fail because no token owned", async function () {
+      const initialOwnerBalance = await logicalContract.balanceOf(
+        owner.address
+      );
+
+      // Try to send 1 token from owner (0 token) to addr1 (0 token).
+      // `require` will evaluate false and revert the transaction.
+      await expect(
+        logicalContract.transfer(addr1.address, 1)
+      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+
+      // Owner balance shouldn't have changed.
+      expect(await logicalContract.balanceOf(owner.address)).to.equal(
+        initialOwnerBalance
+      );
+    });
+
+    it("Pause: Should fail", async function () {
+      // Try to send 1 token from owner (0 token) to addr1 (0 token).
+      // `require` will evaluate false and revert the transaction.
+      await expect(logicalContract.pause()).to.be.revertedWith(
+        "Ownable: caller is not the owner"
+      );
+      await expect(
+        logicalContract
+          .connect("0x0000000000000000000000000000000000000000")
+          .pause()
+      ).to.be.reverted;
+    });
+  });
+
   describe("Transactions", function () {
     it("Should transfer tokens between accounts", async function () {
       // Transfer 50 tokens from owner to addr1
@@ -95,7 +151,7 @@ describe("ERC20MetastudioSMV contract", function () {
       // `require` will evaluate false and revert the transaction.
       await expect(
         proxyContract.connect(addr1).transfer(owner.address, 1)
-      ).to.be.revertedWith("Not enough tokens");
+      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
       expect(await proxyContract.balanceOf(owner.address)).to.equal(
@@ -123,5 +179,4 @@ describe("ERC20MetastudioSMV contract", function () {
       expect(addr2Balance).to.equal(50);
     });
   });
-*/
 });

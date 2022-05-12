@@ -45,7 +45,7 @@ contract ERC20MetastudioSMV is IERC165Upgradeable,
                 interfaceID == 0x36372b07 || // ERC20
                 interfaceID == this.isTrustedForwarder.selector || // ERC2771 Meta-TX
                 //         ^ this.skinColor.selector // Simpson
-                false
+                false || false
             );
     }
 
@@ -65,7 +65,7 @@ contract ERC20MetastudioSMV is IERC165Upgradeable,
         return forwarder == _trustedForwarder;
     }
 
-    function _msgSender() internal view virtual override returns (address sender) {
+    function _msgSender() internal view override returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
             assembly {
@@ -77,7 +77,7 @@ contract ERC20MetastudioSMV is IERC165Upgradeable,
         }
     }
 
-    function _msgData() internal view virtual override returns (bytes calldata) {
+    function _msgData() internal view override returns (bytes calldata) {
         if (isTrustedForwarder(msg.sender)) {
             return msg.data[:msg.data.length - 20];
         } else {
