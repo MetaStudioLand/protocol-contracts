@@ -1,3 +1,22 @@
+# Installing devenv
+
+# Node 16
+
+Install `nvm` (Node Version Manager) Check the following [link](https://github.com/nvm-sh/nvm) for latest version
+
+After installing nvm, use it to install the latest 16th version of `node`
+
+```shell
+nvm install 16
+````
+## Yarn 3 and tools
+
+```shell
+npm install -g yarn
+yarn set version berry 
+
+yarn plugin import interactive-tools 
+```
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
@@ -7,22 +26,22 @@ The project comes with a sample contract, a test for that contract, a sample scr
 Try running some of the following tasks:
 
 ```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
+yarn run hardhat accounts
+yarn run hardhat compile
+yarn run hardhat clean
+yarn run hardhat test
+yarn run hardhat node
+yarn run hardhat help
+REPORT_GAS=true yarn run hardhat test
+yarn run hardhat coverage
+yarn run hardhat run scripts/deploy.ts
+TS_NODE_FILES=true yarn run ts-node scripts/deploy.ts
+yarn run eslint '**/*.{js,ts}'
+yarn run eslint '**/*.{js,ts}' --fix
+yarn run prettier '**/*.{json,sol,md}' --check
+yarn run prettier '**/*.{json,sol,md}' --write
+yarn run solhint 'contracts/**/*.sol'
+yarn run solhint 'contracts/**/*.sol' --fix
 ```
 
 # Etherscan verification
@@ -38,7 +57,7 @@ hardhat run --network ropsten scripts/deploy.ts
 Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
 ```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+yarn run hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
 
 # Performance optimizations
