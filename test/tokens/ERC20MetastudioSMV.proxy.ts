@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { ethers, upgrades, network } from "hardhat";
 import { expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber, Contract } from "ethers";
+import { doTransfert } from "../utils/ERC20.utils";
 
 // `describe` is a Mocha function that allows you to organize your tests. It's
 // not actually needed, but having your tests organized makes debugging them
@@ -117,7 +119,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     });
 
     it("Pause: Should fail", async function () {
-      // Try to send 1 token from owner (0 token) to addr1 (0 token).
+      // Try to pause contract
       // `require` will evaluate false and revert the transaction.
       await expect(logicalContract.pause()).to.be.revertedWith(
         "Ownable: caller is not the owner"
@@ -127,6 +129,38 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
           .connect("0x0000000000000000000000000000000000000000")
           .pause()
       ).to.be.reverted;
+    });
+
+    it("Transfert Ownership: Should fail", async function () {
+      // Try to transfert Ownership contract
+      // `require` will evaluate false and revert the transaction.
+      await expect(
+        logicalContract.transferOwnership(addr2.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+      await expect(
+        logicalContract
+          .connect("0x0000000000000000000000000000000000000000")
+          .transferOwnership(addr2.address)
+      ).to.be.reverted;
+    });
+  });
+
+  describe("Pausable contract", function () {
+    it("Transfer from Paused contract should fail", async function () {
+
+      // Pause ok
+      await proxyContract.pause();
+
+      // Try to send 100 on pause contract
+      // `require` will evaluate false and revert the transaction.
+      await expect(
+        proxyContract.transfer(addr1.address, 100)
+      ).to.be.revertedWith("Pausable: paused");
+
+      // Pause ok
+      await proxyContract.unpause();
+
+      await doTransfert(proxyContract, owner, addr1, 200) 
     });
   });
 
