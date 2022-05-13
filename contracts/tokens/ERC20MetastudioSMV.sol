@@ -11,14 +11,15 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
  
 /// @custom:security-contact blockchain-team@iorga.com: 
-contract ERC20MetastudioSMV is IERC165Upgradeable,
+contract ERC20MetastudioSMV is 
         Initializable, 
         ERC20Upgradeable, 
-        PausableUpgradeable, 
         OwnableUpgradeable, 
+        PausableUpgradeable, 
         ERC20PermitUpgradeable, 
         ERC20VotesUpgradeable, 
-        UUPSUpgradeable {
+        UUPSUpgradeable,
+        IERC165Upgradeable {
 
     address private _trustedForwarder;
 
@@ -27,7 +28,7 @@ contract ERC20MetastudioSMV is IERC165Upgradeable,
         _disableInitializers();
     }
 
-    function initialize() initializer public {
+    function initialize() public initializer {
         __ERC20_init("ERC20MetastudioSMV", "SMV");
         __Ownable_init();
         __Pausable_init();

@@ -42,7 +42,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     const Factory = await ethers.getContractFactory("ERC20MetastudioSMV");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(Factory);
+    proxyContract = await upgrades.deployProxy(Factory, { kind: 'uups' });
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
@@ -82,12 +82,6 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       // to our Signer's owner.
       expect(await proxyContract.owner()).to.equal(owner.address);
     });
-
-    // it("Should set the right Logical's owner", async function () {
-    //   // This test expects the owner variable stored in the contract to be equal
-    //   // to our Signer's owner.
-    //   expect(await logicalContract.owner()).to.equal(owner.address);
-    // });
 
     it("Should assign the total supply of tokens to the owner", async function () {
       const ownerBalance = await proxyContract.balanceOf(owner.address);
@@ -164,6 +158,9 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     });
   });
 
+  /*
+   * Passage de transactions
+   */
   describe("Transactions", function () {
     it("Should transfer tokens between accounts", async function () {
       // Transfer 50 tokens from owner to addr1
