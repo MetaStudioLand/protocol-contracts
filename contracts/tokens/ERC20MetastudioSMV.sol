@@ -28,7 +28,10 @@ contract ERC20MetastudioSMV is
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address tokensOwner) public initializer {
+
+        require( tokensOwner != address(0), "tokensOwner is mandatory");
+
         __ERC20_init("ERC20MetastudioSMV", "SMV");
         __Ownable_init();
         __Pausable_init();
@@ -36,14 +39,14 @@ contract ERC20MetastudioSMV is
         __ERC20Votes_init();
         __UUPSUpgradeable_init();
 
-        _mint(msg.sender, 5_000_000_000 * 10 ** decimals());
+        _mint(tokensOwner, 5_000_000_000 * 10 ** decimals());
     }
 
     function supportsInterface(bytes4 interfaceID) external pure override returns (bool) {
         return interfaceID != 0xffffffff && 
             (
-                interfaceID == this.supportsInterface.selector || // ERC165
-                interfaceID == 0x36372b07 || // ERC20
+                interfaceID == type(IERC165Upgradeable).interfaceId || // ERC165
+                interfaceID == type(IERC20Upgradeable).interfaceId || // ERC20
                 interfaceID == this.isTrustedForwarder.selector || // ERC2771 Meta-TX
                 //         ^ this.skinColor.selector // Simpson
                 false || false

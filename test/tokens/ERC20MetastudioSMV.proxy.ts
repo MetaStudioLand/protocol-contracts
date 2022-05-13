@@ -26,6 +26,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
   let proxyContract: Contract;
   let logicalContract: Contract;
   let owner: SignerWithAddress;
+  let tokensOwner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
   let addrs: SignerWithAddress[];
@@ -36,13 +37,13 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     await network.provider.send("hardhat_reset");
 
     // Gettings addresses
-    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+    [owner, tokensOwner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
     // Get the ContractFactory and Signers here.
     const Factory = await ethers.getContractFactory("ERC20MetastudioSMV");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(Factory, { kind: 'uups' });
+    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address], { kind: 'uups' });
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
@@ -83,10 +84,15 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       expect(await proxyContract.owner()).to.equal(owner.address);
     });
 
-    it("Should assign the total supply of tokens to the owner", async function () {
-      const ownerBalance = await proxyContract.balanceOf(owner.address);
+    it("Owner balance shoud be 0", async function () {
+    expect(await proxyContract.balanceOf(owner.address))
+      .to.equal(0); 
+    });
+
+    it("Should assign the total supply of tokens to the tokensOwner", async function () {
+      const tokensOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
       expect(await proxyContract.totalSupply())
-        .to.equal(ownerBalance)
+        .to.equal(tokensOwnerBalance)
         .to.equal(BigNumber.from("5000000000000000000000000000")); // 5000000000.000000000000000000
     });
   });
@@ -95,6 +101,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
    * Test for every impossible task done on Logical Contract
    */
   describe("Failing when called on Logical Contract", function () {
+
     it("Transfert: Should fail because no token owned", async function () {
       const initialOwnerBalance = await logicalContract.balanceOf(
         owner.address
@@ -148,13 +155,13 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       // Try to send 100 on pause contract
       // `require` will evaluate false and revert the transaction.
       await expect(
-        proxyContract.transfer(addr1.address, 100)
+        proxyContract.connect(tokensOwner).transfer(addr1.address, 100)
       ).to.be.revertedWith("Pausable: paused");
 
       // Pause ok
       await proxyContract.unpause();
 
-      await doTransfert(proxyContract, owner, addr1, 200) 
+      await doTransfert(proxyContract, tokensOwner, addr1, 200) 
     });
   });
 
@@ -164,7 +171,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
   describe("Transactions", function () {
     it("Should transfer tokens between accounts", async function () {
       // Transfer 50 tokens from owner to addr1
-      await proxyContract.transfer(addr1.address, 50);
+      await proxyContract.connect(tokensOwner).transfer(addr1.address, 50);
       const addr1Balance = await proxyContract.balanceOf(addr1.address);
       expect(addr1Balance).to.equal(50);
 
@@ -191,16 +198,16 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     });
 
     it("Should update balances after transfers", async function () {
-      const initialOwnerBalance = await proxyContract.balanceOf(owner.address);
+      const initialOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
 
       // Transfer 100 tokens from owner to addr1.
-      await proxyContract.transfer(addr1.address, 100);
+      await proxyContract.connect(tokensOwner).transfer(addr1.address, 100);
 
       // Transfer another 50 tokens from owner to addr2.
-      await proxyContract.transfer(addr2.address, 50);
+      await proxyContract.connect(tokensOwner).transfer(addr2.address, 50);
 
       // Check balances.
-      const finalOwnerBalance = await proxyContract.balanceOf(owner.address);
+      const finalOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
       expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(150));
 
       const addr1Balance = await proxyContract.balanceOf(addr1.address);
