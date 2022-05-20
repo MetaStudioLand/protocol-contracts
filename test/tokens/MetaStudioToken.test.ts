@@ -2,34 +2,16 @@
 import { ethers, upgrades, network } from "hardhat";
 import { expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { BigNumber, Contract } from "ethers";
+import { Contract } from "ethers";
 import { doTransfert } from "../utils/ERC20.utils";
 
-// `describe` is a Mocha function that allows you to organize your tests. It's
-// not actually needed, but having your tests organized makes debugging them
-// easier. All Mocha functions are available in the global scope.
-
-// `describe` receives the name of a section of your test suite, and a callback.
-// The callback must define the tests of that section. This callback can't be
-// an async function.
-describe("ERC20MetastudioSMV Proxy contract", function () {
-  // Mocha has four functions that let you hook into the test runner's
-  // lifecyle. These are: `before`, `beforeEach`, `after`, `afterEach`.
-
-  // They're very useful to setup the environment for tests, and to clean it
-  // up after they run.
-
-  // A common pattern is to declare some variables, and assign them in the
-  // `before` and `beforeEach` callbacks.
-
-  let isFirstTest = true;
+describe("MetaStudioToken", function () {
   let proxyContract: Contract;
   let logicalContract: Contract;
   let owner: SignerWithAddress;
   let tokensOwner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
-  let addrs: SignerWithAddress[];
 
   // `beforeEach` will run before each test, re-deploying the contract (Proxied) every time.
   beforeEach(async function () {
@@ -37,41 +19,31 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
     await network.provider.send("hardhat_reset");
 
     // Gettings addresses
-    [owner, tokensOwner, addr1, addr2, ...addrs] = await ethers.getSigners();
+    [owner, tokensOwner, addr1, addr2] = await ethers.getSigners();
 
     // Get the ContractFactory and Signers here.
-    const Factory = await ethers.getContractFactory("ERC20MetastudioSMV");
+    const Factory = await ethers.getContractFactory("MetaStudioToken");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address], { kind: 'uups' });
+    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address, ethers.constants.AddressZero], { kind: 'uups' });
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
     // which emit `OwnershipTransferred` event
     await expect(proxyContract.deployTransaction)
       .to.emit(proxyContract, "OwnershipTransferred")
-      .withArgs("0x0000000000000000000000000000000000000000", owner.address);
+      .withArgs(ethers.constants.AddressZero, owner.address);
 
     // Getting implementation contract
     logicalContract = await ethers.getContractAt(
-      "ERC20MetastudioSMV",
+      "MetaStudioToken",
       await upgrades.erc1967.getImplementationAddress(proxyContract.address)
     );
 
     // Le propriétaire du Logical Contract should be "Nobody" (VoidSigner) => no transaction can be issued by it
     expect(await logicalContract.owner()).to.equal(
-      "0x0000000000000000000000000000000000000000"
+      ethers.constants.AddressZero
     );
-
-    if (isFirstTest) {
-      isFirstTest = false;
-      console.log(`Deployed:
-        * Proxy address: ${proxyContract.address} 
-        * Proxy Contract's owner address: ${await proxyContract.owner()} 
-        * Proxy Admin Contract address: ${await upgrades.erc1967.getAdminAddress(proxyContract.address)} 
-        * Logical Contract address: ${logicalContract.address} 
-        * Logical Contract's owner address: ${await logicalContract.owner()}`);
-    }
   });
 
   /*
@@ -93,7 +65,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       const tokensOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
       expect(await proxyContract.totalSupply())
         .to.equal(tokensOwnerBalance)
-        .to.equal(BigNumber.from("5000000000000000000000000000")); // 5000000000.000000000000000000
+        .to.equal(ethers.utils.parseUnits("5000000000"));
     });
   });
 
@@ -127,7 +99,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       );
       await expect(
         logicalContract
-          .connect("0x0000000000000000000000000000000000000000")
+          .connect(ethers.constants.AddressZero)
           .pause()
       ).to.be.reverted;
     });
@@ -140,7 +112,7 @@ describe("ERC20MetastudioSMV Proxy contract", function () {
       ).to.be.revertedWith("Ownable: caller is not the owner");
       await expect(
         logicalContract
-          .connect("0x0000000000000000000000000000000000000000")
+          .connect(ethers.constants.AddressZero)
           .transferOwnership(addr2.address)
       ).to.be.reverted;
     });
