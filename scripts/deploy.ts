@@ -6,15 +6,21 @@
 const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-  const ERC20MetastudioSMV = await ethers.getContractFactory(
-    "ERC20MetastudioSMV"
+  const [deployer] = await ethers.getSigners();
+  const MetaStudioToken = await ethers.getContractFactory(
+    "MetaStudioToken",
+    deployer
   );
 
-  const mc = await upgrades.deployProxy(ERC20MetastudioSMV);
+  const mc = await upgrades.deployProxy(MetaStudioToken, [
+    deployer.address,
+    ethers.constants.AddressZero,
+  ]);
 
   await mc.deployed();
 
-  console.log("ERC20MetastudioSMV deployed to:", mc.address);
+  console.log("MetaStudioToken deployed to:", mc.address);
+  console.log(await upgrades.erc1967.getImplementationAddress(mc.address));
 }
 
 // We recommend this pattern to be able to use async/await everywhere
