@@ -3,27 +3,38 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
+import "./IERC2771Upgradeable.sol";
 
 /**
  * @dev Implementing updatable Trusted forwarder
  */
-abstract contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable {
-    /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
+contract ERC2771ContextUpgradeable 
+    is Initializable, ContextUpgradeable, IERC2771Upgradeable {
+
     address private _trustedForwarder;
 
+    event TrustedForwarderChanged(address oldTF, address newTF);
+
     function __ERC2771_init(address forwarder) internal onlyInitializing {
-        setTrustedForwarder(forwarder);
+        if (forwarder != address(0)) {
+            _setTrustedForwarder(forwarder);
+        }
     }
 
-    function isTrustedForwarder(address forwarder) public view virtual returns (bool) {
+    function isTrustedForwarder(address forwarder) public view virtual override returns (bool) {
         return forwarder == _trustedForwarder;
     }
 
-    function setTrustedForwarder(address forwarder) public virtual {
-        forwarder == _trustedForwarder;
+    /**
+     * @dev Only callable by the owner. Allows change of the trusted forwarder (in case of bankrupt)
+     */
+    function _setTrustedForwarder(address forwarder) internal {
+        address currentTrustedForwarder = _trustedForwarder;
+        _trustedForwarder = forwarder;
+        emit TrustedForwarderChanged(currentTrustedForwarder, forwarder);
     }
 
-    function _msgSender() internal view virtual override returns (address sender) {
+    function _msgSender() internal view virtual override(ContextUpgradeable) returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
             assembly {
@@ -34,7 +45,7 @@ abstract contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable
         }
     }
 
-    function _msgData() internal view virtual override returns (bytes calldata) {
+    function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
         if (isTrustedForwarder(msg.sender)) {
             return msg.data[:msg.data.length - 20];
         } else {
@@ -47,5 +58,5 @@ abstract contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable
      * variables without shifting down storage in the inheritance chain.
      * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
      */
-    uint256[50] private __gap;
+    uint256[49] private __gap;
 }

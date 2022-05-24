@@ -14,23 +14,23 @@ import "../metatx/IERC2771Upgradeable.sol";
 
 /// @custom:security-contact blockchain-team@iorga.com:
 contract MetaStudioToken is
+    IERC165Upgradeable,
     Initializable,
     ERC20Upgradeable,
     OwnableUpgradeable,
-    ERC2771ContextUpgradeable,
     PausableUpgradeable,
     ERC20PermitUpgradeable,
     ERC20VotesUpgradeable,
     UUPSUpgradeable,
-    IERC165Upgradeable
+    ERC2771ContextUpgradeable
 {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address owner, address forwarder) public initializer {
-        require(owner != address(0), "tokensOwner is mandatory");
+    function initialize(address tokensOwner, address forwarder) external initializer {
+        require(tokensOwner != address(0), "tokensOwner is mandatory");
 
         __ERC20_init("MetaStudioToken", "SMV");
         __Ownable_init();
@@ -40,7 +40,7 @@ contract MetaStudioToken is
         __ERC20Votes_init();
         __UUPSUpgradeable_init();
 
-        _mint(owner, 5_000_000_000 * 10 ** decimals());
+        _mint(tokensOwner, 5_000_000_000 * 10 ** decimals());
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -59,11 +59,11 @@ contract MetaStudioToken is
      * Inheritance extensions
      */
 
-    function pause() public onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
@@ -105,11 +105,16 @@ contract MetaStudioToken is
         super._burn(account, amount);
     }
 
+    /// @dev should be declared here because we need to protect calls with onlyOwner
+    function setTrustedForwarder(address forwarder) external onlyOwner {
+        super._setTrustedForwarder(forwarder);
+    }
+
     function _msgSender() internal view virtual override(ContextUpgradeable, ERC2771ContextUpgradeable) returns (address sender) {
-        return ERC2771ContextUpgradeable._msgSender();
+        return super._msgSender();
     }
 
     function _msgData() internal view virtual override(ContextUpgradeable, ERC2771ContextUpgradeable) returns (bytes calldata) {
-        return ERC2771ContextUpgradeable._msgData();
+        return super._msgData();
     }    
 }
