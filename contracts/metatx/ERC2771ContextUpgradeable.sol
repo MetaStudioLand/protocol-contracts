@@ -8,9 +8,11 @@ import "./IERC2771Upgradeable.sol";
 /**
  * @dev Implementing updatable Trusted forwarder
  */
-contract ERC2771ContextUpgradeable 
-    is Initializable, ContextUpgradeable, IERC2771Upgradeable {
-
+contract ERC2771ContextUpgradeable is
+    Initializable,
+    ContextUpgradeable,
+    IERC2771Upgradeable
+{
     address private _trustedForwarder;
 
     event TrustedForwarderChanged(address oldTF, address newTF);
@@ -21,7 +23,13 @@ contract ERC2771ContextUpgradeable
         }
     }
 
-    function isTrustedForwarder(address forwarder) public view virtual override returns (bool) {
+    function isTrustedForwarder(address forwarder)
+        public
+        view
+        virtual
+        override
+        returns (bool)
+    {
         return forwarder == _trustedForwarder;
     }
 
@@ -34,7 +42,13 @@ contract ERC2771ContextUpgradeable
         emit TrustedForwarderChanged(currentTrustedForwarder, forwarder);
     }
 
-    function _msgSender() internal view virtual override(ContextUpgradeable) returns (address sender) {
+    function _msgSender()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable)
+        returns (address sender)
+    {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
             assembly {
@@ -45,7 +59,13 @@ contract ERC2771ContextUpgradeable
         }
     }
 
-    function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
+    function _msgData()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable)
+        returns (bytes calldata)
+    {
         if (isTrustedForwarder(msg.sender)) {
             return msg.data[:msg.data.length - 20];
         } else {
