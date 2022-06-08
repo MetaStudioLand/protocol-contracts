@@ -29,7 +29,10 @@ contract MetaStudioToken is
         _disableInitializers();
     }
 
-    function initialize(address tokensOwner, address forwarder) external initializer {
+    function initialize(address tokensOwner, address forwarder)
+        external
+        initializer
+    {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
 
         __ERC20_init("MetaStudioToken", "SMV");
@@ -40,7 +43,7 @@ contract MetaStudioToken is
         __ERC20Votes_init();
         __UUPSUpgradeable_init();
 
-        _mint(tokensOwner, 5_000_000_000 * 10 ** decimals());
+        _mint(tokensOwner, 5_000_000_000 * 10**decimals());
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -49,10 +52,10 @@ contract MetaStudioToken is
         override
         returns (bool)
     {
-        return 
+        return
             interfaceId == type(IERC165Upgradeable).interfaceId ||
             interfaceId == type(IERC20Upgradeable).interfaceId ||
-            interfaceId == type(IERC2771Upgradeable).interfaceId;            
+            interfaceId == type(IERC2771Upgradeable).interfaceId;
     }
 
     /*
@@ -110,11 +113,23 @@ contract MetaStudioToken is
         super._setTrustedForwarder(forwarder);
     }
 
-    function _msgSender() internal view virtual override(ContextUpgradeable, ERC2771ContextUpgradeable) returns (address sender) {
+    function _msgSender()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable, ERC2771ContextUpgradeable)
+        returns (address sender)
+    {
         return super._msgSender();
     }
 
-    function _msgData() internal view virtual override(ContextUpgradeable, ERC2771ContextUpgradeable) returns (bytes calldata) {
+    function _msgData()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable, ERC2771ContextUpgradeable)
+        returns (bytes calldata)
+    {
         return super._msgData();
-    }    
+    }
 }

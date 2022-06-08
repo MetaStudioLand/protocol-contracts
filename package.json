@@ -2,7 +2,7 @@
   "name": "metastudio",
   "packageManager": "yarn@3.2.0",
   "scripts": {
-    "test" : "hardhat test"
+    "test": "hardhat test"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.3",

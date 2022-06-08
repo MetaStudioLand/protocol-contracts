@@ -9,13 +9,14 @@ After installing nvm, use it to install the latest 16th version of `node`
 ```shell
 nvm install 16
 ```
+
 ## Installing Yarn 3 and tools
 
 ```shell
 npm install -g yarn
-yarn set version berry 
+yarn set version berry
 
-yarn plugin import interactive-tools 
+yarn plugin import interactive-tools
 ```
 
 ## How to upgrade dependencies
