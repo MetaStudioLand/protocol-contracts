@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Installing dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install 
 
       - name: Linting
         run: yarn lint
