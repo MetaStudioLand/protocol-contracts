@@ -2,6 +2,7 @@
   "name": "metastudio",
   "packageManager": "yarn@3.2.0",
   "scripts": {
+    "lint": "eslint '**/*.{js,ts}'",
     "test": "hardhat test"
   },
   "devDependencies": {
