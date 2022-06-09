@@ -17,6 +17,7 @@ contract ERC2771ContextUpgradeable is
 
   event TrustedForwarderChanged(address oldTF, address newTF);
 
+  // solhint-disable-next-line func-name-mixedcase
   function __ERC2771_init(address forwarder) internal onlyInitializing {
     if (forwarder != address(0)) {
       _setTrustedForwarder(forwarder);
@@ -51,6 +52,7 @@ contract ERC2771ContextUpgradeable is
   {
     if (isTrustedForwarder(msg.sender)) {
       // The assembly code is more direct than the Solidity version using `abi.decode`.
+      // solhint-disable-next-line no-inline-assembly
       assembly {
         sender := shr(96, calldataload(sub(calldatasize(), 20)))
       }

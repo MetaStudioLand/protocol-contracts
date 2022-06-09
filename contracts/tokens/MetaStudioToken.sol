@@ -12,7 +12,7 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
 
-/// @custom:security-contact blockchain-team@iorga.com:
+/// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
   IERC165Upgradeable,
   Initializable,
@@ -82,7 +82,10 @@ contract MetaStudioToken is
     internal
     override
     onlyOwner
-  {}
+  // solhint-disable-next-line no-empty-blocks
+  {
+
+  }
 
   // The following functions are overrides required by Solidity.
 
