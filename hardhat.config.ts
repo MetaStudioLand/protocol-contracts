@@ -5,7 +5,6 @@ import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import "hardhat-gas-reporter";
 import "hardhat-storage-layout";
-import "hardhat-tracer";
 
 import {HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
