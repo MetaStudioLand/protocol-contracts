@@ -4,4 +4,3 @@ cache
 typechain
 coverage*
 gasReporterOutput.json
-.*
