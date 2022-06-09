@@ -3,7 +3,9 @@
   "packageManager": "yarn@3.2.0",
   "scripts": {
     "lint": "eslint '**/*.{js,ts}'",
-    "format": "prettier '**/*.{json,sol,md,ts}' --check",
+    "format": "prettier 'contracts/**/*.sol' --check",
+    "format-fix": "prettier 'contracts/**/*.sol' --write",
+    "solhint": "solhint 'contracts/**/*.sol'",
     "test": "hardhat test"
   },
   "devDependencies": {
