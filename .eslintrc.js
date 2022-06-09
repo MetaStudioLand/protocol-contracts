@@ -6,11 +6,7 @@ module.exports = {
     mocha: true,
     node: true,
   },
-  plugins: [
-    "@typescript-eslint",
-    "promise",
-    "prettier"
-  ],
+  plugins: ["@typescript-eslint", "promise", "prettier"],
   extends: [
     "standard",
     "plugin:node/recommended",
@@ -27,10 +23,7 @@ module.exports = {
     },
   },
   rules: {
-    "node/no-unsupported-features/es-syntax": [
-      "error",
-      { ignores: ["modules"] },
-    ],
+    "node/no-unsupported-features/es-syntax": ["error", {ignores: ["modules"]}],
     "node/no-missing-import": [
       "error",
       {
