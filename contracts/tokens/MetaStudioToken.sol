@@ -14,122 +14,104 @@ import "../metatx/IERC2771Upgradeable.sol";
 
 /// @custom:security-contact blockchain-team@iorga.com:
 contract MetaStudioToken is
-    IERC165Upgradeable,
-    Initializable,
-    ERC20Upgradeable,
-    OwnableUpgradeable,
-    PausableUpgradeable,
-    ERC20PermitUpgradeable,
-    ERC20VotesUpgradeable,
-    UUPSUpgradeable,
-    ERC2771ContextUpgradeable
+  IERC165Upgradeable,
+  Initializable,
+  ERC20Upgradeable,
+  OwnableUpgradeable,
+  PausableUpgradeable,
+  ERC20PermitUpgradeable,
+  ERC20VotesUpgradeable,
+  UUPSUpgradeable,
+  ERC2771ContextUpgradeable
 {
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
 
-    function initialize(address tokensOwner, address forwarder)
-        external
-        initializer
-    {
-        require(tokensOwner != address(0), "tokensOwner is mandatory");
+  function initialize(address tokensOwner, address forwarder) external initializer {
+    require(tokensOwner != address(0), "tokensOwner is mandatory");
 
-        __ERC20_init("MetaStudioToken", "SMV");
-        __Ownable_init();
-        __ERC2771_init(forwarder);
-        __Pausable_init();
-        __ERC20Permit_init("MetaStudioToken");
-        __ERC20Votes_init();
-        __UUPSUpgradeable_init();
+    __ERC20_init("MetaStudioToken", "SMV");
+    __Ownable_init();
+    __ERC2771_init(forwarder);
+    __Pausable_init();
+    __ERC20Permit_init("MetaStudioToken");
+    __ERC20Votes_init();
+    __UUPSUpgradeable_init();
 
-        _mint(tokensOwner, 5_000_000_000 * 10**decimals());
-    }
+    _mint(tokensOwner, 5_000_000_000 * 10**decimals());
+  }
 
-    function supportsInterface(bytes4 interfaceId)
-        external
-        pure
-        override
-        returns (bool)
-    {
-        return
-            interfaceId == type(IERC165Upgradeable).interfaceId ||
-            interfaceId == type(IERC20Upgradeable).interfaceId ||
-            interfaceId == type(IERC2771Upgradeable).interfaceId;
-    }
+  function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
+    return
+      interfaceId == type(IERC165Upgradeable).interfaceId ||
+      interfaceId == type(IERC20Upgradeable).interfaceId ||
+      interfaceId == type(IERC2771Upgradeable).interfaceId;
+  }
 
-    /*
-     * Inheritance extensions
-     */
+  /*
+   * Inheritance extensions
+   */
 
-    function pause() external onlyOwner {
-        _pause();
-    }
+  function pause() external onlyOwner {
+    _pause();
+  }
 
-    function unpause() external onlyOwner {
-        _unpause();
-    }
+  function unpause() external onlyOwner {
+    _unpause();
+  }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 amount
-    ) internal override whenNotPaused {
-        super._beforeTokenTransfer(from, to, amount);
-    }
+  function _beforeTokenTransfer(
+    address from,
+    address to,
+    uint256 amount
+  ) internal override whenNotPaused {
+    super._beforeTokenTransfer(from, to, amount);
+  }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyOwner
-    {}
+  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
-    // The following functions are overrides required by Solidity.
+  // The following functions are overrides required by Solidity.
 
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 amount
-    ) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
-        super._afterTokenTransfer(from, to, amount);
-    }
+  function _afterTokenTransfer(
+    address from,
+    address to,
+    uint256 amount
+  ) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    super._afterTokenTransfer(from, to, amount);
+  }
 
-    function _mint(address to, uint256 amount)
-        internal
-        override(ERC20Upgradeable, ERC20VotesUpgradeable)
-    {
-        super._mint(to, amount);
-    }
+  function _mint(address to, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    super._mint(to, amount);
+  }
 
-    function _burn(address account, uint256 amount)
-        internal
-        override(ERC20Upgradeable, ERC20VotesUpgradeable)
-    {
-        super._burn(account, amount);
-    }
+  function _burn(address account, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    super._burn(account, amount);
+  }
 
-    /// @dev should be declared here because we need to protect calls with onlyOwner
-    function setTrustedForwarder(address forwarder) external onlyOwner {
-        super._setTrustedForwarder(forwarder);
-    }
+  /// @dev should be declared here because we need to protect calls with onlyOwner
+  function setTrustedForwarder(address forwarder) external onlyOwner {
+    super._setTrustedForwarder(forwarder);
+  }
 
-    function _msgSender()
-        internal
-        view
-        virtual
-        override(ContextUpgradeable, ERC2771ContextUpgradeable)
-        returns (address sender)
-    {
-        return super._msgSender();
-    }
+  function _msgSender()
+    internal
+    view
+    virtual
+    override(ContextUpgradeable, ERC2771ContextUpgradeable)
+    returns (address sender)
+  {
+    return super._msgSender();
+  }
 
-    function _msgData()
-        internal
-        view
-        virtual
-        override(ContextUpgradeable, ERC2771ContextUpgradeable)
-        returns (bytes calldata)
-    {
-        return super._msgData();
-    }
+  function _msgData()
+    internal
+    view
+    virtual
+    override(ContextUpgradeable, ERC2771ContextUpgradeable)
+    returns (bytes calldata)
+  {
+    return super._msgData();
+  }
 }
