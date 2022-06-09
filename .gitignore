@@ -3,6 +3,7 @@ node_modules
 coverage
 coverage.json
 typechain
+.yarn
 
 #Hardhat files
 cache
@@ -10,3 +11,4 @@ artifacts
 
 #OpenZeppelin files
 .openzeppelin/unknown-*.json
+/.idea/
