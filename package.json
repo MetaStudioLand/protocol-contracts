@@ -1,6 +1,6 @@
 {
   "name": "metastudio",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@1.22.19",
   "scripts": {
     "lint": "eslint '**/*.{js,ts}'",
     "format": "prettier 'contracts/**/*.sol' --check",

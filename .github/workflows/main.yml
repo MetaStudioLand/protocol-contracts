@@ -13,11 +13,8 @@ jobs:
         with:
           node-version: 16.9.1
 
-      - name: Upgrade to Yarn 3
-        run: yarn set version berry
-
       - name: Installing dependencies
-        run: yarn install --immutable
+        run: yarn install --frozen-lockfile
 
       - name: Linting
         run: yarn lint
