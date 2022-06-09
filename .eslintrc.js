@@ -6,11 +6,16 @@ module.exports = {
     mocha: true,
     node: true,
   },
-  plugins: ["@typescript-eslint"],
+  plugins: [
+    "@typescript-eslint",
+    "promise",
+    "prettier"
+  ],
   extends: [
     "standard",
-    "plugin:prettier/recommended",
     "plugin:node/recommended",
+    "plugin:promise/recommended",
+    "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
