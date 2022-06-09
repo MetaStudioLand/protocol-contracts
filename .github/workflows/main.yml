@@ -25,6 +25,9 @@ jobs:
       - name: Formatting
         run: yarn format
 
+      - name: Solhint
+        run: yarn solhint
+
       - name: Testing
         run: yarn test
 

@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import {ethers, upgrades, network} from "hardhat";
-import {expect} from "chai";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
+import {expect} from "chai";
 import {Contract} from "ethers";
+import {ethers, network, upgrades} from "hardhat";
 import {doTransfert} from "../utils/ERC20.utils";
 
 describe("MetaStudioToken", function () {
@@ -25,9 +25,13 @@ describe("MetaStudioToken", function () {
     const Factory = await ethers.getContractFactory("MetaStudioToken");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address, ethers.constants.AddressZero], {
-      kind: "uups",
-    });
+    proxyContract = await upgrades.deployProxy(
+      Factory,
+      [tokensOwner.address, ethers.constants.AddressZero],
+      {
+        kind: "uups",
+      }
+    );
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
@@ -43,7 +47,9 @@ describe("MetaStudioToken", function () {
     );
 
     // Le propriétaire du Logical Contract should be "Nobody" (VoidSigner) => no transaction can be issued by it
-    expect(await logicalContract.owner()).to.equal(ethers.constants.AddressZero);
+    expect(await logicalContract.owner()).to.equal(
+      ethers.constants.AddressZero
+    );
   });
 
   /*
@@ -61,7 +67,9 @@ describe("MetaStudioToken", function () {
     });
 
     it("Should assign the total supply of tokens to the tokensOwner", async function () {
-      const tokensOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
+      const tokensOwnerBalance = await proxyContract.balanceOf(
+        tokensOwner.address
+      );
       expect(await proxyContract.totalSupply())
         .to.equal(tokensOwnerBalance)
         .to.equal(ethers.utils.parseUnits("5000000000"));
@@ -73,33 +81,44 @@ describe("MetaStudioToken", function () {
    */
   describe("Failing when called on Logical Contract", function () {
     it("Transfert: Should fail because no token owned", async function () {
-      const initialOwnerBalance = await logicalContract.balanceOf(owner.address);
+      const initialOwnerBalance = await logicalContract.balanceOf(
+        owner.address
+      );
 
       // Try to send 1 token from owner (0 token) to addr1 (0 token).
       // `require` will evaluate false and revert the transaction.
-      await expect(logicalContract.transfer(addr1.address, 1)).to.be.revertedWith(
-        "ERC20: transfer amount exceeds balance"
-      );
+      await expect(
+        logicalContract.transfer(addr1.address, 1)
+      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
-      expect(await logicalContract.balanceOf(owner.address)).to.equal(initialOwnerBalance);
+      expect(await logicalContract.balanceOf(owner.address)).to.equal(
+        initialOwnerBalance
+      );
     });
 
     it("Pause: Should fail", async function () {
       // Try to pause contract
       // `require` will evaluate false and revert the transaction.
-      await expect(logicalContract.pause()).to.be.revertedWith("Ownable: caller is not the owner");
-      await expect(logicalContract.connect(ethers.constants.AddressZero).pause()).to.be.reverted;
+      await expect(logicalContract.pause()).to.be.revertedWith(
+        "Ownable: caller is not the owner"
+      );
+      await expect(
+        logicalContract.connect(ethers.constants.AddressZero).pause()
+      ).to.be.reverted;
     });
 
     it("Transfert Ownership: Should fail", async function () {
       // Try to transfert Ownership contract
       // `require` will evaluate false and revert the transaction.
-      await expect(logicalContract.transferOwnership(addr2.address)).to.be.revertedWith(
-        "Ownable: caller is not the owner"
-      );
-      await expect(logicalContract.connect(ethers.constants.AddressZero).transferOwnership(addr2.address)).to.be
-        .reverted;
+      await expect(
+        logicalContract.transferOwnership(addr2.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+      await expect(
+        logicalContract
+          .connect(ethers.constants.AddressZero)
+          .transferOwnership(addr2.address)
+      ).to.be.reverted;
     });
   });
 
@@ -110,9 +129,9 @@ describe("MetaStudioToken", function () {
 
       // Try to send 100 on pause contract
       // `require` will evaluate false and revert the transaction.
-      await expect(proxyContract.connect(tokensOwner).transfer(addr1.address, 100)).to.be.revertedWith(
-        "Pausable: paused"
-      );
+      await expect(
+        proxyContract.connect(tokensOwner).transfer(addr1.address, 100)
+      ).to.be.revertedWith("Pausable: paused");
 
       // Pause ok
       await proxyContract.unpause();
@@ -143,16 +162,20 @@ describe("MetaStudioToken", function () {
 
       // Try to send 1 token from addr1 (0 tokens) to owner (1000000 tokens).
       // `require` will evaluate false and revert the transaction.
-      await expect(proxyContract.connect(addr1).transfer(owner.address, 1)).to.be.revertedWith(
-        "ERC20: transfer amount exceeds balance"
-      );
+      await expect(
+        proxyContract.connect(addr1).transfer(owner.address, 1)
+      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
-      expect(await proxyContract.balanceOf(owner.address)).to.equal(initialOwnerBalance);
+      expect(await proxyContract.balanceOf(owner.address)).to.equal(
+        initialOwnerBalance
+      );
     });
 
     it("Should update balances after transfers", async function () {
-      const initialOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
+      const initialOwnerBalance = await proxyContract.balanceOf(
+        tokensOwner.address
+      );
 
       // Transfer 100 tokens from owner to addr1.
       await proxyContract.connect(tokensOwner).transfer(addr1.address, 100);
@@ -161,7 +184,9 @@ describe("MetaStudioToken", function () {
       await proxyContract.connect(tokensOwner).transfer(addr2.address, 50);
 
       // Check balances.
-      const finalOwnerBalance = await proxyContract.balanceOf(tokensOwner.address);
+      const finalOwnerBalance = await proxyContract.balanceOf(
+        tokensOwner.address
+      );
       expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(150));
 
       const addr1Balance = await proxyContract.balanceOf(addr1.address);

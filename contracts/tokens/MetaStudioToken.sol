@@ -29,7 +29,10 @@ contract MetaStudioToken is
     _disableInitializers();
   }
 
-  function initialize(address tokensOwner, address forwarder) external initializer {
+  function initialize(address tokensOwner, address forwarder)
+    external
+    initializer
+  {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
 
     __ERC20_init("MetaStudioToken", "SMV");
@@ -43,7 +46,12 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
-  function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
+  function supportsInterface(bytes4 interfaceId)
+    external
+    pure
+    override
+    returns (bool)
+  {
     return
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
@@ -70,7 +78,11 @@ contract MetaStudioToken is
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+  function _authorizeUpgrade(address newImplementation)
+    internal
+    override
+    onlyOwner
+  {}
 
   // The following functions are overrides required by Solidity.
 
@@ -82,11 +94,17 @@ contract MetaStudioToken is
     super._afterTokenTransfer(from, to, amount);
   }
 
-  function _mint(address to, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+  function _mint(address to, uint256 amount)
+    internal
+    override(ERC20Upgradeable, ERC20VotesUpgradeable)
+  {
     super._mint(to, amount);
   }
 
-  function _burn(address account, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+  function _burn(address account, uint256 amount)
+    internal
+    override(ERC20Upgradeable, ERC20VotesUpgradeable)
+  {
     super._burn(account, amount);
   }
 
