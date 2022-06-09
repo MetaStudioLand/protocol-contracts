@@ -9435,7 +9435,7 @@ __metadata:
     hardhat-tracer: ^1.1.0-rc.6
     lodash: ^4.17.21
     prettier: ^2.6.2
-    prettier-plugin-solidity: ^1.0.0-dev.21
+    prettier-plugin-solidity: ^1.0.0-beta.19
     solhint: ^3.3.7
     solidity-coverage: ^0.7.21
     ts-node: ^10.8.1
@@ -10830,7 +10830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:^1.0.0-dev.21":
+"prettier-plugin-solidity@npm:^1.0.0-beta.19":
   version: 1.0.0-dev.21
   resolution: "prettier-plugin-solidity@npm:1.0.0-dev.21"
   dependencies:
@@ -13319,10 +13319,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>":
   version: 4.7.3
-  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"
+  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
+  checksum: 8257ce7ecbbf9416da60045a76a99d473698ca9e973fa0ddab7137cacb1587255431176cbbcc801a650938c4dc8109ab88355774829a714fabe56a53a2fe4524
   languageName: node
   linkType: hard
 

@@ -1,13 +1,8 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
-import { Contract } from "ethers";
+import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
+import {expect} from "chai";
+import {Contract} from "ethers";
 
-export async function doTransfert(
-  contract: Contract,
-  from: SignerWithAddress,
-  to: SignerWithAddress,
-  amount: number
-) {
+export async function doTransfert(contract: Contract, from: SignerWithAddress, to: SignerWithAddress, amount: number) {
   const initialFromBalance = await contract.balanceOf(from.address);
   const initialToBalance = await contract.balanceOf(to.address);
   console.debug(`Balances from=${initialFromBalance} - to=${initialToBalance}`);
