@@ -25,13 +25,7 @@ describe("MetaStudioToken", function () {
     const Factory = await ethers.getContractFactory("MetaStudioToken");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(
-      Factory,
-      [tokensOwner.address, ethers.constants.AddressZero],
-      {
-        kind: "uups",
-      }
-    );
+    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address, ethers.constants.AddressZero, []], { kind: 'uups' });
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
