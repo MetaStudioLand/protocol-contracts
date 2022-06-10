@@ -1,26 +1,21 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 
-import "./IERC1363.sol";
-import "./IERC1363Receiver.sol";
-import "./IERC1363Spender.sol";
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 
-/**
- * @title ERC1363
- * @author Vittorio Minacori (https://github.com/vittominacori)
- * @dev Implementation of an ERC1363 interface
- */
-abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
-    using Address for address;
+abstract contract ERC1363Upgradeable is ERC20Upgradeable, IERC1363Upgradeable, ERC165Upgradeable {
+    using AddressUpgradeable for address;
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
-        return interfaceId == type(IERC1363).interfaceId || super.supportsInterface(interfaceId);
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165Upgradeable, IERC165Upgradeable) returns (bool) {
+        return interfaceId == type(IERC1363Upgradeable).interfaceId || interfaceId == type(IERC165Upgradeable).interfaceId || super.supportsInterface(interfaceId);
     }
 
     /**
@@ -46,7 +41,7 @@ abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
         bytes memory data
     ) public virtual override returns (bool) {
         transfer(to, amount);
-        require(_checkAndCallTransfer(_msgSender(), to, amount, data), "ERC1363: _checkAndCallTransfer reverts");
+        require(_checkAndCallTransfer(_msgSender(), to, amount, data), "ERC1363Upgradeable: _checkAndCallTransfer reverts");
         return true;
     }
 
@@ -80,7 +75,7 @@ abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
         bytes memory data
     ) public virtual override returns (bool) {
         transferFrom(from, to, amount);
-        require(_checkAndCallTransfer(from, to, amount, data), "ERC1363: _checkAndCallTransfer reverts");
+        require(_checkAndCallTransfer(from, to, amount, data), "ERC1363Upgradeable: _checkAndCallTransfer reverts");
         return true;
     }
 
@@ -107,7 +102,7 @@ abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
         bytes memory data
     ) public virtual override returns (bool) {
         approve(spender, amount);
-        require(_checkAndCallApprove(spender, amount, data), "ERC1363: _checkAndCallApprove reverts");
+        require(_checkAndCallApprove(spender, amount, data), "ERC1363Upgradeable: _checkAndCallApprove reverts");
         return true;
     }
 
@@ -129,8 +124,8 @@ abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
         if (!recipient.isContract()) {
             return false;
         }
-        bytes4 retval = IERC1363Receiver(recipient).onTransferReceived(_msgSender(), sender, amount, data);
-        return (retval == IERC1363Receiver(recipient).onTransferReceived.selector);
+        bytes4 retval = IERC1363ReceiverUpgradeable(recipient).onTransferReceived(_msgSender(), sender, amount, data);
+        return (retval == IERC1363ReceiverUpgradeable(recipient).onTransferReceived.selector);
     }
 
     /**
@@ -149,7 +144,7 @@ abstract contract ERC1363 is ERC20Upgradeable, IERC1363, ERC165 {
         if (!spender.isContract()) {
             return false;
         }
-        bytes4 retval = IERC1363Spender(spender).onApprovalReceived(_msgSender(), amount, data);
-        return (retval == IERC1363Spender(spender).onApprovalReceived.selector);
+        bytes4 retval = IERC1363SpenderUpgradeable(spender).onApprovalReceived(_msgSender(), amount, data);
+        return (retval == IERC1363SpenderUpgradeable(spender).onApprovalReceived.selector);
     }
 }

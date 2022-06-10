@@ -11,7 +11,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
-
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
+import "../ERC1363/ERC1363ContextUpgradeable.sol";
 /// @custom:security-contact blockchain-team@iorga.com:
 contract MetaStudioToken is
     IERC165Upgradeable,
@@ -22,7 +23,8 @@ contract MetaStudioToken is
     ERC20PermitUpgradeable,
     ERC20VotesUpgradeable,
     UUPSUpgradeable,
-    ERC2771ContextUpgradeable
+    ERC2771ContextUpgradeable,
+    ERC1363ContextUpgradeable
 {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -52,7 +54,8 @@ contract MetaStudioToken is
         return 
             interfaceId == type(IERC165Upgradeable).interfaceId ||
             interfaceId == type(IERC20Upgradeable).interfaceId ||
-            interfaceId == type(IERC2771Upgradeable).interfaceId;            
+            interfaceId == type(IERC2771Upgradeable).interfaceId|| 
+            ;            
     }
 
     /*
