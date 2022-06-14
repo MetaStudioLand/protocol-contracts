@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 
 /**
- * @dev Implementing updatable Trusted forwarder
+ * @notice Implementing an updatable Trusted Forwarder
  */
 contract ERC2771ContextUpgradeable is
   Initializable,
@@ -15,6 +15,9 @@ contract ERC2771ContextUpgradeable is
 {
   address private _trustedForwarder;
 
+  /// @notice Emitted when the trusted forwarder have been successfully changed
+  /// @param oldTF previous trusted forwader
+  /// @param newTF new registred trusted forwader
   event TrustedForwarderChanged(address oldTF, address newTF);
 
   // solhint-disable-next-line func-name-mixedcase
@@ -24,6 +27,10 @@ contract ERC2771ContextUpgradeable is
     }
   }
 
+  /// @notice Checks if it's the current trusted forwarder.
+  /// @dev ERC 2771 implementation
+  /// @param forwarder canditate forwarder address
+  /// @return true if it is the trusted forwarder
   function isTrustedForwarder(address forwarder)
     public
     view

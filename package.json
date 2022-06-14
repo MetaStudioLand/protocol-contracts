@@ -8,7 +8,8 @@
     "solhint": "solhint 'contracts/**/*.sol'",
     "test": "hardhat test",
     "test-trace": "hardhat test --trace",
-    "test-fulltrace": "hardhat test --fulltrace"
+    "test-fulltrace": "hardhat test --fulltrace",
+    "dodoc": "hardhat dodoc"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.3",
@@ -19,6 +20,7 @@
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/hardhat-upgrades": "^1.18.1",
     "@openzeppelin/test-helpers": "^0.5.15",
+    "@primitivefi/hardhat-dodoc": "^0.2.3",
     "@typechain/ethers-v5": "^7.2.0",
     "@typechain/hardhat": "^2.3.1",
     "@types/chai": "^4.3.1",

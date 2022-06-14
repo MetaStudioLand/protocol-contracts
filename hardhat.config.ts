@@ -1,6 +1,7 @@
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@openzeppelin/hardhat-upgrades";
+import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import "hardhat-erc1820";
@@ -36,6 +37,12 @@ const config: HardhatUserConfig = {
         runs: 1000,
       },
     },
+  },
+  dodoc: {
+    runOnCompile: true,
+    include: ["tokens", "metatx"],
+    exclude: ["IERC2771Upgradeable"],
+    debugMode: false,
   },
   networks: {
     ropsten: {
