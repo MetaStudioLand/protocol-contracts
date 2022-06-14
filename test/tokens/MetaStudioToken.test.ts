@@ -2,7 +2,7 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {Contract} from "ethers";
-import {ethers, upgrades} from "hardhat";
+import {ethers, network, run, upgrades} from "hardhat";
 import {doTransfert} from "../utils/ERC20.utils";
 
 describe("MetaStudioToken", function () {
@@ -16,7 +16,9 @@ describe("MetaStudioToken", function () {
   // `beforeEach` will run before each test, re-deploying the contract (Proxied) every time.
   beforeEach(async function () {
     // Reset the local Network (blockchain)
-    // await network.provider.send("hardhat_reset");
+    await network.provider.send("hardhat_reset");
+    // Redeploying mocked ERC1820
+    await run("test:setup-test-environment");
 
     // Gettings addresses
     [owner, tokensOwner, addr1, addr2] = await ethers.getSigners();
