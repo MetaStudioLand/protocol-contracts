@@ -3,7 +3,9 @@ import "@nomiclabs/hardhat-waffle";
 import "@openzeppelin/hardhat-upgrades";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
+import "hardhat-erc1820";
 import "hardhat-gas-reporter";
+import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
 
 import {HardhatUserConfig, task} from "hardhat/config";

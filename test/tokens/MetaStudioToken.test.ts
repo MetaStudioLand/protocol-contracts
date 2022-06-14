@@ -10,6 +10,7 @@ describe("MetaStudioToken", function () {
   let logicalContract: Contract;
   let owner: SignerWithAddress;
   let tokensOwner: SignerWithAddress;
+  let defaultOperator: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
 
@@ -19,13 +20,18 @@ describe("MetaStudioToken", function () {
     await network.provider.send("hardhat_reset");
 
     // Gettings addresses
-    [owner, tokensOwner, addr1, addr2] = await ethers.getSigners();
+    [owner, tokensOwner, defaultOperator, addr1, addr2] =
+      await ethers.getSigners();
 
     // Get the ContractFactory and Signers here.
     const Factory = await ethers.getContractFactory("MetaStudioToken");
 
     // Deploying Proxied version of our Contract and waiting for deployement completed
-    proxyContract = await upgrades.deployProxy(Factory, [tokensOwner.address, ethers.constants.AddressZero, []], { kind: 'uups' });
+    proxyContract = await upgrades.deployProxy(
+      Factory,
+      [tokensOwner.address, ethers.constants.AddressZero, []],
+      {kind: "uups"}
+    );
     await proxyContract.deployed();
 
     // Deployement should trigger ownership changement `__Ownable_init()`
