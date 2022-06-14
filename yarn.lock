@@ -5997,7 +5997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^5.0.0, ethers@npm:^5.0.1, ethers@npm:^5.0.13, ethers@npm:^5.0.2, ethers@npm:^5.5.2, ethers@npm:^5.5.3, ethers@npm:^5.6.8":
+"ethers@npm:^5.0.0, ethers@npm:^5.0.1, ethers@npm:^5.0.13, ethers@npm:^5.0.2, ethers@npm:^5.5.2, ethers@npm:^5.5.3, ethers@npm:^5.6.1, ethers@npm:^5.6.8":
   version: 5.6.8
   resolution: "ethers@npm:5.6.8"
   dependencies:
@@ -7282,6 +7282,19 @@ __metadata:
   peerDependencies:
     hardhat: ^2.0.3
   checksum: 041041582ca32ccce90a71a8c243c8cbf0cb09d908fcf69e3994b2805b84f37310cc825ad63ad47ccb803260a6c94237881b2ed9098ac4704e022c19045cd075
+  languageName: node
+  linkType: hard
+
+"hardhat-tracer@npm:^1.1.0-rc.6":
+  version: 1.1.0-rc.6
+  resolution: "hardhat-tracer@npm:1.1.0-rc.6"
+  dependencies:
+    ethers: ^5.6.1
+  peerDependencies:
+    chalk: 4.x
+    ethers: 5.x
+    hardhat: 2.x
+  checksum: 9c8fbf33c08cc082d8daba22bc6627e2d82caadbed7a4e6cd1e0a94851dcd5783d6de66f01ae979f8c8c0bb016590a4a368316cce1817db7bfa7e6d4b10af681
   languageName: node
   linkType: hard
 
@@ -9508,6 +9521,7 @@ __metadata:
     hardhat-gas-reporter: ^1.0.8
     hardhat-gas-trackooor: ^1.0.2
     hardhat-storage-layout: ^0.1.6
+    hardhat-tracer: ^1.1.0-rc.6
     lodash: ^4.17.21
     prettier: ^2.6.2
     prettier-plugin-solidity: ^1.0.0-dev.21
