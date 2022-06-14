@@ -2,7 +2,7 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {Contract} from "ethers";
-import {ethers, network, upgrades} from "hardhat";
+import {ethers, upgrades} from "hardhat";
 import {doTransfert} from "../utils/ERC20.utils";
 
 describe("MetaStudioToken", function () {
@@ -10,18 +10,16 @@ describe("MetaStudioToken", function () {
   let logicalContract: Contract;
   let owner: SignerWithAddress;
   let tokensOwner: SignerWithAddress;
-  let defaultOperator: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
 
   // `beforeEach` will run before each test, re-deploying the contract (Proxied) every time.
   beforeEach(async function () {
     // Reset the local Network (blockchain)
-    await network.provider.send("hardhat_reset");
+    // await network.provider.send("hardhat_reset");
 
     // Gettings addresses
-    [owner, tokensOwner, defaultOperator, addr1, addr2] =
-      await ethers.getSigners();
+    [owner, tokensOwner, addr1, addr2] = await ethers.getSigners();
 
     // Get the ContractFactory and Signers here.
     const Factory = await ethers.getContractFactory("MetaStudioToken");
@@ -89,7 +87,7 @@ describe("MetaStudioToken", function () {
       // `require` will evaluate false and revert the transaction.
       await expect(
         logicalContract.transfer(addr1.address, 1)
-      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+      ).to.be.revertedWith("ERC777: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
       expect(await logicalContract.balanceOf(owner.address)).to.equal(
@@ -164,7 +162,7 @@ describe("MetaStudioToken", function () {
       // `require` will evaluate false and revert the transaction.
       await expect(
         proxyContract.connect(addr1).transfer(owner.address, 1)
-      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+      ).to.be.revertedWith("ERC777: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
       expect(await proxyContract.balanceOf(owner.address)).to.equal(
