@@ -114,25 +114,34 @@ contract MetaStudioToken is
     super._afterTokenTransfer(from, to, amount);
   }
 
+  // @dev Using ERC777 secured implementation
   function _mint(address to, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
-    super._mint(to, amount);
+    _mint(to, amount, "", "");
   }
 
+  // @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
-    super._burn(account, amount);
+    _burn(account, amount, "", "");
   }
 
   function canImplementInterfaceForAddress(
     bytes32 interfaceHash,
     address account
   ) external view returns (bytes32) {
-    return keccak256("ERC1820_ACCEPT_MAGIC");
+    if (
+      account == address(this) &&
+      (interfaceHash == keccak256("ERC777Token") ||
+        interfaceHash == keccak256("ERC20Token"))
+    ) {
+      return "ERC1820_ACCEPT_MAGIC";
+    }
+    return "";
   }
 
   /*
