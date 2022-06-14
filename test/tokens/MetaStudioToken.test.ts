@@ -2,7 +2,7 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {Contract} from "ethers";
-import {ethers, network, run, upgrades} from "hardhat";
+import {ethers, network, run, tracer, upgrades} from "hardhat";
 import {doTransfert} from "../utils/ERC20.utils";
 
 describe("MetaStudioToken", function () {
@@ -13,6 +13,9 @@ describe("MetaStudioToken", function () {
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
 
+  tracer.nameTags[ethers.constants.AddressZero] = "Void0";
+  tracer.nameTags["0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24"] = "ERC1820";
+
   // `beforeEach` will run before each test, re-deploying the contract (Proxied) every time.
   beforeEach(async function () {
     // Reset the local Network (blockchain)
@@ -22,6 +25,10 @@ describe("MetaStudioToken", function () {
 
     // Gettings addresses
     [owner, tokensOwner, addr1, addr2] = await ethers.getSigners();
+    tracer.nameTags[owner.address] = "owner";
+    tracer.nameTags[tokensOwner.address] = "tokensOwner";
+    tracer.nameTags[addr1.address] = "addr1";
+    tracer.nameTags[addr2.address] = "addr2";
 
     // Get the ContractFactory and Signers here.
     const Factory = await ethers.getContractFactory("MetaStudioToken");
@@ -33,6 +40,7 @@ describe("MetaStudioToken", function () {
       {kind: "uups"}
     );
     await proxyContract.deployed();
+    tracer.nameTags[proxyContract.address] = "proxyContract";
 
     // Deployement should trigger ownership changement `__Ownable_init()`
     // which emit `OwnershipTransferred` event
@@ -45,6 +53,7 @@ describe("MetaStudioToken", function () {
       "MetaStudioToken",
       await upgrades.erc1967.getImplementationAddress(proxyContract.address)
     );
+    tracer.nameTags[logicalContract.address] = "logicalContract";
 
     // Le propriétaire du Logical Contract should be "Nobody" (VoidSigner) => no transaction can be issued by it
     expect(await logicalContract.owner()).to.equal(

@@ -7,6 +7,7 @@ import "hardhat-erc1820";
 import "hardhat-gas-reporter";
 import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
+import "hardhat-tracer";
 
 import {HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
