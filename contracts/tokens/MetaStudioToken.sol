@@ -15,6 +15,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC777/ERC777Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
 
+/// @title The Metastudio's ERC777/ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
   IERC165Upgradeable,
@@ -34,6 +35,11 @@ contract MetaStudioToken is
     _disableInitializers();
   }
 
+  /// @notice Contract initialisation. 5_000_000_000 tokens are minted
+  /// @dev Constructor replacement methods used for Proxified Contract
+  /// @param tokensOwner initianally minted Token's owner address
+  /// @param forwarder Initial ERC2771 trusted forwarder
+  /// @param defaultOperators_ Array of default operators for ERC777
   function initialize(
     address tokensOwner,
     address forwarder,
@@ -53,6 +59,10 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
+  /// @notice Supported interface ask machine. Implemented interface are `IERC 165`, `IERC 20`, `IERC 777`, `IERC 2771`, `IERC 1820`
+  /// @dev ERC 165 implementation
+  /// @param interfaceId interface's id
+  /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     external
     pure
@@ -63,22 +73,27 @@ contract MetaStudioToken is
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC777Upgradeable).interfaceId ||
-      interfaceId == type(IERC2771Upgradeable).interfaceId;
+      interfaceId == type(IERC2771Upgradeable).interfaceId ||
+      interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId;
   }
 
   /*
    * Inheritance extensions
    */
 
+  /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on it except `unpause`
+  /// @dev Only owner can pause
   function pause() external onlyOwner {
     _pause();
   }
 
+  /// @notice Unpause the contract.
+  /// @dev Only owner can pause
   function unpause() external onlyOwner {
     _unpause();
   }
 
-  // #dev https://soliditydeveloper.com/erc-777
+  // @dev https://soliditydeveloper.com/erc-777
   function _beforeTokenTransfer(
     address from,
     address to,
@@ -87,7 +102,7 @@ contract MetaStudioToken is
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  // #dev https://soliditydeveloper.com/erc-777
+  // @dev https://soliditydeveloper.com/erc-777
   function _beforeTokenTransfer(
     address operator,
     address from,
@@ -114,7 +129,7 @@ contract MetaStudioToken is
     super._afterTokenTransfer(from, to, amount);
   }
 
-  // @dev Using ERC777 secured implementation
+  /// @dev Using ERC777 secured implementation
   function _mint(address to, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
@@ -122,7 +137,7 @@ contract MetaStudioToken is
     _mint(to, amount, "", "");
   }
 
-  // @dev Using ERC777 secured implementation
+  /// @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
@@ -148,6 +163,7 @@ contract MetaStudioToken is
    ERC777 overrided methodes-----
    */
 
+  /// @inheritdoc ERC777Upgradeable
   function approve(address spender, uint256 value)
     public
     override(ERC20Upgradeable, ERC777Upgradeable)
@@ -172,6 +188,7 @@ contract MetaStudioToken is
     super._spendAllowance(_owner, spender, amount);
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function allowance(address holder, address spender)
     public
     view
@@ -181,6 +198,7 @@ contract MetaStudioToken is
     return super.allowance(holder, spender);
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function balanceOf(address tokenHolder)
     public
     view
@@ -190,6 +208,7 @@ contract MetaStudioToken is
     return super.balanceOf(tokenHolder);
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function decimals()
     public
     pure
@@ -199,6 +218,7 @@ contract MetaStudioToken is
     return 18;
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function name()
     public
     view
@@ -208,6 +228,7 @@ contract MetaStudioToken is
     return super.name();
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function symbol()
     public
     view
@@ -217,6 +238,7 @@ contract MetaStudioToken is
     return super.symbol();
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function totalSupply()
     public
     view
@@ -226,6 +248,7 @@ contract MetaStudioToken is
     return super.totalSupply();
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function transfer(address recipient, uint256 amount)
     public
     override(ERC20Upgradeable, ERC777Upgradeable)
@@ -234,6 +257,7 @@ contract MetaStudioToken is
     return super.transfer(recipient, amount);
   }
 
+  /// @inheritdoc ERC777Upgradeable
   function transferFrom(
     address holder,
     address recipient,
@@ -246,7 +270,9 @@ contract MetaStudioToken is
     Extended ERC2771
   */
 
+  /// @notice Allows Contract's owner to change the trusted forwarder
   /// @dev should be declared here because we need to protect calls with onlyOwner
+  /// @param forwarder New tructed forwarder's address
   function setTrustedForwarder(address forwarder) external onlyOwner {
     super._setTrustedForwarder(forwarder);
   }
