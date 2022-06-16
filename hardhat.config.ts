@@ -4,6 +4,7 @@ import "@openzeppelin/hardhat-upgrades";
 import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
+import "hardhat-deploy";
 import "hardhat-erc1820";
 import "hardhat-gas-reporter";
 import "hardhat-gas-trackooor";
@@ -54,7 +55,7 @@ const config: HardhatUserConfig = {
     debugMode: false,
   },
   networks: {
-    ropsten: {
+    goerli: {
       url: process.env.ROPSTEN_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
