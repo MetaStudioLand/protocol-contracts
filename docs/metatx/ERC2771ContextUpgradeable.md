@@ -68,3 +68,6 @@ Emitted when the trusted forwarder have been successfully changed
 |---|---|---|
 | oldTF  | address | previous trusted forwader |
 | newTF  | address | new registred trusted forwader |
+
+
+
