@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
@@ -145,10 +145,11 @@ contract MetaStudioToken is
     _burn(account, amount, "", "");
   }
 
+  /// @inheritdoc IERC1820ImplementerUpgradeable
   function canImplementInterfaceForAddress(
     bytes32 interfaceHash,
     address account
-  ) external view returns (bytes32) {
+  ) external view override returns (bytes32) {
     if (
       account == address(this) &&
       (interfaceHash == keccak256("ERC777Token") ||
