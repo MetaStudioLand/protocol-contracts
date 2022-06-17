@@ -14,12 +14,16 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1820ImplementerUpgrad
 import "@openzeppelin/contracts-upgradeable/token/ERC777/ERC777Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
+import "../ERC1363/ERC1363ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 /// @title The Metastudio's ERC777/ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
+    Initializable,
+  ContextUpgradeable,
   IERC165Upgradeable,
-  Initializable,
+  ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
   PausableUpgradeable,
@@ -64,9 +68,9 @@ contract MetaStudioToken is
   /// @param interfaceId interface's id
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
-    external
-    pure
-    override
+    public
+    view
+    override(ERC1363Upgradeable , IERC165Upgradeable)
     returns (bool)
   {
     return
@@ -74,7 +78,9 @@ contract MetaStudioToken is
       interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC777Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
-      interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId;
+      interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId  || 
+      super.supportsInterface(interfaceId)
+      ;
   }
 
   /*
