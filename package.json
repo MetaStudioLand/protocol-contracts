@@ -62,6 +62,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0",
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
-    "erc-payable-token": "^4.6.0"
+    "erc-payable-token": "^4.6.0",
+    "hardhat-contract-sizer": "^2.5.1",
+    "truffle-contract-size": "^2.0.1"
   }
 }
