@@ -72,6 +72,7 @@ contract MetaStudioToken is
     return
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
+      interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
       interfaceId == type(IERC777Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId;
