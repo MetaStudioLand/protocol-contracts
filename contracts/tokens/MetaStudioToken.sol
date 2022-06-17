@@ -59,7 +59,7 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
-  /// @notice Supported interface ask machine. Implemented interface are `IERC 165`, `IERC 20`, `IERC 777`, `IERC 2771`, `IERC 1820`
+  /// @notice Supported interface ask machine. Implemented interface are `IERC 165`, `IERC 20`, `IERC 777`, `IERC 2771`, `IERC 1820`, `IERC20Permit`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
   /// @return Returns true if the specified interface is implemented by the contract
