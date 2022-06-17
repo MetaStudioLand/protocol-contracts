@@ -39,15 +39,15 @@ contract MetaStudioToken is
   /// @dev Constructor replacement methods used for Proxified Contract
   /// @param tokensOwner initianally minted Token's owner address
   /// @param forwarder Initial ERC2771 trusted forwarder
-  /// @param defaultOperators_ Array of default operators for ERC777
+  /// @param defaultOperators Array of default operators for ERC777
   function initialize(
     address tokensOwner,
     address forwarder,
-    address[] memory defaultOperators_
+    address[] memory defaultOperators
   ) external initializer {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
-    __ERC777_init("MetaStudioToken", "SMV", defaultOperators_);
+    __ERC777_init("MetaStudioToken", "SMV", defaultOperators);
     __Ownable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
@@ -286,7 +286,7 @@ contract MetaStudioToken is
     override(ContextUpgradeable, ERC2771ContextUpgradeable)
     returns (address sender)
   {
-    return super._msgSender();
+    return ERC2771ContextUpgradeable._msgSender();
   }
 
   function _msgData()
@@ -296,6 +296,6 @@ contract MetaStudioToken is
     override(ContextUpgradeable, ERC2771ContextUpgradeable)
     returns (bytes calldata)
   {
-    return super._msgData();
+    return ERC2771ContextUpgradeable._msgData();
   }
 }
