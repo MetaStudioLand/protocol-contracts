@@ -35,7 +35,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.9",
+    version: "0.8.7",
     settings: {
       optimizer: {
         enabled: true,
@@ -63,7 +63,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     goerli: {
-      url: process.env.ROPSTEN_URL || "",
+      url: process.env.GOERLI_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
@@ -43,15 +43,16 @@ contract MetaStudioToken is
   /// @dev Constructor replacement methods used for Proxified Contract
   /// @param tokensOwner initianally minted Token's owner address
   /// @param forwarder Initial ERC2771 trusted forwarder
-  /// @param defaultOperators_ Array of default operators for ERC777
+
+  /// @param defaultOperators Array of default operators for ERC777
   function initialize(
     address tokensOwner,
     address forwarder,
-    address[] memory defaultOperators_
+    address[] memory defaultOperators
   ) external initializer {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
-    __ERC777_init("MetaStudioToken", "SMV", defaultOperators_);
+    __ERC777_init("MetaStudioToken", "SMV", defaultOperators);
     __Ownable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
@@ -62,8 +63,7 @@ contract MetaStudioToken is
 
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
-
-  /// @notice Supported interface ask machine. Implemented interface are `IERC 165`, `IERC 20`, `IERC 777`, `IERC 2771`, `IERC 1820`
+  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
   /// @return Returns true if the specified interface is implemented by the contract
@@ -79,6 +79,7 @@ contract MetaStudioToken is
       interfaceId == type(IERC777Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
+      interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
       super.supportsInterface(interfaceId);
   }
 
@@ -150,10 +151,12 @@ contract MetaStudioToken is
     _burn(account, amount, "", "");
   }
 
+
+  /// @inheritdoc IERC1820ImplementerUpgradeable
   function canImplementInterfaceForAddress(
     bytes32 interfaceHash,
     address account
-  ) external view returns (bytes32) {
+  ) external view override returns (bytes32) {
     if (
       account == address(this) &&
       (interfaceHash == keccak256("ERC777Token") ||
@@ -289,7 +292,7 @@ contract MetaStudioToken is
     override(ContextUpgradeable, ERC2771ContextUpgradeable)
     returns (address sender)
   {
-    return super._msgSender();
+    return ERC2771ContextUpgradeable._msgSender();
   }
 
   function _msgData()
@@ -299,6 +302,6 @@ contract MetaStudioToken is
     override(ContextUpgradeable, ERC2771ContextUpgradeable)
     returns (bytes calldata)
   {
-    return super._msgData();
+    return ERC2771ContextUpgradeable._msgData();
   }
 }
