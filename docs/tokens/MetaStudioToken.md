@@ -400,7 +400,7 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 ### initialize
 
 ```solidity
-function initialize(address tokensOwner, address forwarder, address[] defaultOperators_) external nonpayable
+function initialize(address tokensOwner, address forwarder, address[] defaultOperators) external nonpayable
 ```
 
 Contract initialisation. 5_000_000_000 tokens are minted
@@ -413,7 +413,7 @@ Contract initialisation. 5_000_000_000 tokens are minted
 |---|---|---|
 | tokensOwner | address | initianally minted Token&#39;s owner address |
 | forwarder | address | Initial ERC2771 trusted forwarder |
-| defaultOperators_ | address[] | Array of default operators for ERC777 |
+| defaultOperators | address[] | Array of default operators for ERC777 |
 
 ### isOperatorFor
 
