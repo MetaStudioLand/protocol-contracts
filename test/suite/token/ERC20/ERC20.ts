@@ -346,57 +346,60 @@ export class ERC20 {
     // });
 
     // TODO reactivate for general usage
-    // describe("_burn", function () {
-    //   it("rejects a null account", async function () {
-    //     await expectRevert(
-    //       this.token.burn(ZERO_ADDRESS, new BN(1)),
-    //       "ERC20: burn from the zero address"
-    //     );
-    //   });
-    //
-    //   describe("for a non zero account", function () {
-    //     it("rejects burning more than balance", async function () {
-    //       await expectRevert(
-    //         this.token.burn(initialHolder, initialSupply.addn(1)),
-    //         "ERC20: burn amount exceeds balance"
-    //       );
-    //     });
-    //
-    //     const describeBurn = function (description, amount) {
-    //       describe(description, function () {
-    //         beforeEach("burning", async function () {
-    //           this.receipt = await this.token.burn(initialHolder, amount);
-    //         });
-    //
-    //         it("decrements totalSupply", async function () {
-    //           const expectedSupply = initialSupply.sub(amount);
-    //           expect(await this.token.totalSupply()).to.be.bignumber.equal(
-    //             expectedSupply
-    //           );
-    //         });
-    //
-    //         it("decrements initialHolder balance", async function () {
-    //           const expectedBalance = initialSupply.sub(amount);
-    //           expect(
-    //             await this.token.balanceOf(initialHolder)
-    //           ).to.be.bignumber.equal(expectedBalance);
-    //         });
-    //
-    //         it("emits Transfer event", async function () {
-    //           const event = expectEvent(this.receipt, "Transfer", {
-    //             from: initialHolder,
-    //             to: ZERO_ADDRESS,
-    //           });
-    //
-    //           expect(event.args.value).to.be.bignumber.equal(amount);
-    //         });
-    //       });
-    //     };
-    //
-    //     describeBurn("for entire balance", initialSupply);
-    //     describeBurn("for less amount than balance", initialSupply.subn(1));
-    //   });
-    // });
+    describe("_burn", function () {
+      it("rejects a null account", async function () {
+        await expect(this.token.burn(ZERO_ADDRESS, toBN(1))).to.be.revertedWith(
+          `${errorPrefix}: burn from the zero address`
+        );
+      });
+
+      describe("for a non zero account", function () {
+        it("rejects burning more than balance", async function () {
+          await expect(
+            this.token.burn(initialHolder.address, initialSupply.add(1))
+          ).to.be.revertedWith(`${errorPrefix}: burn amount exceeds balance`);
+        });
+
+        const describeBurn = function (description: string, amount: BigNumber) {
+          describe(description, function () {
+            beforeEach("burning", async function () {
+              this.receipt = await this.token.burn(
+                initialHolder.address,
+                amount
+              );
+            });
+
+            it("decrements totalSupply", async function () {
+              const expectedSupply = initialSupply.sub(amount);
+              expect(await this.token.totalSupply()).to.be.equal(
+                expectedSupply
+              );
+            });
+
+            it("decrements initialHolder balance", async function () {
+              const expectedBalance = initialSupply.sub(amount);
+              expect(
+                await this.token.balanceOf(initialHolder.address)
+              ).to.be.equal(expectedBalance);
+            });
+
+            it("emits Transfer event", async function () {
+              // const event = expectEvent(this.receipt, "Transfer", {
+              //   from: initialHolder,
+              //   to: ZERO_ADDRESS,
+              // });
+              // expect(event.args.value).to.be.bignumber.equal(amount);
+              await expect(this.receipt)
+                .to.emit(this.token, "Transfer")
+                .withArgs(initialHolder.address, ZERO_ADDRESS, amount);
+            });
+          });
+        };
+
+        describeBurn("for entire balance", initialSupply);
+        describeBurn("for less amount than balance", initialSupply.sub(1));
+      });
+    });
 
     describe("_transfer", function () {
       shouldBehaveLikeERC20Transfer(
