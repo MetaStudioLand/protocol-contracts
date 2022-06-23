@@ -304,18 +304,32 @@ export async function shouldBehaveLikeERC20Transfer(
   errorPrefix: string,
   from: SignerWithAddress,
   to: SignerWithAddress,
-  balance: BigNumber
+  balance: BigNumber,
+  useInternal: boolean = false
 ) {
-  const _doTransfer = (
-    token: Contract,
-    from: SignerWithAddress | string,
-    to: SignerWithAddress | string,
-    value: BigNumber
-  ) => {
-    return token
-      .connect(from)
-      .transfer(typeof to === "string" ? to : to.address, value);
-  };
+  const _doTransfer = useInternal
+    ? (
+        token: Contract,
+        from: SignerWithAddress | string,
+        to: SignerWithAddress | string,
+        amount: BigNumber
+      ) => {
+        return token.transferInternal(
+          typeof from === "string" ? from : from.address,
+          typeof to === "string" ? to : to.address,
+          amount
+        );
+      }
+    : (
+        token: Contract,
+        from: SignerWithAddress | string,
+        to: SignerWithAddress | string,
+        amount: BigNumber
+      ) => {
+        return token
+          .connect(from)
+          .transfer(typeof to === "string" ? to : to.address, amount);
+      };
 
   describe("when the recipient is not the zero address", function () {
     describe("when the sender does not have enough balance", function () {
@@ -396,18 +410,35 @@ export async function shouldBehaveLikeERC20Approve(
   errorPrefix: string,
   owner: SignerWithAddress,
   spender: SignerWithAddress,
-  supply: BigNumber
+  supply: BigNumber,
+  useInternal: boolean = false
 ) {
-  const _doApprove = (
-    token: Contract,
-    owner: SignerWithAddress,
-    spender: SignerWithAddress | string,
-    amount: BigNumber
-  ) => {
-    return token
-      .connect(owner)
-      .approve(typeof spender === "string" ? spender : spender.address, amount);
-  };
+  const _doApprove = useInternal
+    ? (
+        token: Contract,
+        owner: SignerWithAddress | string,
+        spender: SignerWithAddress | string,
+        amount: BigNumber
+      ) => {
+        return token.approveInternal(
+          typeof owner === "string" ? owner : owner.address,
+          typeof spender === "string" ? spender : spender.address,
+          amount
+        );
+      }
+    : (
+        token: Contract,
+        owner: SignerWithAddress | string,
+        spender: SignerWithAddress | string,
+        amount: BigNumber
+      ) => {
+        return token
+          .connect(owner)
+          .approve(
+            typeof spender === "string" ? spender : spender.address,
+            amount
+          );
+      };
 
   describe("when the spender is not the zero address", function () {
     describe("when the sender has enough balance", function () {
