@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
@@ -14,7 +14,6 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1820ImplementerUpgrad
 import "@openzeppelin/contracts-upgradeable/token/ERC777/ERC777Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
-import "../ERC1363/ERC1363ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 /// @title The Metastudio's ERC777/ERC20 token
@@ -23,7 +22,6 @@ contract MetaStudioToken is
   Initializable,
   ContextUpgradeable,
   IERC165Upgradeable,
-  ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
   PausableUpgradeable,
@@ -69,8 +67,8 @@ contract MetaStudioToken is
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
-    view
-    override(ERC1363Upgradeable, IERC165Upgradeable)
+    pure
+    override( IERC165Upgradeable)
     returns (bool)
   {
     return
@@ -79,8 +77,7 @@ contract MetaStudioToken is
       interfaceId == type(IERC777Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
-      interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
-      super.supportsInterface(interfaceId);
+      interfaceId == type(IERC20PermitUpgradeable).interfaceId ;
   }
 
   /*
