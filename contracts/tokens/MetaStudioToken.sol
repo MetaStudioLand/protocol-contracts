@@ -51,7 +51,6 @@ contract MetaStudioToken is
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC777_init("MetaStudioToken", "SMV", defaultOperators_);
-
     __Ownable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
@@ -62,7 +61,6 @@ contract MetaStudioToken is
 
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
-
   /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
@@ -70,7 +68,7 @@ contract MetaStudioToken is
   function supportsInterface(bytes4 interfaceId)
     public
     pure
-    override( IERC165Upgradeable)
+    override(IERC165Upgradeable)
     returns (bool)
   {
     return
@@ -80,8 +78,7 @@ contract MetaStudioToken is
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ;
-
-  }
+      }
 
   /*
    * Inheritance extensions
@@ -143,6 +140,11 @@ contract MetaStudioToken is
     _mint(to, amount, "", "");
   }
 
+
+
+
+
+
   /// @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
@@ -150,6 +152,7 @@ contract MetaStudioToken is
   {
     _burn(account, amount, "", "");
   }
+
 
   /// @inheritdoc IERC1820ImplementerUpgradeable
   function canImplementInterfaceForAddress(
@@ -181,7 +184,6 @@ contract MetaStudioToken is
   function isOperatorFor(address operator, address tokenHolder) public view override(ERC777Upgradeable) returns (bool) {
         return super.isOperatorFor(operator, tokenHolder);
     }
-
   function _approve(
     address holder,
     address spender,
@@ -197,6 +199,8 @@ contract MetaStudioToken is
   ) internal override(ERC20Upgradeable, ERC777Upgradeable) {
     super._spendAllowance(_owner, spender, amount);
   }
+
+
 
   function granularity() public view  override(ERC777Upgradeable) returns (uint256) {
         return super.granularity();
@@ -215,7 +219,9 @@ contract MetaStudioToken is
         super.authorizeOperator(operator);
     }
 
-
+    function burn(uint256 amount, bytes memory data) public  override(ERC777Upgradeable) {
+       super.burn(amount, data);
+    }
   function revokeOperator(address operator) public override(ERC777Upgradeable) {
         super.revokeOperator(operator);
     }
@@ -246,6 +252,8 @@ contract MetaStudioToken is
     ) public override(ERC777Upgradeable) {
        super.operatorBurn(account, amount, data,operatorData);
     }
+
+
 
   /// @inheritdoc ERC777Upgradeable
   function allowance(address holder, address spender)
