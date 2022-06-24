@@ -81,6 +81,8 @@ describe("MetaStudioToken", async function () {
         errorPrefix: "ERC777",
         shouldTestIncreaseDecreaseApproval: false,
       },
+      erc777: {
+      },
     },
 
     // token info to test

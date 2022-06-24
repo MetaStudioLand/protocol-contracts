@@ -44,15 +44,15 @@ contract MetaStudioToken is
   /// @param tokensOwner initianally minted Token's owner address
   /// @param forwarder Initial ERC2771 trusted forwarder
 
-  /// @param defaultOperators Array of default operators for ERC777
+  /// @param defaultOperators_ Array of default operators for ERC777
   function initialize(
     address tokensOwner,
     address forwarder,
-    address[] memory defaultOperators
+    address[] memory defaultOperators_
   ) external initializer {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
-    __ERC777_init("MetaStudioToken", "SMV", defaultOperators);
+    __ERC777_init("MetaStudioToken", "SMV", defaultOperators_);
     __Ownable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
@@ -143,6 +143,11 @@ contract MetaStudioToken is
     _mint(to, amount, "", "");
   }
 
+
+
+
+
+
   /// @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
@@ -179,7 +184,9 @@ contract MetaStudioToken is
   {
     return super.approve(spender, value);
   }
-
+  function isOperatorFor(address operator, address tokenHolder) public view override(ERC777Upgradeable) returns (bool) {
+        return super.isOperatorFor(operator, tokenHolder);
+    }
   function _approve(
     address holder,
     address spender,
@@ -195,6 +202,59 @@ contract MetaStudioToken is
   ) internal override(ERC20Upgradeable, ERC777Upgradeable) {
     super._spendAllowance(_owner, spender, amount);
   }
+
+
+
+  function granularity() public view  override(ERC777Upgradeable) returns (uint256) {
+        return super.granularity();
+    }
+
+ function send(
+        address recipient,
+        uint256 amount,
+        bytes memory data
+    ) public  override(ERC777Upgradeable) {
+        super.send(recipient, amount,data);
+    }
+
+
+  function authorizeOperator(address operator) public override(ERC777Upgradeable) {
+        super.authorizeOperator(operator);
+    }
+
+
+  function revokeOperator(address operator) public override(ERC777Upgradeable) {
+        super.revokeOperator(operator);
+    }
+
+    function defaultOperators() public view  override(ERC777Upgradeable) returns (address[] memory) {
+        return super.defaultOperators();
+    }
+
+
+
+    function operatorSend(
+        address sender,
+        address recipient,
+        uint256 amount,
+        bytes memory data,
+        bytes memory operatorData
+    ) public override(ERC777Upgradeable) {
+        super.operatorSend(sender,recipient,amount,data,operatorData);
+    }
+
+
+
+    function operatorBurn(
+        address account,
+        uint256 amount,
+        bytes memory data,
+        bytes memory operatorData
+    ) public override(ERC777Upgradeable) {
+       super.operatorBurn(account, amount, data,operatorData);
+    }
+
+
 
   /// @inheritdoc ERC777Upgradeable
   function allowance(address holder, address spender)

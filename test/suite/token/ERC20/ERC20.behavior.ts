@@ -420,8 +420,8 @@ export async function shouldBehaveLikeERC20Approve(
         spender: SignerWithAddress | string,
         amount: BigNumber
       ) => {
-        return token.approveInternal(
-          typeof owner === "string" ? owner : owner.address,
+        return token.approve(
+          // typeof owner === "string" ? owner : owner.address,
           typeof spender === "string" ? spender : spender.address,
           amount
         );

@@ -431,7 +431,7 @@ export class ERC20 {
       describe("when the owner is the zero address", function () {
         it("reverts", async function () {
           await expect(
-            this.token.approveInternal(ZERO_ADDRESS, recipient, initialSupply)
+            this.token.approve(recipient, initialSupply)
           ).to.be.revertedWith("ERC20: approve from the zero address");
         });
       });

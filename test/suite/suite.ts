@@ -1,10 +1,15 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
 import {ERC20} from "./token/ERC20/ERC20";
+import { ERC777 } from "./token/ERC777/ERC777";
 
 export interface ISuiteERC20Options {
   errorPrefix?: string;
   shouldTestIncreaseDecreaseApproval: boolean;
+}
+
+export interface ISuiteERC777Options {
+
 }
 
 export interface ISuiteOptions {
@@ -34,12 +39,17 @@ export interface ISuiteOptions {
   ) => Promise<void>;
 
   ercs: {
-    erc20?: ISuiteERC20Options;
+    [x: string]: any;
+    // erc20?: ISuiteERC20Options;
+    erc777?: ISuiteERC777Options;
   };
 }
 
 export async function runTestSuite(options: ISuiteOptions) {
-  if (options.ercs.erc20) {
-    await new ERC20().run(options);
+  // if (options.ercs.erc20) {
+  //   await new ERC20().run(options);
+  // }
+  if (options.ercs.erc777) {
+    await new ERC777().run(options);
   }
 }
