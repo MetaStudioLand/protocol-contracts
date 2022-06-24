@@ -61,6 +61,7 @@ contract MetaStudioToken is
 
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
+
   /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
@@ -77,8 +78,8 @@ contract MetaStudioToken is
       interfaceId == type(IERC777Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
-      interfaceId == type(IERC20PermitUpgradeable).interfaceId ;
-      }
+      interfaceId == type(IERC20PermitUpgradeable).interfaceId;
+  }
 
   /*
    * Inheritance extensions
@@ -140,11 +141,6 @@ contract MetaStudioToken is
     _mint(to, amount, "", "");
   }
 
-
-
-
-
-
   /// @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
@@ -152,7 +148,6 @@ contract MetaStudioToken is
   {
     _burn(account, amount, "", "");
   }
-
 
   /// @inheritdoc IERC1820ImplementerUpgradeable
   function canImplementInterfaceForAddress(
@@ -181,9 +176,16 @@ contract MetaStudioToken is
   {
     return super.approve(spender, value);
   }
-  function isOperatorFor(address operator, address tokenHolder) public view override(ERC777Upgradeable) returns (bool) {
-        return super.isOperatorFor(operator, tokenHolder);
-    }
+
+  function isOperatorFor(address operator, address tokenHolder)
+    public
+    view
+    override(ERC777Upgradeable)
+    returns (bool)
+  {
+    return super.isOperatorFor(operator, tokenHolder);
+  }
+
   function _approve(
     address holder,
     address spender,
@@ -200,60 +202,68 @@ contract MetaStudioToken is
     super._spendAllowance(_owner, spender, amount);
   }
 
+  function granularity()
+    public
+    view
+    override(ERC777Upgradeable)
+    returns (uint256)
+  {
+    return super.granularity();
+  }
 
+  function send(
+    address recipient,
+    uint256 amount,
+    bytes memory data
+  ) public override(ERC777Upgradeable) {
+    super.send(recipient, amount, data);
+  }
 
-  function granularity() public view  override(ERC777Upgradeable) returns (uint256) {
-        return super.granularity();
-    }
+  function authorizeOperator(address operator)
+    public
+    override(ERC777Upgradeable)
+  {
+    super.authorizeOperator(operator);
+  }
 
- function send(
-        address recipient,
-        uint256 amount,
-        bytes memory data
-    ) public  override(ERC777Upgradeable) {
-        super.send(recipient, amount,data);
-    }
+  function burn(uint256 amount, bytes memory data)
+    public
+    override(ERC777Upgradeable)
+  {
+    super.burn(amount, data);
+  }
 
-
-  function authorizeOperator(address operator) public override(ERC777Upgradeable) {
-        super.authorizeOperator(operator);
-    }
-
-    function burn(uint256 amount, bytes memory data) public  override(ERC777Upgradeable) {
-       super.burn(amount, data);
-    }
   function revokeOperator(address operator) public override(ERC777Upgradeable) {
-        super.revokeOperator(operator);
-    }
+    super.revokeOperator(operator);
+  }
 
-    function defaultOperators() public view  override(ERC777Upgradeable) returns (address[] memory) {
-        return super.defaultOperators();
-    }
+  function defaultOperators()
+    public
+    view
+    override(ERC777Upgradeable)
+    returns (address[] memory)
+  {
+    return super.defaultOperators();
+  }
 
+  function operatorSend(
+    address sender,
+    address recipient,
+    uint256 amount,
+    bytes memory data,
+    bytes memory operatorData
+  ) public override(ERC777Upgradeable) {
+    super.operatorSend(sender, recipient, amount, data, operatorData);
+  }
 
-
-    function operatorSend(
-        address sender,
-        address recipient,
-        uint256 amount,
-        bytes memory data,
-        bytes memory operatorData
-    ) public override(ERC777Upgradeable) {
-        super.operatorSend(sender,recipient,amount,data,operatorData);
-    }
-
-
-
-    function operatorBurn(
-        address account,
-        uint256 amount,
-        bytes memory data,
-        bytes memory operatorData
-    ) public override(ERC777Upgradeable) {
-       super.operatorBurn(account, amount, data,operatorData);
-    }
-
-
+  function operatorBurn(
+    address account,
+    uint256 amount,
+    bytes memory data,
+    bytes memory operatorData
+  ) public override(ERC777Upgradeable) {
+    super.operatorBurn(account, amount, data, operatorData);
+  }
 
   /// @inheritdoc ERC777Upgradeable
   function allowance(address holder, address spender)
