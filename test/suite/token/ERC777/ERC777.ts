@@ -58,7 +58,7 @@ export class ERC777 {
         return toBN(amount).mul(toBN(10).pow(options.decimals));
       };
     const initialSupply = tokens(options.initialSupply);
-    const data = web3.utils.sha3('OZ777TestData');
+    const data = web3.utils.sha3('shouldBehaveLikeERC777DirectSendBurn');
     const operatorData = web3.utils.sha3('OZ777TestOperatorData');
   
     const defaultOperators = [defaultOperatorA.address, defaultOperatorB.address];
@@ -108,10 +108,10 @@ export class ERC777 {
           });
 
           it('default operators are operators for all accounts', async function () {
-            // for (const operator of defaultOperators) {
-            //   expect(await this.token.isOperatorFor(operator, anyone.address)).to.equal(true);
-            // }
-            expect(this.token.isOperatorFor(newOperator.address, anyone.address)).to.equal(true);
+            for (const operator of defaultOperators) {
+              expect(await this.token.isOperatorFor(operator, anyone.address)).to.equal(true);
+            }
+            // expect( await this.token.isOperatorFor(defaultOperatorA.address, anyone.address)).to.equal(true);
           });
     
           // it('returns the default operators', async function () {
@@ -175,14 +175,14 @@ export class ERC777 {
     
             context('with new authorized operator', function () {
               beforeEach(async function () {
-                await this.token.authorizeOperator(newOperator, { from: holder });
+                await this.token.connect(holder.address).authorizeOperator(newOperator.address);
               });
     
               shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, newOperator, data, operatorData);
     
               context('with revoked operator', function () {
                 beforeEach(async function () {
-                  await this.token.revokeOperator(newOperator, { from: holder });
+                  await this.token.connect(holder.address).revokeOperator(newOperator.address);
                 });
     
                 shouldBehaveLikeERC777UnauthorizedOperatorSendBurn(holder, anyone, newOperator, data, operatorData);
@@ -192,18 +192,18 @@ export class ERC777 {
     
           // describe('mint (internal)', function () {
           //   const to = anyone;
-          //   const amount = new BN('5');
+          //   const amount = BigNumber.from(5);
     
           //   context('with default operator', function () {
           //     const operator = defaultOperatorA;
     
-          //     shouldBehaveLikeERC777InternalMint(to, operator, amount, data, operatorData);
+          //     shouldBehaveLikeERC777InternalMint(to, operator.address, amount, data, operatorData);
           //   });
     
           //   context('with non operator', function () {
           //     const operator = newOperator;
     
-          //     shouldBehaveLikeERC777InternalMint(to, operator, amount, data, operatorData);
+          //     shouldBehaveLikeERC777InternalMint(to, operator.address, amount, data, operatorData);
           //   });
           // });
     
@@ -241,6 +241,7 @@ export class ERC777 {
           //       });
           //     });
     
+       
           //     context('with non operator', function () {
           //       const operator = newOperator;
     
@@ -268,107 +269,122 @@ export class ERC777 {
           //     });
           //   });
     
-          //   context('to non ERC777TokensRecipient implementer', function () {
-          //     beforeEach(async function () {
-          //       this.tokensRecipientImplementer = await ERC777SenderRecipientMock.new();
-          //       this.recipient = this.tokensRecipientImplementer.address;
-          //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // context('to non ERC777TokensRecipient implementer', function () {
+            //   beforeEach(async function () {
+            //     this.tokensRecipientImplementer = await ERC777SenderRecipientMock.new();
+            //     this.recipient = this.tokensRecipientImplementer.address;
+            //   });
     
-          //     context('with default operator', function () {
-          //       const operator = defaultOperatorA;
+            //   context('with default operator', function () {
+            //     const operator = defaultOperatorA;
     
-          //       it('without requireReceptionAck', async function () {
-          //         await this.token.mintInternalExtended(
-          //           this.recipient,
-          //           amount,
-          //           data,
-          //           operatorData,
-          //           false,
-          //           { from: operator },
-          //         );
-          //       });
+            //     it('without requireReceptionAck', async function () {
+            //       await this.token.mintInternalExtended(
+            //         this.recipient,
+            //         amount,
+            //         data,
+            //         operatorData,
+            //         false,
+            //         { from: operator },
+            //       );
+            //     });
     
-          //       it('with requireReceptionAck', async function () {
-          //         await expectRevert(
-          //           this.token.mintInternalExtended(
-          //             this.recipient,
-          //             amount,
-          //             data,
-          //             operatorData,
-          //             true,
-          //             { from: operator },
-          //           ),
-          //           'ERC777: token recipient contract has no implementer for ERC777TokensRecipient',
-          //         );
-          //       });
-          //     });
+            //     it('with requireReceptionAck', async function () {
+            //       await expectRevert(
+            //         this.token.mintInternalExtended(
+            //           this.recipient,
+            //           amount,
+            //           data,
+            //           operatorData,
+            //           true,
+            //           { from: operator },
+            //         ),
+            //         'ERC777: token recipient contract has no implementer for ERC777TokensRecipient',
+            //       );
+            //     });
+            //   });
     
-          //     context('with non operator', function () {
-          //       const operator = newOperator;
+              // context('with non operator', function () {
+              //   const operator = newOperator;
     
-          //       it('without requireReceptionAck', async function () {
-          //         await this.token.mintInternalExtended(
-          //           this.recipient,
-          //           amount,
-          //           data,
-          //           operatorData,
-          //           false,
-          //           { from: operator },
-          //         );
-          //       });
+              //   it('without requireReceptionAck', async function () {
+              //     await this.token.mintInternalExtended(
+              //       this.recipient,
+              //       amount,
+              //       data,
+              //       operatorData,
+              //       false,
+              //       { from: operator },
+              //     );
+              //   });
     
-          //       it('with requireReceptionAck', async function () {
-          //         await expectRevert(
-          //           this.token.mintInternalExtended(
-          //             this.recipient,
-          //             amount,
-          //             data,
-          //             operatorData,
-          //             true,
-          //             { from: operator },
-          //           ),
-          //           'ERC777: token recipient contract has no implementer for ERC777TokensRecipient',
-          //         );
-          //       });
-          //     });
+              //   it('with requireReceptionAck', async function () {
+              //     await expectRevert(
+              //       this.token.mintInternalExtended(
+              //         this.recipient,
+              //         amount,
+              //         data,
+              //         operatorData,
+              //         true,
+              //         { from: operator },
+              //       ),
+              //       'ERC777: token recipient contract has no implementer for ERC777TokensRecipient',
+              //     );
+              //   });
+              // });
           //   });
           // });
         });
     
-        // describe('operator management', function () {
-        //   it('accounts are their own operator', async function () {
-        //     expect(await this.token.isOperatorFor(holder, holder)).to.equal(true);
-        //   });
+        describe('operator management', function () {
+          it('accounts are their own operator', async function () {
+            expect(await this.token.isOperatorFor(holder, holder)).to.equal(true);
+          });
     
-        //   it('reverts when self-authorizing', async function () {
-        //     await expectRevert(
-        //       this.token.authorizeOperator(holder, { from: holder }), 'ERC777: authorizing self as operator',
-        //     );
-        //   });
+          it('reverts when self-authorizing', async function () {
+            await expectRevert(
+              this.token.connect(holder.address).authorizeOperator(holder.address), 'ERC777: authorizing self as operator',
+            );
+          });
     
-        //   it('reverts when self-revoking', async function () {
-        //     await expectRevert(
-        //       this.token.revokeOperator(holder, { from: holder }), 'ERC777: revoking self as operator',
-        //     );
-        //   });
+          it('reverts when self-revoking', async function () {
+            await expectRevert(
+              this.token.connect(holder.address).revokeOperator(holder.address), 'ERC777: revoking self as operator',
+            );
+          });
     
-        //   it('non-operators can be revoked', async function () {
-        //     expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+          it('non-operators can be revoked', async function () {
+            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
     
-        //     const receipt = await this.token.revokeOperator(newOperator, { from: holder });
-        //     expectEvent(receipt, 'RevokedOperator', { operator: newOperator, tokenHolder: holder });
+            const receipt = await this.token.connect(holder.address).revokeOperator(newOperator.address);
+            expectEvent(receipt, 'RevokedOperator', { operator: newOperator, tokenHolder: holder });
     
-        //     expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
-        //   });
+            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+          });
     
-        //   it('non-operators can be authorized', async function () {
-        //     expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+          it('non-operators can be authorized', async function () {
+            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
     
-        //     const receipt = await this.token.authorizeOperator(newOperator, { from: holder });
-        //     expectEvent(receipt, 'AuthorizedOperator', { operator: newOperator, tokenHolder: holder });
+            const receipt = await this.token.authorizeOperator(newOperator, { from: holder });
+            expectEvent(receipt, 'AuthorizedOperator', { operator: newOperator, tokenHolder: holder });
     
-        //     expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(true);
-        //   });
+            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(true);
+          });
     
         //   describe('new operators', function () {
         //     beforeEach(async function () {

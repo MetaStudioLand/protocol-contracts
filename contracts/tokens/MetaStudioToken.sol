@@ -222,7 +222,9 @@ contract MetaStudioToken is
         super.authorizeOperator(operator);
     }
 
-
+    function burn(uint256 amount, bytes memory data) public  override(ERC777Upgradeable) {
+       super.burn(amount, data);
+    }
   function revokeOperator(address operator) public override(ERC777Upgradeable) {
         super.revokeOperator(operator);
     }

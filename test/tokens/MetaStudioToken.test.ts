@@ -15,7 +15,7 @@ describe("MetaStudioToken", async function () {
       await run("test:setup-test-environment");
 
       // Gettings addresses
-      const [owner, tokensOwner] = options.accounts;
+      const [owner, tokensOwner, op1, op2,newOperator,anyone] = options.accounts;
       tracer.nameTags[owner.address] = "contractOwner";
       tracer.nameTags[tokensOwner.address] = "tokensOwner";
 
@@ -25,7 +25,7 @@ describe("MetaStudioToken", async function () {
       // Deploying Proxied version of our Contract and waiting for deployement completed
       const proxyContract = await upgrades.deployProxy(
         Factory,
-        [tokensOwner.address, ethers.constants.AddressZero, []],
+        [tokensOwner.address, ethers.constants.AddressZero, [op1.address, op2.address]],
         {kind: "uups"}
       );
       await proxyContract.deployed();
