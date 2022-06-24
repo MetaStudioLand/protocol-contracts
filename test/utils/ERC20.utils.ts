@@ -13,7 +13,7 @@ export async function doTransfert(
   console.debug(`Balances from=${initialFromBalance} - to=${initialToBalance}`);
 
   // Transfer another amount tokens from from.address to to.address.
-  await contract.connect(from).transfer(to.address, amount);
+  await contract.connect(from.address).transfer(to.address, amount);
 
   // Check balances.
   const finalFromBalance = await contract.balanceOf(from.address);
