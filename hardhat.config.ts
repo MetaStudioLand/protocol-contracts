@@ -1,10 +1,15 @@
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@openzeppelin/hardhat-upgrades";
+import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
+import "hardhat-deploy";
+import "hardhat-erc1820";
 import "hardhat-gas-reporter";
+import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
+import "hardhat-tracer";
 
 import {HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
@@ -13,6 +18,10 @@ dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
+task("storageLayout", "Prints the list of accounts", async (taskArgs, hre) => {
+  await hre.storageLayout.export();
+});
+
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
@@ -26,17 +35,28 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.9",
+    version: "0.8.7",
     settings: {
       optimizer: {
         enabled: true,
         runs: 1000,
       },
+      outputSelection: {
+        "*": {
+          "*": ["storageLayout"],
+        },
+      },
     },
   },
+  dodoc: {
+    runOnCompile: true,
+    include: ["tokens", "metatx"],
+    exclude: ["IERC2771Upgradeable"],
+    debugMode: false,
+  },
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    goerli: {
+      url: process.env.GOERLI_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
