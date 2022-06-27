@@ -556,7 +556,7 @@ function shouldBehaveLikeERC777SendBurnWithSendHook (operator: SignerWithAddress
 
 function removeBalance (holder: SignerWithAddress) {
   beforeEach(async function () {
-    await this.token.burn(await this.token.balanceOf(holder.address), '0x');
+    await this.token.connect(holder).burn(await this.token.balanceOf(holder.address), '0x');
     expect(await this.token.balanceOf(holder.address)).to.be.equal(BigNumber.from(0));
   });
 }
