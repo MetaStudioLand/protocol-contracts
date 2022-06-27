@@ -195,11 +195,16 @@ function shouldBehaveLikeERC777OperatorBurn (holder: SignerWithAddress, operator
 
       it('reverts when burning from the zero address', async function () {
         // This is not yet reflected in the spec
-        await expectRevert.unspecified(
-          this.token.connect(operator).operatorBurn(
-            ZERO_ADDRESS, BigNumber.from(0), data, operatorData,
-          ),
-        );
+        await expect(
+          this.token
+            .connect(operator)
+            .operatorBurn( ZERO_ADDRESS, BigNumber.from(0), data, operatorData)
+        ).to.be.reverted
+        // await expectRevert.unspecified(
+        //   this.token.connect(operator).operatorBurn(
+        //     ZERO_ADDRESS, BigNumber.from(0), data, operatorData,
+        //   ),
+        // );
       });
     });
   });
@@ -208,7 +213,11 @@ function shouldBehaveLikeERC777OperatorBurn (holder: SignerWithAddress, operator
 function shouldBehaveLikeERC777UnauthorizedOperatorBurn (holder: SignerWithAddress, operator: SignerWithAddress, data: any, operatorData: any) {
   describe('operator burn', function () {
     it('reverts', async function () {
-      await expectRevert.unspecified(this.token.operatorBurn(holder.address, BigNumber.from(0), data, operatorData));
+      await expect(
+        this.token
+          .operatorBurn(holder.address, BigNumber.from(0), data, operatorData)
+      ).to.be.reverted
+      // await expectRevert.unspecified(this.token.operatorBurn(holder.address, BigNumber.from(0), data, operatorData));
     });
   });
 }
@@ -232,7 +241,7 @@ function shouldSendTokens (from: SignerWithAddress, operator: SignerWithAddress|
     let receipt;
     if (!operatorCall) {
       (receipt = await this.token.connect(from).send(to.address, amount, data));
-      await expect(receipt)
+       expect(receipt)
       .to.emit(this.token, "Sent")
       .withArgs(
        from.address,
@@ -245,7 +254,7 @@ function shouldSendTokens (from: SignerWithAddress, operator: SignerWithAddress|
     } else {
       (receipt = await this.token.connect(operator).operatorSend(from.address, to.address, amount, data, operatorData));
       
-      await expect(receipt)
+       expect(receipt)
             .to.emit(this.token, "Sent")
             .withArgs(
                operator.address,
@@ -256,7 +265,7 @@ function shouldSendTokens (from: SignerWithAddress, operator: SignerWithAddress|
               operatorData);
     }
 
-    await expect(receipt)
+     expect(receipt)
     .to.emit(this.token, "Transfer")
     .withArgs(
       from.address,
@@ -291,7 +300,7 @@ function shouldBurnTokens (from: SignerWithAddress, operator: SignerWithAddress 
     if (!operatorCall) {
       (receipt = await this.token.connect(from).burn(amount, data));
  
-      await expect(receipt)
+       expect(receipt)
     .to.emit(this.token, "Burned")
     .withArgs(from.address,
       from.address,
@@ -301,7 +310,16 @@ function shouldBurnTokens (from: SignerWithAddress, operator: SignerWithAddress 
     } else {
       (receipt = await this.token.connect(operator).operatorBurn(from.address, amount, data, operatorData));
   
-      await expect(receipt)
+      // await expect(
+      //  receipt
+      // ).withArgs( operator.address,
+      //   from.address,
+      //   amount,
+      //   data,
+      //   operatorData).to.be.revertedWith("ERC777: caller is not an operator for holder");
+
+
+       expect(receipt)
       .to.emit(this.token, "Burned")
       .withArgs( operator.address,
         from.address,
@@ -309,7 +327,7 @@ function shouldBurnTokens (from: SignerWithAddress, operator: SignerWithAddress 
         data,
         operatorData);
     }
-    await expect(receipt)
+     expect(receipt)
       .to.emit(this.token, "Transfer")
       .withArgs(  from.address,
         ZERO_ADDRESS,

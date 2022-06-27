@@ -175,7 +175,7 @@ export class ERC777 {
     
             context('with new authorized operator', function () {
               beforeEach(async function () {
-                await this.token.authorizeOperator(newOperator.address);
+                await this.token.connect(holder).authorizeOperator(newOperator.address);
               });
     
               shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, newOperator, data, operatorData);
