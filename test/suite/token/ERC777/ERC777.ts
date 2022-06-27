@@ -155,34 +155,34 @@ export class ERC777 {
     
         context('with no ERC777TokensSender and no ERC777TokensRecipient implementers', function () {
           describe('send/burn', function () {
-            shouldBehaveLikeERC777DirectSendBurn(holder.address, anyone.address, data);
+            shouldBehaveLikeERC777DirectSendBurn(holder, anyone, data);
     
             context('with self operator', function () {
-              shouldBehaveLikeERC777OperatorSendBurn(holder.address, anyone.address, holder.address, data, operatorData);
+              shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, holder, data, operatorData);
             });
     
             context('with first default operator', function () {
-              shouldBehaveLikeERC777OperatorSendBurn(holder.address, anyone.address, defaultOperatorA.address, data, operatorData);
+              shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, defaultOperatorA, data, operatorData);
             });
     
             context('with second default operator', function () {
-              shouldBehaveLikeERC777OperatorSendBurn(holder.address, anyone.address, defaultOperatorB.address, data, operatorData);
+              shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, defaultOperatorB, data, operatorData);
             });
     
             context('before authorizing a new operator', function () {
-              shouldBehaveLikeERC777UnauthorizedOperatorSendBurn(holder.address, anyone.address, newOperator.address, data, operatorData);
+              shouldBehaveLikeERC777UnauthorizedOperatorSendBurn(holder, anyone, newOperator, data, operatorData);
             });
     
             context('with new authorized operator', function () {
               beforeEach(async function () {
-                await this.token.connect(holder.address).authorizeOperator(newOperator.address);
+                await this.token.authorizeOperator(newOperator.address);
               });
     
               shouldBehaveLikeERC777OperatorSendBurn(holder, anyone, newOperator, data, operatorData);
     
               context('with revoked operator', function () {
                 beforeEach(async function () {
-                  await this.token.connect(holder.address).revokeOperator(newOperator.address);
+                  await this.token.revokeOperator(newOperator.address);
                 });
     
                 shouldBehaveLikeERC777UnauthorizedOperatorSendBurn(holder, anyone, newOperator, data, operatorData);
@@ -353,112 +353,133 @@ export class ERC777 {
     
         describe('operator management', function () {
           it('accounts are their own operator', async function () {
-            expect(await this.token.isOperatorFor(holder, holder)).to.equal(true);
+            expect(await this.token.isOperatorFor(holder.address, holder.address)).to.equal(true);
           });
     
           it('reverts when self-authorizing', async function () {
-            await expectRevert(
+            await expect(
               this.token.connect(holder.address).authorizeOperator(holder.address), 'ERC777: authorizing self as operator',
             );
           });
     
           it('reverts when self-revoking', async function () {
-            await expectRevert(
+            await expect(
               this.token.connect(holder.address).revokeOperator(holder.address), 'ERC777: revoking self as operator',
             );
           });
     
           it('non-operators can be revoked', async function () {
-            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+            expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(false);
     
-            const receipt = await this.token.connect(holder.address).revokeOperator(newOperator.address);
-            expectEvent(receipt, 'RevokedOperator', { operator: newOperator, tokenHolder: holder });
-    
-            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+            const receipt = await this.token.connect(holder).revokeOperator(newOperator.address);
+            await expect(receipt)
+            .to.emit(this.token, "RevokedOperator")
+            .withArgs(
+              newOperator.address, holder.address );
+            expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(false);
           });
     
           it('non-operators can be authorized', async function () {
-            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
+            expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(false);
     
-            const receipt = await this.token.authorizeOperator(newOperator, { from: holder });
-            expectEvent(receipt, 'AuthorizedOperator', { operator: newOperator, tokenHolder: holder });
-    
-            expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(true);
+            const receipt = await this.token.connect(holder).authorizeOperator(newOperator.address);
+            await expect(receipt)
+            .to.emit(this.token, "AuthorizedOperator")
+            .withArgs(
+              newOperator.address, holder.address );
+            expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(true);
           });
     
-        //   describe('new operators', function () {
-        //     beforeEach(async function () {
-        //       await this.token.authorizeOperator(newOperator, { from: holder });
-        //     });
+
+
+
+          describe('new operators', function () {
+            beforeEach(async function () {
+              await this.token.authorizeOperator(newOperator.address);
+            });
     
-        //     it('are not added to the default operators list', async function () {
-        //       expect(await this.token.defaultOperators()).to.deep.equal(defaultOperators);
-        //     });
+            it('are not added to the default operators list', async function () {
+              expect(await this.token.defaultOperators()).to.deep.equal(defaultOperators);
+            });
     
-        //     it('can be re-authorized', async function () {
-        //       const receipt = await this.token.authorizeOperator(newOperator, { from: holder });
-        //       expectEvent(receipt, 'AuthorizedOperator', { operator: newOperator, tokenHolder: holder });
+            it('can be re-authorized', async function () {
+              const receipt = await this.token.connect(holder).authorizeOperator(newOperator.address);
+              await expect(receipt)
+              .to.emit(this.token, "AuthorizedOperator")
+              .withArgs(
+                newOperator.address, holder.address );
+              expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(true);
+            });
     
-        //       expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(true);
-        //     });
+            it('can be revoked', async function () {
+            const receipt = await this.token.connect(holder).revokeOperator(newOperator.address);
+              await expect(receipt)
+              .to.emit(this.token, "RevokedOperator")
+              .withArgs(
+                newOperator.address, holder.address );
+              expect(await this.token.isOperatorFor(newOperator.address, holder.address)).to.equal(false);
+            });
+          });
     
-        //     it('can be revoked', async function () {
-        //       const receipt = await this.token.revokeOperator(newOperator, { from: holder });
-        //       expectEvent(receipt, 'RevokedOperator', { operator: newOperator, tokenHolder: holder });
+
+
+
+
+          describe('default operators', function () {
+            it('can be re-authorized', async function () {
+              const receipt = await this.token.connect(holder).authorizeOperator(defaultOperatorA.address);
+              await expect(receipt)
+              .to.emit(this.token, "AuthorizedOperator")
+              .withArgs(
+                defaultOperatorA.address, holder.address );
+              expect(await this.token.isOperatorFor(defaultOperatorA.address, holder.address)).to.equal(true);
+            });
     
-        //       expect(await this.token.isOperatorFor(newOperator, holder)).to.equal(false);
-        //     });
-        //   });
+            it('can be revoked', async function () {
+              const receipt = await this.token.connect(holder).revokeOperator(defaultOperatorA.address);
+              await expect(receipt)
+              .to.emit(this.token, "RevokedOperator")
+              .withArgs(
+                defaultOperatorA.address, holder.address );
+              expect(await this.token.isOperatorFor(defaultOperatorA.address, holder.address)).to.equal(false);
+            });
     
-        //   describe('default operators', function () {
-        //     it('can be re-authorized', async function () {
-        //       const receipt = await this.token.authorizeOperator(defaultOperatorA, { from: holder });
-        //       expectEvent(receipt, 'AuthorizedOperator', { operator: defaultOperatorA, tokenHolder: holder });
+            it('cannot be revoked for themselves', async function () {
+              await expect(
+                this.token.connect(defaultOperatorA).revokeOperator(defaultOperatorA.address),
+                'ERC777: revoking self as operator',
+              );
+            });
     
-        //       expect(await this.token.isOperatorFor(defaultOperatorA, holder)).to.equal(true);
-        //     });
+            context('with revoked default operator', function () {
+              beforeEach(async function () {
+                await this.token.connect(holder).revokeOperator(defaultOperatorA.address);
+              });
     
-        //     it('can be revoked', async function () {
-        //       const receipt = await this.token.revokeOperator(defaultOperatorA, { from: holder });
-        //       expectEvent(receipt, 'RevokedOperator', { operator: defaultOperatorA, tokenHolder: holder });
+              it('default operator is not revoked for other holders', async function () {
+                expect(await this.token.isOperatorFor(defaultOperatorA.address, anyone.address)).to.equal(true);
+              });
     
-        //       expect(await this.token.isOperatorFor(defaultOperatorA, holder)).to.equal(false);
-        //     });
+              it('other default operators are not revoked', async function () {
+                expect(await this.token.isOperatorFor(defaultOperatorB.address, holder.address)).to.equal(true);
+              });
     
-        //     it('cannot be revoked for themselves', async function () {
-        //       await expectRevert(
-        //         this.token.revokeOperator(defaultOperatorA, { from: defaultOperatorA }),
-        //         'ERC777: revoking self as operator',
-        //       );
-        //     });
+              it('default operators list is not modified', async function () {
+                expect(await this.token.defaultOperators()).to.deep.equal(defaultOperators);
+              });
     
-        //     context('with revoked default operator', function () {
-        //       beforeEach(async function () {
-        //         await this.token.revokeOperator(defaultOperatorA, { from: holder });
-        //       });
-    
-        //       it('default operator is not revoked for other holders', async function () {
-        //         expect(await this.token.isOperatorFor(defaultOperatorA, anyone)).to.equal(true);
-        //       });
-    
-        //       it('other default operators are not revoked', async function () {
-        //         expect(await this.token.isOperatorFor(defaultOperatorB, holder)).to.equal(true);
-        //       });
-    
-        //       it('default operators list is not modified', async function () {
-        //         expect(await this.token.defaultOperators()).to.deep.equal(defaultOperators);
-        //       });
-    
-        //       it('revoked default operator can be re-authorized', async function () {
-        //         const receipt = await this.token.authorizeOperator(defaultOperatorA, { from: holder });
-        //         expectEvent(receipt, 'AuthorizedOperator', { operator: defaultOperatorA, tokenHolder: holder });
-    
-        //         expect(await this.token.isOperatorFor(defaultOperatorA, holder)).to.equal(true);
-        //       });
-        //     });
-        //   });
-        // });
-    
+              it('revoked default operator can be re-authorized', async function () {
+                const receipt = await this.token.connect(holder).authorizeOperator(defaultOperatorA.address);
+                await expect(receipt)
+                .to.emit(this.token, "AuthorizedOperator")
+                .withArgs(
+                  defaultOperatorA.address, holder.address );
+                expect(await this.token.isOperatorFor(defaultOperatorA.address, holder.address)).to.equal(true);
+              });
+            });
+          });
+        })
+
         // describe('send and receive hooks', function () {
         //   const amount = new BN('1');
         //   const operator = defaultOperatorA;
@@ -614,8 +635,7 @@ export class ERC777 {
         //     });
         //   });
         // });
-      });
-    
+      })
       // context('with no default operators', function () {
       //   beforeEach(async function () {
       //     this.token = await ERC777.new(holder, initialSupply, name, symbol, []);
@@ -657,11 +677,7 @@ export class ERC777 {
     
       //     expect(externalSendHook).to.be.lt(internalBeforeHook);
       //   });
-      // });
-
-
-
-
-
-
-  }}
+      // }) 
+    
+    
+    }}
