@@ -11,7 +11,7 @@ import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
 import "hardhat-tracer";
 import "hardhat-contract-sizer";
-import {HardhatUserConfig, task} from "hardhat/config";
+import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 
 dotenv.config();
@@ -28,6 +28,14 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   for (const account of accounts) {
     console.log(account.address);
   }
+});
+
+/**
+ * @dev force usage of ethers.js accounts
+ */
+extendEnvironment(async (env) => {
+  // @ts-ignore
+  env.accounts = await env.ethers.getSigners();
 });
 
 // You need to export an object to set up your config

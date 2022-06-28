@@ -1,22 +1,39 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {toBN} from "../../../helpers";
+import {ethers, upgrades} from "hardhat";
 
-export async function shouldBehaveLikeERC20Pausable(
-  initialSupply: BigNumber,
-  holder: SignerWithAddress,
-  recipient: SignerWithAddress,
-  anotherAccount: SignerWithAddress
-) {
-  describe("pausable token", function () {
+describe("Pausable", async function () {
+  const [holder, recipient, anotherAccount] = await ethers.getSigners();
+
+  const decimals = 18;
+
+  const tokens = function (amount: number): BigNumber {
+    return BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
+  };
+
+  const initialSupply = tokens(5_000_000_000);
+
+  beforeEach(async function () {
+    const Factory = await ethers.getContractFactory("MetaStudioToken");
+
+    // Deploying Proxied version of our Contract and waiting for deployement completed
+    const proxyContract = await upgrades.deployProxy(
+      Factory,
+      [holder.address, ethers.constants.AddressZero, []],
+      {kind: "uups"}
+    );
+    await proxyContract.deployed();
+    this.token = proxyContract;
+  });
+
+  describe("======== Contract: Pausable ========", async function () {
     describe("transfer", function () {
       it("allows to transfer when unpaused", async function () {
         await this.token
           .connect(holder)
           .transfer(recipient.address, initialSupply);
 
-        expect(await this.token.balanceOf(holder.address)).to.be.equal(0);
+        expect(await this.token.balanceOf(holder.address)).to.be.equal("0");
         expect(await this.token.balanceOf(recipient.address)).to.be.equal(
           initialSupply
         );
@@ -30,7 +47,7 @@ export async function shouldBehaveLikeERC20Pausable(
           .connect(holder)
           .transfer(recipient.address, initialSupply);
 
-        expect(await this.token.balanceOf(holder.address)).to.be.equal(0);
+        expect(await this.token.balanceOf(holder.address)).to.be.equal("0");
         expect(await this.token.balanceOf(recipient.address)).to.be.equal(
           initialSupply
         );
@@ -46,7 +63,7 @@ export async function shouldBehaveLikeERC20Pausable(
     });
 
     describe("transfer from", function () {
-      const allowance = toBN(40);
+      const allowance = BigNumber.from(40);
 
       beforeEach(async function () {
         await this.token
@@ -93,67 +110,5 @@ export async function shouldBehaveLikeERC20Pausable(
         ).to.be.revertedWith("Pausable: paused");
       });
     });
-
-    describe("mint", function () {
-      const amount = toBN("42");
-
-      it("allows to mint when unpaused", async function () {
-        await this.token.mint(recipient.address, amount);
-
-        expect(await this.token.balanceOf(recipient.address)).to.be.equal(
-          amount
-        );
-      });
-
-      it("allows to mint when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
-
-        await this.token.mint(recipient.address, amount);
-
-        expect(await this.token.balanceOf(recipient.address)).to.be.equal(
-          amount
-        );
-      });
-
-      it("reverts when trying to mint when paused", async function () {
-        await this.token.pause();
-
-        await expect(
-          this.token.mint(recipient.address, amount)
-        ).to.be.revertedWith("Pausable: paused");
-      });
-    });
-
-    describe("burn", function () {
-      const amount = toBN("42");
-
-      it("allows to burn when unpaused", async function () {
-        await this.token.burn(holder.address, amount);
-
-        expect(await this.token.balanceOf(holder.address)).to.be.equal(
-          initialSupply.sub(amount)
-        );
-      });
-
-      it("allows to burn when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
-
-        await this.token.burn(holder.address, amount);
-
-        expect(await this.token.balanceOf(holder.address)).to.be.equal(
-          initialSupply.sub(amount)
-        );
-      });
-
-      it("reverts when trying to burn when paused", async function () {
-        await this.token.pause();
-
-        await expect(
-          this.token.burn(holder.address, amount)
-        ).to.be.revertedWith("Pausable: paused");
-      });
-    });
   });
-}
+});
