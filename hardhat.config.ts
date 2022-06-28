@@ -10,7 +10,7 @@ import "hardhat-gas-reporter";
 import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
 import "hardhat-tracer";
-import 'hardhat-contract-sizer';
+import "hardhat-contract-sizer";
 import {HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 
