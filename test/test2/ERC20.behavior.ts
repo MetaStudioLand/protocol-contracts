@@ -320,10 +320,6 @@ export async function shouldBehaveLikeERC20Transfer(
       const amount = balance.add(1);
 
       it("reverts", async function () {
-        // await expectRevert(
-        //   doTransfer.call(this, from, to, amount),
-        //   `${errorPrefix}: transfer amount exceeds balance`
-        // );
         await expect(
           _doTransfer(this.token, from, to, amount)
         ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
@@ -337,16 +333,10 @@ export async function shouldBehaveLikeERC20Transfer(
         await _doTransfer(this.token, from, to, amount);
 
         expect(await this.token.balanceOf(from.address)).to.be.equal("0");
-
         expect(await this.token.balanceOf(to.address)).to.be.equal(amount);
       });
 
       it("emits a transfer event", async function () {
-        // expectEvent(await doTransfer( from, to, amount), "Transfer", {
-        //   from: from.address,
-        //   to: to.address,
-        //   value: amount,
-        // });
         await expect(_doTransfer(this.token, from, to, amount))
           .to.emit(this.token, "Transfer")
           .withArgs(from.address, to.address, amount);

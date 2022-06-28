@@ -1,28 +1,46 @@
 import {expect} from "chai";
-import {ethers, upgrades} from "hardhat";
+import {ethers, tracer, upgrades} from "hardhat";
 
 describe("Ownable", async function () {
-  const [owner, anotherAccount] = await ethers.getSigners();
+  /*
+   Affecting accounts
+   */
+  const accounts = await ethers.getSigners();
 
-  beforeEach(async function () {
-    const Factory = await ethers.getContractFactory("MetaStudioToken");
-
-    // Deploying Proxied version of our Contract and waiting for deployement completed
-    const proxyContract = await upgrades.deployProxy(
-      Factory,
-      [owner.address, ethers.constants.AddressZero],
-      {kind: "uups"}
-    );
-    await proxyContract.deployed();
-
-    this.token = proxyContract;
-  });
-
-  it("has an owner", async function () {
-    expect(await this.token.owner()).to.equal(owner.address);
-  });
+  const owner = accounts[0];
+  tracer.nameTags[owner.address] = "contractOwner";
+  const initialHolder = accounts[1];
+  tracer.nameTags[initialHolder.address] = "initialHolder";
+  const recipient = accounts[2];
+  tracer.nameTags[recipient.address] = "recipient";
+  const anotherAccount = accounts[3];
+  tracer.nameTags[anotherAccount.address] = "anotherAccount";
 
   describe("======== Contract: Ownable ========", async function () {
+    beforeEach(async function () {
+      const Factory = await ethers.getContractFactory("MetaStudioToken");
+
+      // Deploying Proxied version of our Contract and waiting for deployement completed
+      const proxyContract = await upgrades.deployProxy(
+        Factory,
+        [owner.address, ethers.constants.AddressZero],
+        {kind: "uups"}
+      );
+      await proxyContract.deployed();
+
+      this.token = proxyContract;
+
+      console.log(
+        `--2-> initialHolder balance: ${await this.token.balanceOf(
+          initialHolder.address
+        )}`
+      );
+    });
+
+    it("has an owner", async function () {
+      expect(await this.token.owner()).to.equal(owner.address);
+    });
+
     describe("transfer ownership", function () {
       it("changes owner after transfer", async function () {
         await expect(

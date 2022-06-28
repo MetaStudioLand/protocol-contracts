@@ -8,9 +8,6 @@ import {
 } from "./ERC20.behavior";
 
 describe("ERC20", async function () {
-  const accounts = await ethers.getSigners();
-  const tokensOwnerAccountIdx = 1;
-
   const name = "MetaStudioToken";
   const symbol = "SMV";
   const decimals = 18;
@@ -18,16 +15,15 @@ describe("ERC20", async function () {
   /*
     Affecting accounts
    */
+  const accounts = await ethers.getSigners();
+
   const owner = accounts[0];
   tracer.nameTags[owner.address] = "contractOwner";
-  const initialHolder = accounts[tokensOwnerAccountIdx || 0];
+  const initialHolder = accounts[1];
   tracer.nameTags[initialHolder.address] = "initialHolder";
-
-  const firstUserAccountIdx = (tokensOwnerAccountIdx ?? 0) + 1;
-
-  const recipient = accounts[firstUserAccountIdx];
+  const recipient = accounts[2];
   tracer.nameTags[recipient.address] = "recipient";
-  const anotherAccount = accounts[firstUserAccountIdx + 1];
+  const anotherAccount = accounts[3];
   tracer.nameTags[anotherAccount.address] = "anotherAccount";
 
   const tokens = function (amount: number): BigNumber {
@@ -36,18 +32,24 @@ describe("ERC20", async function () {
 
   const initialSupply = tokens(5_000_000_000);
 
-  beforeEach(async function () {
-    const Factory = await ethers.getContractFactory("MetaStudioToken");
-    const proxyContract = await upgrades.deployProxy(
-      Factory,
-      [initialHolder.address, ethers.constants.AddressZero],
-      {kind: "uups"}
-    );
-    await proxyContract.deployed();
-    this.token = proxyContract;
-  });
-
   describe("======== Contract: ERC20 ========", async function () {
+    beforeEach(async function () {
+      const Factory = await ethers.getContractFactory("MetaStudioToken");
+      const proxyContract = await upgrades.deployProxy(
+        Factory,
+        [initialHolder.address, ethers.constants.AddressZero],
+        {kind: "uups"}
+      );
+      await proxyContract.deployed();
+      this.token = proxyContract;
+
+      console.log(
+        `--1-> initialHolder balance: ${await this.token.balanceOf(
+          initialHolder.address
+        )}`
+      );
+    });
+
     it(`has a name: "${name}"`, async function () {
       expect(await this.token.name()).to.equal(name);
     });
@@ -71,7 +73,7 @@ describe("ERC20", async function () {
       describe("when the spender is not the zero address", function () {
         const spender = recipient;
 
-        const shouldDecreaseApproval = (amount: BigNumber) => {
+        const shouldDecreaseApproval = function (amount: BigNumber) {
           describe("when there was no approved amount before", function () {
             it("reverts", async function () {
               await expect(
