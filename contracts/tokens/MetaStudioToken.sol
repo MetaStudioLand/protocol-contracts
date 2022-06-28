@@ -19,7 +19,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 /// @title The Metastudio's ERC777/ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
- abstract contract MetaStudioToken is
+abstract contract MetaStudioToken is
   Initializable,
   ContextUpgradeable,
   IERC165Upgradeable,
@@ -43,10 +43,10 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
   /// @dev Constructor replacement methods used for Proxified Contract
   /// @param tokensOwner initianally minted Token's owner address
   /// @param forwarder Initial ERC2771 trusted forwarder
-  function initialize(
-    address tokensOwner,
-    address forwarder
-  ) external initializer {
+  function initialize(address tokensOwner, address forwarder)
+    external
+    initializer
+  {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC20_init("MetaStudioToken", "SMV");
@@ -60,6 +60,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
+
   /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
@@ -101,7 +102,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
     address to,
     uint256 amount
   ) internal override whenNotPaused nonReentrant {
-    super._beforeTokenTransfer( from, to, amount);
+    super._beforeTokenTransfer(from, to, amount);
   }
 
   function _authorizeUpgrade(address newImplementation)
@@ -128,12 +129,14 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
   {
     _mint(to, amount);
   }
+
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
     super._burn(account, amount);
   }
+
   /// @inheritdoc ERC20Upgradeable
   function allowance(address holder, address spender)
     public
@@ -143,6 +146,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
   {
     return super.allowance(holder, spender);
   }
+
   /// @inheritdoc ERC20Upgradeable
   function balanceOf(address tokenHolder)
     public
@@ -152,13 +156,9 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
   {
     return super.balanceOf(tokenHolder);
   }
+
   /// @inheritdoc ERC20Upgradeable
-  function decimals()
-    public
-    pure
-    override(ERC20Upgradeable)
-    returns (uint8)
-  {
+  function decimals() public pure override(ERC20Upgradeable) returns (uint8) {
     return 18;
   }
 
