@@ -19,7 +19,7 @@ describe("Pausable", async function () {
     // Deploying Proxied version of our Contract and waiting for deployement completed
     const proxyContract = await upgrades.deployProxy(
       Factory,
-      [holder.address, ethers.constants.AddressZero, []],
+      [holder.address, ethers.constants.AddressZero],
       {kind: "uups"}
     );
     await proxyContract.deployed();

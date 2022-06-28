@@ -4,13 +4,12 @@ import "@openzeppelin/hardhat-upgrades";
 import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
+import "hardhat-contract-sizer";
 import "hardhat-deploy";
-import "hardhat-erc1820";
 import "hardhat-gas-reporter";
 import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
 import "hardhat-tracer";
-import "hardhat-contract-sizer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 
@@ -65,7 +64,7 @@ const config: HardhatUserConfig = {
   },
   dodoc: {
     runOnCompile: true,
-    include: ["tokens", "metatx"],
+    include: ["tokens", "metatx", "ERC1363"],
     exclude: ["IERC2771Upgradeable"],
     debugMode: false,
   },

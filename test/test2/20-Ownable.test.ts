@@ -10,7 +10,7 @@ describe("Ownable", async function () {
     // Deploying Proxied version of our Contract and waiting for deployement completed
     const proxyContract = await upgrades.deployProxy(
       Factory,
-      [owner.address, ethers.constants.AddressZero, []],
+      [owner.address, ethers.constants.AddressZero],
       {kind: "uups"}
     );
     await proxyContract.deployed();

@@ -35,13 +35,12 @@ describe("ERC20", async function () {
   };
 
   const initialSupply = tokens(5_000_000_000);
-  const errorPrefix = "ERC777";
 
   beforeEach(async function () {
     const Factory = await ethers.getContractFactory("MetaStudioToken");
     const proxyContract = await upgrades.deployProxy(
       Factory,
-      [initialHolder.address, ethers.constants.AddressZero, []],
+      [initialHolder.address, ethers.constants.AddressZero],
       {kind: "uups"}
     );
     await proxyContract.deployed();
@@ -62,7 +61,6 @@ describe("ERC20", async function () {
     });
 
     await shouldBehaveLikeERC20(
-      errorPrefix,
       initialSupply,
       initialHolder,
       recipient,
@@ -274,14 +272,13 @@ describe("ERC20", async function () {
         it("reverts", async function () {
           await expect(
             this.token.connect(initialHolder).increaseAllowance(spender, amount)
-          ).to.be.revertedWith(`${errorPrefix}: approve to the zero address`);
+          ).to.be.revertedWith("ERC20: approve to the zero address");
         });
       });
     });
 
     describe("_transfer", function () {
       shouldBehaveLikeERC20Transfer(
-        errorPrefix,
         initialHolder,
         recipient,
         initialSupply,
@@ -303,7 +300,6 @@ describe("ERC20", async function () {
 
     describe("_approve", async function () {
       await shouldBehaveLikeERC20Approve(
-        "ERC20",
         initialHolder,
         recipient,
         initialSupply,
