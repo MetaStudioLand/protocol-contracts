@@ -447,20 +447,20 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 ### initialize
 
 ```solidity
-function initialize(address tokensOwner, address forwarder, address[] defaultOperators_) external nonpayable
+function initialize(address tokensOwner, address forwarder, address[] defaultOperators) external nonpayable
 ```
 
+Contract initialisation. 5_000_000_000 tokens are minted
 
-
-
+*Constructor replacement methods used for Proxified Contract*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| tokensOwner | address | undefined |
-| forwarder | address | undefined |
-| defaultOperators_ | address[] | Array of default operators for ERC777 |
+| tokensOwner | address | initianally minted Token&#39;s owner address |
+| forwarder | address | Initial ERC2771 trusted forwarder |
+| defaultOperators | address[] | Array of default operators for ERC777 |
 
 ### isOperatorFor
 
@@ -758,7 +758,7 @@ Allows Contract&#39;s owner to change the trusted forwarder
 function supportsInterface(bytes4 interfaceId) external view returns (bool)
 ```
 
-Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
+Supported interface ask machine. Implemented interface are `IERC 165`, `IERC 20`, `IERC 777`, `IERC 2771`, `IERC 1820`
 
 *ERC 165 implementation*
 

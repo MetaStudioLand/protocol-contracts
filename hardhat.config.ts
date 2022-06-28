@@ -10,7 +10,7 @@ import "hardhat-gas-reporter";
 import "hardhat-gas-trackooor";
 import "hardhat-storage-layout";
 import "hardhat-tracer";
-
+import "hardhat-contract-sizer";
 import {HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 
@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000,
+        runs: 10,
       },
       outputSelection: {
         "*": {
@@ -47,6 +47,13 @@ const config: HardhatUserConfig = {
         },
       },
     },
+  },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
+    only: [],
   },
   dodoc: {
     runOnCompile: true,
