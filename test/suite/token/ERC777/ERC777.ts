@@ -5,6 +5,7 @@ import {BigNumber, Contract} from "ethers";
 import {tracer} from "hardhat";
 import {toBN, ZERO_ADDRESS} from "../../helpers";
 import {ISuiteOptions} from "../../suite";
+import {ethers} from "hardhat";
 const { BN, constants, expectEvent, expectRevert, singletons } = require('@openzeppelin/test-helpers');
 const {
     shouldBehaveLikeERC20,
@@ -64,8 +65,10 @@ export class ERC777 {
     const defaultOperators = [defaultOperatorA.address, defaultOperatorB.address];
     
       context('with default operators', function () {
-        beforeEach(async function () {    
+        beforeEach(async function () {  
+            
             this.token = await options.create(options);
+            this.erc1820 = ethers.getContractAt("ERC1820Registry", "0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24") ;
             if (options.beforeEach) {
               await options.beforeEach(this.token, options);
             }

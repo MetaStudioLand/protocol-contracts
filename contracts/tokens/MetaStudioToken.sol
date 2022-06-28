@@ -2,6 +2,7 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
@@ -11,7 +12,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC777Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1820ImplementerUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC777/ERC777Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
 import "../ERC1363/ERC1363ContextUpgradeable.sol";
@@ -19,17 +19,17 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 /// @title The Metastudio's ERC777/ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
-contract MetaStudioToken is
+ abstract contract MetaStudioToken is
   Initializable,
   ContextUpgradeable,
   IERC165Upgradeable,
+  ERC20Upgradeable,
   ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
   PausableUpgradeable,
   ERC20PermitUpgradeable,
   ERC20VotesUpgradeable,
-  ERC777Upgradeable,
   IERC1820ImplementerUpgradeable,
   ERC2771ContextUpgradeable,
   UUPSUpgradeable
@@ -43,16 +43,13 @@ contract MetaStudioToken is
   /// @dev Constructor replacement methods used for Proxified Contract
   /// @param tokensOwner initianally minted Token's owner address
   /// @param forwarder Initial ERC2771 trusted forwarder
-
-  /// @param defaultOperators_ Array of default operators for ERC777
   function initialize(
     address tokensOwner,
-    address forwarder,
-    address[] memory defaultOperators_
+    address forwarder
   ) external initializer {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
-    __ERC777_init("MetaStudioToken", "SMV", defaultOperators_);
+    __ERC20_init("MetaStudioToken", "SMV");
     __Ownable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
@@ -76,7 +73,7 @@ contract MetaStudioToken is
     return
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
-      interfaceId == type(IERC777Upgradeable).interfaceId ||
+      interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
@@ -99,23 +96,12 @@ contract MetaStudioToken is
     _unpause();
   }
 
-  // @dev https://soliditydeveloper.com/erc-777
   function _beforeTokenTransfer(
     address from,
     address to,
     uint256 amount
   ) internal override whenNotPaused nonReentrant {
-    super._beforeTokenTransfer(from, to, amount);
-  }
-
-  // @dev https://soliditydeveloper.com/erc-777
-  function _beforeTokenTransfer(
-    address operator,
-    address from,
-    address to,
-    uint256 amount
-  ) internal override whenNotPaused nonReentrant {
-    super._beforeTokenTransfer(operator, from, to, amount);
+    super._beforeTokenTransfer( from, to, amount);
   }
 
   function _authorizeUpgrade(address newImplementation)
@@ -140,149 +126,37 @@ contract MetaStudioToken is
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
-    _mint(to, amount, "", "");
+    _mint(to, amount);
   }
-
-
-
-
-
-
-  /// @dev Using ERC777 secured implementation
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
-    _burn(account, amount, "", "");
+    super._burn(account, amount);
   }
-
-
-  /// @inheritdoc IERC1820ImplementerUpgradeable
-  function canImplementInterfaceForAddress(
-    bytes32 interfaceHash,
-    address account
-  ) external view override returns (bytes32) {
-    if (
-      account == address(this) &&
-      (interfaceHash == keccak256("ERC777Token") ||
-        interfaceHash == keccak256("ERC20Token"))
-    ) {
-      return "ERC1820_ACCEPT_MAGIC";
-    }
-    return "";
-  }
-
-  /*
-   ERC777 overrided methodes-----
-   */
-
-  /// @inheritdoc ERC777Upgradeable
-  function approve(address spender, uint256 value)
-    public
-    override(ERC20Upgradeable, ERC777Upgradeable)
-    returns (bool)
-  {
-    return super.approve(spender, value);
-  }
-  function isOperatorFor(address operator, address tokenHolder) public view override(ERC777Upgradeable) returns (bool) {
-        return super.isOperatorFor(operator, tokenHolder);
-    }
-  function _approve(
-    address holder,
-    address spender,
-    uint256 value
-  ) internal override(ERC20Upgradeable, ERC777Upgradeable) {
-    super._approve(holder, spender, value);
-  }
-
-  function _spendAllowance(
-    address _owner,
-    address spender,
-    uint256 amount
-  ) internal override(ERC20Upgradeable, ERC777Upgradeable) {
-    super._spendAllowance(_owner, spender, amount);
-  }
-
-
-
-  function granularity() public view  override(ERC777Upgradeable) returns (uint256) {
-        return super.granularity();
-    }
-
- function send(
-        address recipient,
-        uint256 amount,
-        bytes memory data
-    ) public  override(ERC777Upgradeable) {
-        super.send(recipient, amount,data);
-    }
-
-
-  function authorizeOperator(address operator) public override(ERC777Upgradeable) {
-        super.authorizeOperator(operator);
-    }
-
-    function burn(uint256 amount, bytes memory data) public  override(ERC777Upgradeable) {
-       super.burn(amount, data);
-    }
-  function revokeOperator(address operator) public override(ERC777Upgradeable) {
-        super.revokeOperator(operator);
-    }
-
-    function defaultOperators() public view  override(ERC777Upgradeable) returns (address[] memory) {
-        return super.defaultOperators();
-    }
-
-
-
-    function operatorSend(
-        address sender,
-        address recipient,
-        uint256 amount,
-        bytes memory data,
-        bytes memory operatorData
-    ) public override(ERC777Upgradeable) {
-        super.operatorSend(sender,recipient,amount,data,operatorData);
-    }
-
-
-
-    function operatorBurn(
-        address account,
-        uint256 amount,
-        bytes memory data,
-        bytes memory operatorData
-    ) public override(ERC777Upgradeable) {
-       super.operatorBurn(account, amount, data,operatorData);
-    }
-
-
-
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function allowance(address holder, address spender)
     public
     view
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (uint256)
   {
     return super.allowance(holder, spender);
   }
-
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function balanceOf(address tokenHolder)
     public
     view
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (uint256)
   {
     return super.balanceOf(tokenHolder);
   }
-
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function decimals()
     public
     pure
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (uint8)
   {
     return 18;
@@ -292,7 +166,7 @@ contract MetaStudioToken is
   function name()
     public
     view
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (string memory)
   {
     return super.name();
@@ -302,37 +176,37 @@ contract MetaStudioToken is
   function symbol()
     public
     view
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (string memory)
   {
     return super.symbol();
   }
 
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function totalSupply()
     public
     view
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (uint256)
   {
     return super.totalSupply();
   }
 
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function transfer(address recipient, uint256 amount)
     public
-    override(ERC20Upgradeable, ERC777Upgradeable)
+    override(ERC20Upgradeable)
     returns (bool)
   {
     return super.transfer(recipient, amount);
   }
 
-  /// @inheritdoc ERC777Upgradeable
+  /// @inheritdoc ERC20Upgradeable
   function transferFrom(
     address holder,
     address recipient,
     uint256 amount
-  ) public override(ERC20Upgradeable, ERC777Upgradeable) returns (bool) {
+  ) public override(ERC20Upgradeable) returns (bool) {
     return super.transferFrom(holder, recipient, amount);
   }
 
