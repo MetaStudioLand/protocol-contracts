@@ -65,7 +65,7 @@ const config: HardhatUserConfig = {
   dodoc: {
     runOnCompile: true,
     include: ["tokens", "metatx", "ERC1363"],
-    exclude: ["IERC2771Upgradeable"],
+    exclude: ["mocks", "elin", "IERC2771Upgradeable"],
     debugMode: false,
   },
   networks: {
