@@ -22,6 +22,8 @@ export async function baseContext(
   tracer.nameTags[signers.spender.address] = "spender";
   signers.anotherAccount = accounts[3];
   tracer.nameTags[signers.anotherAccount.address] = "anotherAccount";
+  signers.forwarder = accounts[4];
+  tracer.nameTags[signers.forwarder.address] = "forwarder";
 
   /**
    * Main Suite

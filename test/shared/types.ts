@@ -7,6 +7,7 @@ export interface Signers {
   recipient: SignerWithAddress;
   spender: SignerWithAddress;
   anotherAccount: SignerWithAddress;
+  forwarder: SignerWithAddress;
 }
 
 declare module "mocha" {
