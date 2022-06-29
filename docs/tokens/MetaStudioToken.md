@@ -2,7 +2,7 @@
 
 
 
-> The Metastudio&#39;s ERC777/ERC20 token
+> The Metastudio&#39;s ERC20 token
 
 
 
@@ -35,7 +35,7 @@ function allowance(address holder, address spender) external view returns (uint2
 
 
 
-*See {IERC20-allowance}. Note that operator and allowance concepts are orthogonal: operators may not have allowance, and accounts with allowance may not be operators themselves.*
+*See {IERC20-allowance}.*
 
 #### Parameters
 
@@ -53,19 +53,19 @@ function allowance(address holder, address spender) external view returns (uint2
 ### approve
 
 ```solidity
-function approve(address spender, uint256 value) external nonpayable returns (bool)
+function approve(address spender, uint256 amount) external nonpayable returns (bool)
 ```
 
 
 
-*See {IERC20-approve}. NOTE: If `value` is the maximum `uint256`, the allowance is not updated on `transferFrom`. This is semantically equivalent to an infinite approval. Note that accounts cannot have allowance issued by their operators.*
+*See {IERC20-approve}. NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on `transferFrom`. This is semantically equivalent to an infinite approval. Requirements: - `spender` cannot be the zero address.*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
 | spender | address | undefined |
-| value | uint256 | undefined |
+| amount | uint256 | undefined |
 
 #### Returns
 
@@ -120,22 +120,6 @@ function approveAndCall(address spender, uint256 amount, bytes data) external no
 |---|---|---|
 | _0 | bool | A boolean that indicates if the operation was successful. |
 
-### authorizeOperator
-
-```solidity
-function authorizeOperator(address operator) external nonpayable
-```
-
-
-
-*See {IERC777-authorizeOperator}.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator | address | undefined |
-
 ### balanceOf
 
 ```solidity
@@ -144,7 +128,7 @@ function balanceOf(address tokenHolder) external view returns (uint256)
 
 
 
-*Returns the amount of tokens owned by an account (`tokenHolder`).*
+*See {IERC20-balanceOf}.*
 
 #### Parameters
 
@@ -157,46 +141,6 @@ function balanceOf(address tokenHolder) external view returns (uint256)
 | Name | Type | Description |
 |---|---|---|
 | _0 | uint256 | undefined |
-
-### burn
-
-```solidity
-function burn(uint256 amount, bytes data) external nonpayable
-```
-
-
-
-*See {IERC777-burn}. Also emits a {IERC20-Transfer} event for ERC20 compatibility.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| amount | uint256 | undefined |
-| data | bytes | undefined |
-
-### canImplementInterfaceForAddress
-
-```solidity
-function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) external view returns (bytes32)
-```
-
-
-
-*Returns a special value (`ERC1820_ACCEPT_MAGIC`) if this contract implements `interfaceHash` for `account`. See {IERC1820Registry-setInterfaceImplementer}.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| interfaceHash | bytes32 | undefined |
-| account | address | undefined |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | bytes32 | undefined |
 
 ### checkpoints
 
@@ -229,7 +173,7 @@ function decimals() external pure returns (uint8)
 
 
 
-*See {ERC20-decimals}. Always returns 18, as per the [ERC777 EIP](https://eips.ethereum.org/EIPS/eip-777#backward-compatibility).*
+*Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5.05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless this function is overridden; NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.*
 
 
 #### Returns
@@ -260,23 +204,6 @@ function decreaseAllowance(address spender, uint256 subtractedValue) external no
 | Name | Type | Description |
 |---|---|---|
 | _0 | bool | undefined |
-
-### defaultOperators
-
-```solidity
-function defaultOperators() external view returns (address[])
-```
-
-
-
-*See {IERC777-defaultOperators}.*
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | address[] | undefined |
 
 ### delegate
 
@@ -404,23 +331,6 @@ function getVotes(address account) external view returns (uint256)
 |---|---|---|
 | _0 | uint256 | undefined |
 
-### granularity
-
-```solidity
-function granularity() external view returns (uint256)
-```
-
-
-
-*See {IERC777-granularity}. This implementation always returns `1`.*
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | uint256 | undefined |
-
 ### increaseAllowance
 
 ```solidity
@@ -447,43 +357,19 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 ### initialize
 
 ```solidity
-function initialize(address tokensOwner, address forwarder, address[] defaultOperators_) external nonpayable
+function initialize(address tokensOwner, address forwarder) external nonpayable
 ```
 
+Contract initialisation. 5_000_000_000 tokens are minted
 
-
-
+*Constructor replacement methods used for Proxified Contract*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| tokensOwner | address | undefined |
-| forwarder | address | undefined |
-| defaultOperators_ | address[] | Array of default operators for ERC777 |
-
-### isOperatorFor
-
-```solidity
-function isOperatorFor(address operator, address tokenHolder) external view returns (bool)
-```
-
-
-
-*See {IERC777-isOperatorFor}.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator | address | undefined |
-| tokenHolder | address | undefined |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | bool | undefined |
+| tokensOwner | address | initianally minted Token&#39;s owner address |
+| forwarder | address | Initial ERC2771 trusted forwarder |
 
 ### isTrustedForwarder
 
@@ -567,45 +453,6 @@ function numCheckpoints(address account) external view returns (uint32)
 | Name | Type | Description |
 |---|---|---|
 | _0 | uint32 | undefined |
-
-### operatorBurn
-
-```solidity
-function operatorBurn(address account, uint256 amount, bytes data, bytes operatorData) external nonpayable
-```
-
-
-
-*See {IERC777-operatorBurn}. Emits {Burned} and {IERC20-Transfer} events.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| account | address | undefined |
-| amount | uint256 | undefined |
-| data | bytes | undefined |
-| operatorData | bytes | undefined |
-
-### operatorSend
-
-```solidity
-function operatorSend(address sender, address recipient, uint256 amount, bytes data, bytes operatorData) external nonpayable
-```
-
-
-
-*See {IERC777-operatorSend}. Emits {Sent} and {IERC20-Transfer} events.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| sender | address | undefined |
-| recipient | address | undefined |
-| amount | uint256 | undefined |
-| data | bytes | undefined |
-| operatorData | bytes | undefined |
 
 ### owner
 
@@ -702,40 +549,6 @@ function renounceOwnership() external nonpayable
 *Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.*
 
 
-### revokeOperator
-
-```solidity
-function revokeOperator(address operator) external nonpayable
-```
-
-
-
-*See {IERC777-revokeOperator}.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator | address | undefined |
-
-### send
-
-```solidity
-function send(address recipient, uint256 amount, bytes data) external nonpayable
-```
-
-
-
-*See {IERC777-send}. Also emits a {IERC20-Transfer} event for ERC20 compatibility.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| recipient | address | undefined |
-| amount | uint256 | undefined |
-| data | bytes | undefined |
-
 ### setTrustedForwarder
 
 ```solidity
@@ -758,7 +571,7 @@ Allows Contract&#39;s owner to change the trusted forwarder
 function supportsInterface(bytes4 interfaceId) external view returns (bool)
 ```
 
-Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
+Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
 
 *ERC 165 implementation*
 
@@ -799,7 +612,7 @@ function totalSupply() external view returns (uint256)
 
 
 
-*See {IERC777-totalSupply}.*
+*See {IERC20-totalSupply}.*
 
 
 #### Returns
@@ -816,7 +629,7 @@ function transfer(address recipient, uint256 amount) external nonpayable returns
 
 
 
-*See {IERC20-transfer}. Unlike `send`, `recipient` is _not_ required to implement the {IERC777Recipient} interface if it is a contract. Also emits a {Sent} event.*
+*See {IERC20-transfer}. Requirements: - `to` cannot be the zero address. - the caller must have a balance of at least `amount`.*
 
 #### Parameters
 
@@ -886,7 +699,7 @@ function transferFrom(address holder, address recipient, uint256 amount) externa
 
 
 
-*See {IERC20-transferFrom}. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Note that operator and allowance concepts are orthogonal: operators cannot call `transferFrom` (unless they have allowance), and accounts with allowance cannot call `operatorSend` (unless they are operators). Emits {Sent}, {IERC20-Transfer} and {IERC20-Approval} events.*
+*See {IERC20-transferFrom}. Emits an {Approval} event indicating the updated allowance. This is not required by the EIP. See the note at the beginning of {ERC20}. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Requirements: - `from` and `to` cannot be the zero address. - `from` must have a balance of at least `amount`. - the caller must have allowance for ``from``&#39;s tokens of at least `amount`.*
 
 #### Parameters
 
@@ -1050,23 +863,6 @@ event Approval(address indexed owner, address indexed spender, uint256 value)
 | spender `indexed` | address | undefined |
 | value  | uint256 | undefined |
 
-### AuthorizedOperator
-
-```solidity
-event AuthorizedOperator(address indexed operator, address indexed tokenHolder)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator `indexed` | address | undefined |
-| tokenHolder `indexed` | address | undefined |
-
 ### BeaconUpgraded
 
 ```solidity
@@ -1082,26 +878,6 @@ event BeaconUpgraded(address indexed beacon)
 | Name | Type | Description |
 |---|---|---|
 | beacon `indexed` | address | undefined |
-
-### Burned
-
-```solidity
-event Burned(address indexed operator, address indexed from, uint256 amount, bytes data, bytes operatorData)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator `indexed` | address | undefined |
-| from `indexed` | address | undefined |
-| amount  | uint256 | undefined |
-| data  | bytes | undefined |
-| operatorData  | bytes | undefined |
 
 ### DelegateChanged
 
@@ -1155,26 +931,6 @@ event Initialized(uint8 version)
 |---|---|---|
 | version  | uint8 | undefined |
 
-### Minted
-
-```solidity
-event Minted(address indexed operator, address indexed to, uint256 amount, bytes data, bytes operatorData)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator `indexed` | address | undefined |
-| to `indexed` | address | undefined |
-| amount  | uint256 | undefined |
-| data  | bytes | undefined |
-| operatorData  | bytes | undefined |
-
 ### OwnershipTransferred
 
 ```solidity
@@ -1207,44 +963,6 @@ event Paused(address account)
 | Name | Type | Description |
 |---|---|---|
 | account  | address | undefined |
-
-### RevokedOperator
-
-```solidity
-event RevokedOperator(address indexed operator, address indexed tokenHolder)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator `indexed` | address | undefined |
-| tokenHolder `indexed` | address | undefined |
-
-### Sent
-
-```solidity
-event Sent(address indexed operator, address indexed from, address indexed to, uint256 amount, bytes data, bytes operatorData)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| operator `indexed` | address | undefined |
-| from `indexed` | address | undefined |
-| to `indexed` | address | undefined |
-| amount  | uint256 | undefined |
-| data  | bytes | undefined |
-| operatorData  | bytes | undefined |
 
 ### Transfer
 

@@ -10,16 +10,14 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/interfaces/IERC777Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/interfaces/IERC1820ImplementerUpgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
 import "../ERC1363/ERC1363ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
-/// @title The Metastudio's ERC777/ERC20 token
+/// @title The Metastudio's ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
-abstract contract MetaStudioToken is
+contract MetaStudioToken is
   Initializable,
   ContextUpgradeable,
   IERC165Upgradeable,
@@ -30,7 +28,6 @@ abstract contract MetaStudioToken is
   PausableUpgradeable,
   ERC20PermitUpgradeable,
   ERC20VotesUpgradeable,
-  IERC1820ImplementerUpgradeable,
   ERC2771ContextUpgradeable,
   UUPSUpgradeable
 {
@@ -61,14 +58,14 @@ abstract contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
-  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC777`, `IERC2771`, `IERC1820`, `IERC20Permit`
+  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
     view
-    override(ERC1363Upgradeable, IERC165Upgradeable)
+    override(IERC165Upgradeable, ERC1363Upgradeable)
     returns (bool)
   {
     return
@@ -76,7 +73,6 @@ abstract contract MetaStudioToken is
       interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
-      interfaceId == type(IERC1820ImplementerUpgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
       super.supportsInterface(interfaceId);
   }
@@ -122,12 +118,11 @@ abstract contract MetaStudioToken is
     super._afterTokenTransfer(from, to, amount);
   }
 
-  /// @dev Using ERC777 secured implementation
   function _mint(address to, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
-    _mint(to, amount);
+    super._mint(to, amount);
   }
 
   function _burn(address account, uint256 amount)
