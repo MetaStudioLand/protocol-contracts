@@ -22,7 +22,7 @@ contract MetaStudioToken is
   ContextUpgradeable,
   IERC165Upgradeable,
   ERC20Upgradeable,
-  //  ERC1363Upgradeable,
+  ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
   PausableUpgradeable,
@@ -58,14 +58,14 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
-  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`
+  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
     view
-    override(IERC165Upgradeable)
+    override(IERC165Upgradeable, ERC1363Upgradeable)
     returns (bool)
   {
     return
@@ -74,7 +74,7 @@ contract MetaStudioToken is
       interfaceId == type(IERC20Upgradeable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
-      false; //super.supportsInterface(interfaceId);
+      super.supportsInterface(interfaceId);
   }
 
   /*

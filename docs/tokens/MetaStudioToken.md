@@ -73,6 +73,53 @@ function approve(address spender, uint256 amount) external nonpayable returns (b
 |---|---|---|
 | _0 | bool | undefined |
 
+### approveAndCall
+
+```solidity
+function approveAndCall(address spender, uint256 amount) external nonpayable returns (bool)
+```
+
+
+
+*Approve spender to transfer tokens and then execute a callback on `spender`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| spender | address | The address allowed to transfer to |
+| amount | uint256 | The amount allowed to be transferred |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
+
+### approveAndCall
+
+```solidity
+function approveAndCall(address spender, uint256 amount, bytes data) external nonpayable returns (bool)
+```
+
+
+
+*Approve spender to transfer tokens and then execute a callback on `spender`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| spender | address | The address allowed to transfer to. |
+| amount | uint256 | The amount allowed to be transferred. |
+| data | bytes | Additional data with no specified format. |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
+
 ### balanceOf
 
 ```solidity
@@ -597,6 +644,53 @@ function transfer(address recipient, uint256 amount) external nonpayable returns
 |---|---|---|
 | _0 | bool | undefined |
 
+### transferAndCall
+
+```solidity
+function transferAndCall(address to, uint256 amount) external nonpayable returns (bool)
+```
+
+
+
+*Transfer tokens to a specified address and then execute a callback on `to`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| to | address | The address to transfer to. |
+| amount | uint256 | The amount to be transferred. |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
+
+### transferAndCall
+
+```solidity
+function transferAndCall(address to, uint256 amount, bytes data) external nonpayable returns (bool)
+```
+
+
+
+*Transfer tokens to a specified address and then execute a callback on `to`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| to | address | The address to transfer to |
+| amount | uint256 | The amount to be transferred |
+| data | bytes | Additional data with no specified format |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
+
 ### transferFrom
 
 ```solidity
@@ -620,6 +714,55 @@ function transferFrom(address holder, address recipient, uint256 amount) externa
 | Name | Type | Description |
 |---|---|---|
 | _0 | bool | undefined |
+
+### transferFromAndCall
+
+```solidity
+function transferFromAndCall(address from, address to, uint256 amount, bytes data) external nonpayable returns (bool)
+```
+
+
+
+*Transfer tokens from one address to another and then execute a callback on `to`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| from | address | The address which you want to send tokens from |
+| to | address | The address which you want to transfer to |
+| amount | uint256 | The amount of tokens to be transferred |
+| data | bytes | Additional data with no specified format |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
+
+### transferFromAndCall
+
+```solidity
+function transferFromAndCall(address from, address to, uint256 amount) external nonpayable returns (bool)
+```
+
+
+
+*Transfer tokens from one address to another and then execute a callback on `to`.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| from | address | The address which you want to send tokens from |
+| to | address | The address which you want to transfer to |
+| amount | uint256 | The amount of tokens to be transferred |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | A boolean that indicates if the operation was successful. |
 
 ### transferOwnership
 
