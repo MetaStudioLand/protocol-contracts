@@ -571,7 +571,7 @@ Allows Contract&#39;s owner to change the trusted forwarder
 function supportsInterface(bytes4 interfaceId) external view returns (bool)
 ```
 
-Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`
+Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
 
 *ERC 165 implementation*
 

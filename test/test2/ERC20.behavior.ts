@@ -3,7 +3,7 @@ import {expect} from "chai";
 import {BigNumber, Contract} from "ethers";
 import {ethers} from "hardhat";
 
-export async function shouldBehaveLikeERC20(
+export function shouldBehaveLikeERC20(
   initialSupply: BigNumber,
   initialHolder: SignerWithAddress,
   recipient: SignerWithAddress,
@@ -285,7 +285,7 @@ export async function shouldBehaveLikeERC20(
   });
 }
 
-export async function shouldBehaveLikeERC20Transfer(
+export function shouldBehaveLikeERC20Transfer(
   from: SignerWithAddress,
   to: SignerWithAddress,
   balance: BigNumber,
@@ -380,7 +380,7 @@ export async function shouldBehaveLikeERC20Transfer(
   });
 }
 
-export async function shouldBehaveLikeERC20Approve(
+export function shouldBehaveLikeERC20Approve(
   owner: SignerWithAddress,
   spender: SignerWithAddress,
   supply: BigNumber,
