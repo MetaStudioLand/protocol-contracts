@@ -1,5 +1,7 @@
 import {expect} from "chai";
-import {ethers} from "hardhat";
+import {ethers, tracer} from "hardhat";
+import {getSuiteSigners} from "../shared/utils";
+import {shouldBehaveLikeRegularContext} from "./behaviors/ERC2771.behavior";
 
 export function unitTestERC2771() {
   describe("======== ERC2771 ========", async function () {
@@ -26,26 +28,36 @@ export function unitTestERC2771() {
 
     describe("a trusted forwarder is defined", function () {
       beforeEach(async function () {
-        await this.token.setTrustedForwarder(this.signers.forwarder.address);
+        const Factory = await ethers.getContractFactory("MinimalForwarder");
+        const minimalForwarder = await Factory.deploy();
+        await minimalForwarder.deployed();
+        this.minimalForwarder = minimalForwarder;
+        tracer.nameTags[this.minimalForwarder.address] =
+          "Contract: MinimalForwarder";
+
+        await this.token.setTrustedForwarder(this.minimalForwarder.address);
+      });
+      afterEach(async function () {
+        delete tracer.nameTags[this.minimalForwarder.address];
       });
 
       it("recognize trusted forwarder", async function () {
         await expect(
           await this.token
             .connect(this.signers.recipient)
-            .isTrustedForwarder(this.signers.forwarder.address)
+            .isTrustedForwarder(this.minimalForwarder.address)
         ).to.be.true;
       });
 
-      // context("when called directly", function () {
-      //   beforeEach(async function () {
-      //     this.context = this.signers.recipient; // The Context behavior expects the contract in this.context
-      //     this.caller = await ContextMockCaller.new();
-      //   });
-      //
-      //   shouldBehaveLikeRegularContext(...accounts);
-      // });
-      //
+      context("when called directly", function () {
+        beforeEach(async function () {
+          this.context = this.token;
+        });
+
+        const signers = getSuiteSigners(this);
+        shouldBehaveLikeRegularContext(signers.recipient);
+      });
+
       // context("when receiving a relayed call", function () {
       //   beforeEach(async function () {
       //     this.wallet = Wallet.generate();

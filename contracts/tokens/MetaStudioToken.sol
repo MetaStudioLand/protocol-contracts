@@ -15,6 +15,8 @@ import "../metatx/IERC2771Upgradeable.sol";
 import "../ERC1363/ERC1363ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
+import "hardhat/console.sol";
+
 /// @title The Metastudio's ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is

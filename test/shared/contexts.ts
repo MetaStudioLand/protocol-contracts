@@ -13,17 +13,17 @@ export async function baseContext(
   const accounts: SignerWithAddress[] = await ethers.getSigners();
   const signers = {} as Signers;
   signers.owner = accounts[0];
-  tracer.nameTags[signers.owner.address] = "contractOwner";
+  tracer.nameTags[signers.owner.address] = "Owner";
   signers.initialHolder = accounts[1];
-  tracer.nameTags[signers.initialHolder.address] = "initialHolder";
+  tracer.nameTags[signers.initialHolder.address] = "Initial Holder";
   signers.recipient = accounts[2];
-  tracer.nameTags[signers.recipient.address] = "recipient";
-  signers.spender = accounts[2];
-  tracer.nameTags[signers.spender.address] = "spender";
+  tracer.nameTags[signers.recipient.address] = "Recipient";
   signers.anotherAccount = accounts[3];
-  tracer.nameTags[signers.anotherAccount.address] = "anotherAccount";
+  tracer.nameTags[signers.anotherAccount.address] = "Another Account";
   signers.forwarder = accounts[4];
-  tracer.nameTags[signers.forwarder.address] = "forwarder";
+  tracer.nameTags[signers.forwarder.address] = "Forwarder";
+  signers.spender = accounts[5];
+  tracer.nameTags[signers.spender.address] = "Spender";
 
   /**
    * Main Suite
@@ -46,6 +46,11 @@ export async function baseContext(
       );
       await proxyContract.deployed();
       this.token = proxyContract;
+      tracer.nameTags[this.token.address] = "Contract: MetaStudioToken";
+    });
+
+    afterEach(async function () {
+      delete tracer.nameTags[this.token.address];
     });
 
     hooks();
