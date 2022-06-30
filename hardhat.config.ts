@@ -11,7 +11,7 @@ import "hardhat-gas-reporter";
 // import "hardhat-storage-layout";
 import "hardhat-tracer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
-// import "solidity-coverage";
+import "solidity-coverage";
 
 dotenv.config();
 

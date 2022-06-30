@@ -34,6 +34,7 @@ export const functionCallEncodeABI = (
   paramsValues?: any[]
 ) => {
   const ABI = [`function ${functionName}(${functionParams})`];
+  console.log(`ABI: ${ABI}`);
   const iface = new ethers.utils.Interface(ABI);
   return iface.encodeFunctionData(functionName, paramsValues);
 };
