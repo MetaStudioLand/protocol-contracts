@@ -5,7 +5,7 @@ import {getSuiteContext} from "../shared/utils";
 import {shouldBehaveLikeForwardedRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
 
 export function unitTestERC2771() {
-  describe("======== ERC2771 ========", async function () {
+  describe("======== ERC2771 ================================================", async function () {
     describe("no trusted forwarder defined", function () {
       it("unrecognize trusted forwarder", async function () {
         await expect(

@@ -6,7 +6,7 @@ import {getSuiteContext, tokens} from "../shared/utils";
 import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
 
 export function unitTestERC20(): void {
-  describe("======== Contract: ERC20 ========", async function () {
+  describe("======== Contract: ERC20 ================================================", async function () {
     const name = "MetaStudioToken";
     const symbol = "SMV";
     const initialSupply = tokens(5_000_000_000);

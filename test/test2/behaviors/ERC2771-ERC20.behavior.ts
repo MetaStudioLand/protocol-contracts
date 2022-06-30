@@ -35,7 +35,7 @@ export function shouldBehaveLikeForwardedRegularERC20(
           from: fromAddress,
           to: token.address,
           value: 0,
-          gas: "100000",
+          gas: "10000000",
           nonce: nonce.toString(),
           data,
         };
@@ -70,7 +70,7 @@ export function shouldBehaveLikeForwardedRegularERC20(
           from: getAddress(spender),
           to: token.address,
           value: 0,
-          gas: "100000",
+          gas: "10000000",
           nonce: nonce.toString(),
           data,
         };
@@ -103,7 +103,7 @@ export function shouldBehaveLikeForwardedRegularERC20(
           from: fromAddress,
           to: token.address,
           value: 0,
-          gas: "100000",
+          gas: "10000000",
           nonce: nonce.toString(),
           data,
         };

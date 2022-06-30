@@ -34,7 +34,31 @@ contract ERC2771Forwarder {
       value: req.value
     }(abi.encodePacked(req.data, req.from));
 
-    emit Forwarded(success, returndata);
-    return (success, returndata);
+    if (success) {
+      emit Forwarded(success, returndata);
+      return (success, returndata);
+    } else {
+      emit Forwarded(success, returndata);
+      string memory _revertMsg = _getRevertMsg(returndata);
+      revert(_revertMsg);
+    }
+  }
+
+  /**
+   * @dev https://ethereum.stackexchange.com/a/83577/61294
+   */
+  function _getRevertMsg(bytes memory _returnData)
+    internal
+    pure
+    returns (string memory)
+  {
+    // If the _res length is less than 68, then the transaction failed silently (without a revert message)
+    if (_returnData.length < 68) return "Transaction reverted silently";
+
+    assembly {
+      // Slice the sighash.
+      _returnData := add(_returnData, 0x04)
+    }
+    return abi.decode(_returnData, (string)); // All that remains is the revert string
   }
 }
