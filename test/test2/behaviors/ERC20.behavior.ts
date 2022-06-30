@@ -295,11 +295,6 @@ export function shouldBehaveLikeERC20Transfer(
       });
 
       it("emits a transfer event", async function () {
-        // expectEvent(await doTransfer( from, to, amount), "Transfer", {
-        //   from: from.address,
-        //   to: to.address,
-        //   value: amount,
-        // });
         await expect(_doTransfer(this.token, from, to, amount, this.forwarder))
           .to.emit(this.token, "Transfer")
           .withArgs(from.address, to.address, amount);
