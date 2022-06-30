@@ -2,11 +2,11 @@ import {expect} from "chai";
 import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
 import {NB_DECIMALS} from "../shared/constants";
-import {getSuiteSigners, tokens} from "../shared/utils";
+import {getSuiteContext, tokens} from "../shared/utils";
 import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
 
 export function unitTestERC20(): void {
-  describe("======== Contract: ERC20 ========", async function () {
+  describe("======== Contract: ERC20 ================================================", async function () {
     const name = "MetaStudioToken";
     const symbol = "SMV";
     const initialSupply = tokens(5_000_000_000);
@@ -23,7 +23,7 @@ export function unitTestERC20(): void {
       expect(await this.token.decimals()).to.be.equal(NB_DECIMALS);
     });
 
-    const signers = getSuiteSigners(this);
+    const {signers} = getSuiteContext(this);
     shouldBehaveLikeERC20(
       initialSupply,
       signers.initialHolder,

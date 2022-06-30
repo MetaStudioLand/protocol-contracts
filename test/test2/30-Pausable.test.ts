@@ -3,7 +3,7 @@ import {BigNumber} from "ethers";
 import {tokens} from "../shared/utils";
 
 export function unitTestPausable(): void {
-  describe("======== Contract: Pausable ========", async function () {
+  describe("======== Contract: Pausable ================================================", async function () {
     const initialSupply = tokens(5_000_000_000);
 
     describe("transfer", function () {

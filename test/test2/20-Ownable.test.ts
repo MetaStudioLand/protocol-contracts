@@ -2,7 +2,7 @@ import {expect} from "chai";
 import {ethers} from "hardhat";
 
 export function unitTestOwnable() {
-  describe("======== Contract: Ownable ========", function () {
+  describe("======== Contract: Ownable ================================================", function () {
     it("has an owner", async function () {
       expect(await this.token.owner()).to.equal(this.signers.owner.address);
     });

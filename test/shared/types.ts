@@ -1,5 +1,5 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {Contract} from "ethers";
+import {BigNumber, Contract} from "ethers";
 
 export interface Signers {
   owner: SignerWithAddress;
@@ -13,6 +13,8 @@ export interface Signers {
 declare module "mocha" {
   export interface Context {
     token: Contract;
+    forwarder: Contract;
     signers: Signers;
+    initialSupply: BigNumber;
   }
 }
