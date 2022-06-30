@@ -1,4 +1,5 @@
 import {BigNumber} from "ethers";
+import {ethers, tracer} from "hardhat";
 import {Suite} from "mocha";
 import {NB_DECIMALS} from "./constants";
 import {Signers} from "./types";
@@ -25,4 +26,18 @@ export const getSuiteSigners = (suite: Suite): Signers => {
     currSuite = currSuite.parent ?? null;
   }
   return currSuite?.ctx?.signers ?? emptySigners;
+};
+
+export const functionCallEncodeABI = (
+  functionName: string,
+  functionParams: string,
+  paramsValues?: any[]
+) => {
+  const ABI = [`function ${functionName}(${functionParams})`];
+  const iface = new ethers.utils.Interface(ABI);
+  return iface.encodeFunctionData(functionName, paramsValues);
+};
+
+export const logNameTags = () => {
+  console.log(`Names: ${JSON.stringify(tracer.nameTags, null, 3)}`);
 };

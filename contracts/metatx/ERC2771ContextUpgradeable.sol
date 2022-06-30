@@ -5,6 +5,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 
+import "hardhat/console.sol";
+
 /**
  * @notice Implementing an updatable Trusted Forwarder
  */
@@ -63,6 +65,7 @@ contract ERC2771ContextUpgradeable is
       assembly {
         sender := shr(96, calldataload(sub(calldatasize(), 20)))
       }
+      return sender;
     } else {
       return super._msgSender();
     }
@@ -81,6 +84,31 @@ contract ERC2771ContextUpgradeable is
       return super._msgData();
     }
   }
+
+  /**
+   * @dev specific to tests
+   */
+  //  event Sender(address sender);
+
+  function msgSender() public view returns (address) {
+    //    console.log("=======> msgSender called: %s", _msgSender());
+    return _msgSender();
+  }
+
+  //  event Data(bytes data, uint256 integerValue, string stringValue);
+
+  //  function msgData(uint256 integerValue, string memory stringValue)
+  //    public
+  //    view
+  //    returns (
+  //      bytes,
+  //      uint256,
+  //      string memory
+  //    )
+  //  {
+  //    console.log("msgSender data");
+  //    return (_msgData(), integerValue, stringValue);
+  //  }
 
   /**
    * @dev This empty reserved space is put in place to allow future versions to add new
