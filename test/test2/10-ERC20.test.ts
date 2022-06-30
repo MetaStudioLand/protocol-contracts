@@ -260,49 +260,5 @@ export function unitTestERC20(): void {
         });
       });
     });
-
-    // FIXME Pas de function "transfertInternal" dans le contrat
-    // describe("_transfer", function () {
-    //   shouldBehaveLikeERC20Transfer(
-    //     signers.initialHolder,
-    //     signers.recipient,
-    //     initialSupply,
-    //     true
-    //   );
-    //
-    //   describe("when the sender is the zero address", function () {
-    //     it("reverts", async function () {
-    //       await expect(
-    //         this.token.transferInternal(
-    //           ethers.constants.AddressZero,
-    //           this.signers.recipient,
-    //           initialSupply
-    //         )
-    //       ).to.be.revertedWith("ERC20: transfer from the zero address");
-    //     });
-    //   });
-    // });
-
-    // FIXME Pas de function "approveInternal" dans le contrat
-    // describe("_approve", async function () {
-    //   shouldBehaveLikeERC20Approve(
-    //     signers.initialHolder,
-    //     signers.recipient,
-    //     initialSupply,
-    //     true
-    //   );
-    //
-    //   describe("when the owner is the zero address", function () {
-    //     it("reverts", async function () {
-    //       await expect(
-    //         this.token.approveInternal(
-    //           ethers.constants.AddressZero,
-    //           this.signers.recipient,
-    //           initialSupply
-    //         )
-    //       ).to.be.revertedWith("ERC20: approve from the zero address");
-    //     });
-    //   });
-    // });
   });
 }
