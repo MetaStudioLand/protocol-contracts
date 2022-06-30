@@ -5,7 +5,6 @@ import {ethers, tracer} from "hardhat";
 import {Address} from "hardhat-deploy/dist/types";
 import {
   DATA,
-  NB_DECIMALS,
   RECEIVER_MAGIC_VALUE,
   SPENDER_MAGIC_VALUE,
 } from "../shared/constants";
@@ -106,8 +105,6 @@ export function unitTestERC1363(): void {
         spender: SignerWithAddress,
         balance: BigNumber
       ) {
-        let receiver: any;
-
         beforeEach(async function () {
           const FactoryERC1363Receiver = await ethers.getContractFactory(
             "ERC1363ReceiverMock"
