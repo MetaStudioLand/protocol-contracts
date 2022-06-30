@@ -1,7 +1,8 @@
 import {expect} from "chai";
 import {ethers, tracer} from "hardhat";
-import {getSuiteSigners} from "../shared/utils";
-import {shouldBehaveLikeRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
+import {after} from "mocha";
+import {getSuiteContext} from "../shared/utils";
+import {shouldBehaveLikeForwardedRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
 
 export function unitTestERC2771() {
   describe("======== ERC2771 ========", async function () {
@@ -27,30 +28,35 @@ export function unitTestERC2771() {
     });
 
     describe("a trusted forwarder is defined", function () {
-      beforeEach(async function () {
+      before(async function () {
         const Factory = await ethers.getContractFactory("ERC2771Forwarder");
         const minimalForwarder = await Factory.deploy();
         await minimalForwarder.deployed();
-        this.minimalForwarder = minimalForwarder;
-        tracer.nameTags[this.minimalForwarder.address] =
-          "Contract: MinimalForwarder";
-
-        await this.token.setTrustedForwarder(this.minimalForwarder.address);
+        this.forwarder = minimalForwarder;
+        tracer.nameTags[this.forwarder.address] = "Contract: Forwarder";
       });
-      afterEach(async function () {
-        delete tracer.nameTags[this.minimalForwarder.address];
+      after(function () {
+        if (this.forwarder) {
+          delete tracer.nameTags[this.forwarder.address];
+        }
+      });
+      beforeEach(async function () {
+        await this.token.setTrustedForwarder(this.forwarder.address);
       });
 
       it("recognize trusted forwarder", async function () {
         await expect(
           await this.token
             .connect(this.signers.recipient)
-            .isTrustedForwarder(this.minimalForwarder.address)
+            .isTrustedForwarder(this.forwarder.address)
         ).to.be.true;
       });
 
-      const signers = getSuiteSigners(this);
-      shouldBehaveLikeRegularERC20(signers.recipient);
+      describe("forwarding ERC20", function () {
+        const {signers, initialSupply} = getSuiteContext(this);
+        console.log(`data: ${signers}, ${initialSupply}`);
+        shouldBehaveLikeForwardedRegularERC20(signers, initialSupply);
+      });
     });
   });
 }

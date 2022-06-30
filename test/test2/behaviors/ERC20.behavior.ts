@@ -34,7 +34,22 @@ export function shouldBehaveLikeERC20(
   });
 
   describe("transfer", function () {
-    shouldBehaveLikeERC20Transfer(initialHolder, recipient, initialSupply);
+    shouldBehaveLikeERC20Transfer(
+      initialHolder,
+      recipient,
+      initialSupply,
+      function (
+        token: Contract,
+        from: SignerWithAddress | string,
+        to: SignerWithAddress | string,
+        amount: BigNumber,
+        forwarder: Contract | null
+      ) {
+        return token
+          .connect(from)
+          .transfer(typeof to === "string" ? to : to.address, amount);
+      }
+    );
   });
 
   describe("transfer from", function () {
@@ -232,39 +247,21 @@ export function shouldBehaveLikeERC20Transfer(
   from: SignerWithAddress,
   to: SignerWithAddress,
   balance: BigNumber,
-  useInternal: boolean = false
+  _doTransfer: (
+    token: Contract,
+    from: SignerWithAddress | string,
+    to: SignerWithAddress | string,
+    amount: BigNumber,
+    forwarder: Contract | null
+  ) => Promise<any>
 ) {
-  const _doTransfer = useInternal
-    ? (
-        token: Contract,
-        from: SignerWithAddress | string,
-        to: SignerWithAddress | string,
-        amount: BigNumber
-      ) => {
-        return token.transferInternal(
-          typeof from === "string" ? from : from.address,
-          typeof to === "string" ? to : to.address,
-          amount
-        );
-      }
-    : (
-        token: Contract,
-        from: SignerWithAddress | string,
-        to: SignerWithAddress | string,
-        amount: BigNumber
-      ) => {
-        return token
-          .connect(from)
-          .transfer(typeof to === "string" ? to : to.address, amount);
-      };
-
   describe("when the recipient is not the zero address", function () {
     describe("when the sender does not have enough balance", function () {
       const amount = balance.add(1);
 
       it("reverts", async function () {
         await expect(
-          _doTransfer(this.token, from, to, amount)
+          _doTransfer(this.token, from, to, amount, this.forwarder)
         ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
       });
     });
@@ -273,14 +270,14 @@ export function shouldBehaveLikeERC20Transfer(
       const amount = balance;
 
       it("transfers the requested amount", async function () {
-        await _doTransfer(this.token, from, to, amount);
+        await _doTransfer(this.token, from, to, amount, this.forwarder);
 
         expect(await this.token.balanceOf(from.address)).to.be.equal("0");
         expect(await this.token.balanceOf(to.address)).to.be.equal(amount);
       });
 
       it("emits a transfer event", async function () {
-        await expect(_doTransfer(this.token, from, to, amount))
+        await expect(_doTransfer(this.token, from, to, amount, this.forwarder))
           .to.emit(this.token, "Transfer")
           .withArgs(from.address, to.address, amount);
       });
@@ -290,7 +287,7 @@ export function shouldBehaveLikeERC20Transfer(
       const amount = BigNumber.from("0");
 
       it("transfers the requested amount", async function () {
-        await _doTransfer(this.token, from, to, amount);
+        await _doTransfer(this.token, from, to, amount, this.forwarder);
 
         expect(await this.token.balanceOf(from.address)).to.be.equal(balance);
 
@@ -298,7 +295,12 @@ export function shouldBehaveLikeERC20Transfer(
       });
 
       it("emits a transfer event", async function () {
-        await expect(_doTransfer(this.token, from, to, amount))
+        // expectEvent(await doTransfer( from, to, amount), "Transfer", {
+        //   from: from.address,
+        //   to: to.address,
+        //   value: amount,
+        // });
+        await expect(_doTransfer(this.token, from, to, amount, this.forwarder))
           .to.emit(this.token, "Transfer")
           .withArgs(from.address, to.address, amount);
       });
@@ -308,7 +310,13 @@ export function shouldBehaveLikeERC20Transfer(
   describe("when the recipient is the zero address", function () {
     it("reverts", async function () {
       await expect(
-        _doTransfer(this.token, from, ethers.constants.AddressZero, balance)
+        _doTransfer(
+          this.token,
+          from,
+          ethers.constants.AddressZero,
+          balance,
+          this.forwarder
+        )
       ).to.be.revertedWith("ERC20: transfer to the zero address");
     });
   });

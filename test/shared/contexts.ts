@@ -2,6 +2,7 @@ import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {ethers, tracer, upgrades} from "hardhat";
 import {Suite} from "mocha";
 import {Signers} from "./types";
+import {tokens} from "./utils";
 
 export async function baseContext(
   description: string,
@@ -25,6 +26,8 @@ export async function baseContext(
   signers.spender = accounts[5];
   tracer.nameTags[signers.spender.address] = "Spender";
 
+  const initialSupply = tokens(5_000_000_000);
+
   /**
    * Main Suite
    */
@@ -32,9 +35,11 @@ export async function baseContext(
     const rootSuite = this;
     // @ts-ignore
     rootSuite.ctx.signers = signers;
+    rootSuite.ctx.initialSupply = initialSupply;
 
     before(async function () {
       this.signers = signers;
+      this.initialSupply = initialSupply;
     });
 
     beforeEach(async function () {
