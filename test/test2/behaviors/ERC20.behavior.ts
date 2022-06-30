@@ -137,7 +137,7 @@ export function shouldBehaveLikeERC20(
           describe("when the token owner has enough balance", function () {
             const amount = initialSupply;
 
-            it("reverts", async function () {;
+            it("reverts", async function () {
               await expect(
                 this.token
                   .connect(spender)
