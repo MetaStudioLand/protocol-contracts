@@ -1,7 +1,5 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
-import {BigNumber} from "ethers";
-import {functionCallEncodeABI} from "../../shared/utils";
 
 export async function shouldBehaveLikeRegularContext(
   sender: SignerWithAddress
@@ -53,36 +51,36 @@ export async function shouldBehaveLikeRegularContext(
     // });
   });
 
-  describe("msgData", function () {
-    const integerValue = BigNumber.from("34130");
-    const stringValue = "OpenZeppelin";
-
-    let callData: string;
-
-    beforeEach(async function () {
-      callData = functionCallEncodeABI(
-        "msgData",
-        "uint256 integerValue, string memory stringValue",
-        [integerValue.toString(), stringValue]
-      );
-    });
-
-    // it("returns the transaction data when called from an EOA", async function () {
-    //   await expect(await this.context.msgData(integerValue, stringValue))
-    //     .to.emit(this.context, "Data")
-    //     .withArgs(callData, integerValue, stringValue);
-    // });
-
-    // it("returns the transaction sender when from another contract", async function () {
-    //   await expect(
-    //     await this.minimalForwarder.callData(
-    //       this.context.address,
-    //       integerValue,
-    //       stringValue
-    //     )
-    //   )
-    //     .to.emit(this.context, "Data")
-    //     .withArgs(callData, integerValue, stringValue);
-    // });
-  });
+  // describe("msgData", function () {
+  //   const integerValue = BigNumber.from("34130");
+  //   const stringValue = "OpenZeppelin";
+  //
+  //   let callData: string;
+  //
+  //   beforeEach(async function () {
+  //     callData = functionCallEncodeABI(
+  //       "msgData",
+  //       "uint256 integerValue, string memory stringValue",
+  //       [integerValue.toString(), stringValue]
+  //     );
+  //   });
+  //
+  //   it("returns the transaction data when called from an EOA", async function () {
+  //     await expect(await this.context.msgData(integerValue, stringValue))
+  //       .to.emit(this.context, "Data")
+  //       .withArgs(callData, integerValue, stringValue);
+  //   });
+  //
+  //   it("returns the transaction sender when from another contract", async function () {
+  //     await expect(
+  //       await this.minimalForwarder.callData(
+  //         this.context.address,
+  //         integerValue,
+  //         stringValue
+  //       )
+  //     )
+  //       .to.emit(this.context, "Data")
+  //       .withArgs(callData, integerValue, stringValue);
+  //   });
+  // });
 }
