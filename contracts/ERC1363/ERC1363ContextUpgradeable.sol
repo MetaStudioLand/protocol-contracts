@@ -1,20 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
-
+import "hardhat/console.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
-
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeable.sol";
 
 abstract contract ERC1363Upgradeable is
+  Initializable,
   ERC20Upgradeable,
   ERC165Upgradeable,
   IERC1363Upgradeable
 {
   using AddressUpgradeable for address;
+
+  function __ERC1363_init() internal onlyInitializing {}
+
+  function __ERC1363_init_unchained() internal onlyInitializing {}
 
   function supportsInterface(bytes4 interfaceId)
     public
@@ -75,7 +80,22 @@ abstract contract ERC1363Upgradeable is
     address to,
     uint256 amount
   ) public virtual override returns (bool) {
-    return transferFromAndCall(from, to, amount, "");
+    return _transferFromAndCall(from, to, amount, "");
+  }
+
+  function transferFromAndCall(
+    address from,
+    address to,
+    uint256 amount,
+    bytes memory data
+  ) public virtual override returns (bool) {
+    transferFrom(from, to, amount);
+    require(
+      _checkAndCallTransfer(from, to, amount, data),
+      "ERC1363Upgradeable: _checkAndCallTransfer reverts"
+    );
+    return true;
+    // return _transferFromAndCall(from, to,amount,data);
   }
 
   /**
@@ -86,12 +106,12 @@ abstract contract ERC1363Upgradeable is
    * @param data Additional data with no specified format
    * @return A boolean that indicates if the operation was successful.
    */
-  function transferFromAndCall(
+  function _transferFromAndCall(
     address from,
     address to,
     uint256 amount,
     bytes memory data
-  ) public virtual override returns (bool) {
+  ) internal returns (bool) {
     transferFrom(from, to, amount);
     require(
       _checkAndCallTransfer(from, to, amount, data),

@@ -81,13 +81,6 @@ export function shouldBehaveLikeERC20(
             });
 
             it("emits a transfer event", async function () {
-              // expectEvent(
-              //   await this.token
-              //     .connect(spender)
-              //     .transferFrom(tokenOwner.address, to.address, amount),
-              //   "Transfer",
-              //   {from: tokenOwner.address, to: to.address, value: amount}
-              // );
               await expect(
                 this.token
                   .connect(spender)
@@ -98,20 +91,6 @@ export function shouldBehaveLikeERC20(
             });
 
             it("emits an approval event", async function () {
-              // expectEvent(
-              //   await this.token
-              //     .connect(spender)
-              //     .transferFrom(tokenOwner.address, to.address, amount),
-              //   "Approval",
-              //   {
-              //     owner: tokenOwner.address,
-              //     spender: spender.address,
-              //     value: await this.token.allowance(
-              //       tokenOwner.address,
-              //       spender.address
-              //     ),
-              //   }
-              // );
               await expect(
                 await this.token
                   .connect(spender)
@@ -137,12 +116,6 @@ export function shouldBehaveLikeERC20(
             });
 
             it("reverts", async function () {
-              // await expectRevert(
-              //   token
-              //     .connect(spender)
-              //     .transferFrom(tokenOwner.address, to.address, amount),
-              //   `${errorPrefix}: transfer amount exceeds balance`
-              // );
               await expect(
                 this.token
                   .connect(spender)
@@ -164,13 +137,7 @@ export function shouldBehaveLikeERC20(
           describe("when the token owner has enough balance", function () {
             const amount = initialSupply;
 
-            it("reverts", async function () {
-              // await expectRevert(
-              //   token
-              //     .connect(spender)
-              //     .transferFrom(tokenOwner.address, to.address, amount),
-              //   `${errorPrefix}: insufficient allowance`
-              // );
+            it("reverts", async function () {;
               await expect(
                 this.token
                   .connect(spender)
@@ -187,12 +154,6 @@ export function shouldBehaveLikeERC20(
             });
 
             it("reverts", async function () {
-              // await expectRevert(
-              //   token
-              //     .connect(spender)
-              //     .transferFrom(tokenOwner.address, to.address, amount),
-              //   `${errorPrefix}: transfer amount exceeds balance`
-              // );
               await expect(
                 this.token
                   .connect(spender)
@@ -220,12 +181,6 @@ export function shouldBehaveLikeERC20(
           });
 
           it("does not emit an approval event", async function () {
-            // expectEvent.notEmitted(
-            //   await this.token
-            //     .connect(spender)
-            //     .transferFrom(tokenOwner.address, to.address, 1),
-            //   "Approval"
-            // );
             await expect(
               this.token
                 .connect(spender)
@@ -244,12 +199,6 @@ export function shouldBehaveLikeERC20(
         });
 
         it("reverts", async function () {
-          // await expectRevert(
-          //   token
-          //     .connect(spender)
-          //     .transferFrom(tokenOwner.address, to, amount),
-          //   `${errorPrefix}: transfer to the zero address`
-          // );
           await expect(
             this.token
               .connect(spender)
@@ -265,12 +214,6 @@ export function shouldBehaveLikeERC20(
       const to = recipient;
 
       it("reverts", async function () {
-        // await expectRevert(
-        //   token
-        //     .connect(spender)
-        //     .transferFrom(tokenOwner, to.address, amount),
-        //   "from the zero address"
-        // );
         await expect(
           this.token
             .connect(spender)
@@ -355,11 +298,6 @@ export function shouldBehaveLikeERC20Transfer(
       });
 
       it("emits a transfer event", async function () {
-        // expectEvent(await doTransfer( from, to, amount), "Transfer", {
-        //   from: from.address,
-        //   to: to.address,
-        //   value: amount,
-        // });
         await expect(_doTransfer(this.token, from, to, amount))
           .to.emit(this.token, "Transfer")
           .withArgs(from.address, to.address, amount);
@@ -369,10 +307,6 @@ export function shouldBehaveLikeERC20Transfer(
 
   describe("when the recipient is the zero address", function () {
     it("reverts", async function () {
-      // await expectRevert(
-      //   doTransfer( from, ethers.constants.AddressZero, balance),
-      //   `${errorPrefix}: transfer to the zero address`
-      // );
       await expect(
         _doTransfer(this.token, from, ethers.constants.AddressZero, balance)
       ).to.be.revertedWith("ERC20: transfer to the zero address");
@@ -418,15 +352,6 @@ export function shouldBehaveLikeERC20Approve(
       const amount = supply;
 
       it("emits an approval event", async function () {
-        // expectEvent(
-        //   await _doApprove(this.token, owner, spender, amount),
-        //   "Approval",
-        //   {
-        //     owner: owner.address,
-        //     spender: spender.address,
-        //     value: amount,
-        //   }
-        // );
         await expect(_doApprove(this.token, owner, spender, amount))
           .to.emit(this.token, "Approval")
           .withArgs(owner.address, spender.address, amount);
@@ -461,15 +386,6 @@ export function shouldBehaveLikeERC20Approve(
       const amount = supply.add(1);
 
       it("emits an approval event", async function () {
-        // expectEvent(
-        //   await _doApprove(this.token, owner, spender, amount),
-        //   "Approval",
-        //   {
-        //     owner: owner.address,
-        //     spender: spender.address,
-        //     value: amount,
-        //   }
-        // );
         await expect(_doApprove(this.token, owner, spender, amount))
           .to.emit(this.token, "Approval")
           .withArgs(owner.address, spender.address, amount);
@@ -503,10 +419,6 @@ export function shouldBehaveLikeERC20Approve(
 
   describe("when the spender is the zero address", function () {
     it("reverts", async function () {
-      // await expectRevert(
-      //   _doApprove(this.token, owner, ethers.constants.AddressZero, supply),
-      //   `${errorPrefix}: approve to the zero address`
-      // );
       await expect(
         _doApprove(this.token, owner, ethers.constants.AddressZero, supply)
       ).to.be.revertedWith("ERC20: approve to the zero address");

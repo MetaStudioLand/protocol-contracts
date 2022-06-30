@@ -723,22 +723,22 @@ function transferFromAndCall(address from, address to, uint256 amount, bytes dat
 
 
 
-*Transfer tokens from one address to another and then execute a callback on `to`.*
+
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| from | address | The address which you want to send tokens from |
-| to | address | The address which you want to transfer to |
-| amount | uint256 | The amount of tokens to be transferred |
-| data | bytes | Additional data with no specified format |
+| from | address | undefined |
+| to | address | undefined |
+| amount | uint256 | undefined |
+| data | bytes | undefined |
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | A boolean that indicates if the operation was successful. |
+| _0 | bool | undefined |
 
 ### transferFromAndCall
 

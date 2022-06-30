@@ -44,6 +44,7 @@ export async function baseContext(
       );
       await proxyContract.deployed();
       this.token = proxyContract;
+      tracer.nameTags[this.token.address] = "Contract: MetaStudioToken";
     });
 
     hooks();

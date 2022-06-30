@@ -53,6 +53,7 @@ contract MetaStudioToken is
     __Pausable_init();
     __ERC20Permit_init("MetaStudioToken");
     __ERC20Votes_init();
+    __ERC1363_init();
     __UUPSUpgradeable_init();
 
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
@@ -93,6 +94,7 @@ contract MetaStudioToken is
     _unpause();
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function _beforeTokenTransfer(
     address from,
     address to,
@@ -110,6 +112,7 @@ contract MetaStudioToken is
 
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function _afterTokenTransfer(
     address from,
     address to,
@@ -118,6 +121,7 @@ contract MetaStudioToken is
     super._afterTokenTransfer(from, to, amount);
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function _mint(address to, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
@@ -125,11 +129,22 @@ contract MetaStudioToken is
     super._mint(to, amount);
   }
 
+  /// @inheritdoc ERC20Upgradeable
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable, ERC20VotesUpgradeable)
   {
     super._burn(account, amount);
+  }
+
+  /// @inheritdoc ERC20Upgradeable
+  function approve(address spender, uint256 amount)
+    public
+    virtual
+    override(ERC20Upgradeable)
+    returns (bool)
+  {
+    return super.approve(spender, amount);
   }
 
   /// @inheritdoc ERC20Upgradeable
