@@ -1,17 +1,18 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
 import {Signers} from "../../shared/types";
-import {functionCallEncodeABI} from "../../shared/utils";
+import {functionCallEncodeABI, getAddress} from "../../shared/utils";
 import {
   shouldBehaveLikeERC20Approve,
   shouldBehaveLikeERC20Transfer,
+  shouldBehaveLikeERC20TransferFrom,
 } from "./ERC20.behavior";
 
 export function shouldBehaveLikeForwardedRegularERC20(
   signers: Signers,
   initialSupply: BigNumber
 ) {
-  describe("Transfer", function () {
+  describe("transfer", function () {
     shouldBehaveLikeERC20Transfer(
       signers.initialHolder,
       signers.recipient,
@@ -24,10 +25,10 @@ export function shouldBehaveLikeForwardedRegularERC20(
         forwarder: Contract | null
       ) {
         const data = functionCallEncodeABI("transfer", "address,uint256", [
-          typeof to === "string" ? to : to.address,
+          getAddress(to),
           amount,
         ]);
-        const fromAddress = typeof from === "string" ? from : from.address;
+        const fromAddress = getAddress(from);
         // @ts-ignore
         const nonce = await forwarder.getNonce(fromAddress);
         const req = {
@@ -40,6 +41,41 @@ export function shouldBehaveLikeForwardedRegularERC20(
         };
         // @ts-ignore
         return forwarder.connect(from).execute(req);
+      }
+    );
+  });
+
+  describe("transfer from", function () {
+    shouldBehaveLikeERC20TransferFrom(
+      signers.recipient,
+      signers.initialHolder,
+      signers.anotherAccount,
+      initialSupply,
+      async function (
+        token: Contract,
+        spender: SignerWithAddress | string,
+        tokenOwner: SignerWithAddress | string,
+        to: SignerWithAddress | string,
+        amount: BigNumber,
+        forwarder: Contract | null
+      ) {
+        const data = functionCallEncodeABI(
+          "transferFrom",
+          "address,address,uint256",
+          [getAddress(tokenOwner), getAddress(to), amount]
+        );
+        // @ts-ignore
+        const nonce = await forwarder.getNonce(getAddress(spender));
+        const req = {
+          from: getAddress(spender),
+          to: token.address,
+          value: 0,
+          gas: "100000",
+          nonce: nonce.toString(),
+          data,
+        };
+        // @ts-ignore
+        return forwarder.connect(spender).execute(req);
       }
     );
   });
@@ -57,10 +93,10 @@ export function shouldBehaveLikeForwardedRegularERC20(
         forwarder: Contract | null
       ) {
         const data = functionCallEncodeABI("approve", "address,uint256", [
-          typeof spender === "string" ? spender : spender.address,
+          getAddress(spender),
           amount,
         ]);
-        const fromAddress = typeof owner === "string" ? owner : owner.address;
+        const fromAddress = getAddress(owner);
         // @ts-ignore
         const nonce = await forwarder.getNonce(fromAddress);
         const req = {

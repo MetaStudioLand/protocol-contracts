@@ -1,3 +1,4 @@
+import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber} from "ethers";
 import {ethers, tracer} from "hardhat";
 import {Context, Suite} from "mocha";
@@ -40,4 +41,12 @@ export const functionCallEncodeABI = (
 
 export const logNameTags = () => {
   console.log(`Names: ${JSON.stringify(tracer.nameTags, null, 3)}`);
+};
+
+export const getAddress = (
+  accountOrAddress: SignerWithAddress | string
+): string => {
+  return typeof accountOrAddress === "string"
+    ? accountOrAddress
+    : accountOrAddress.address;
 };
