@@ -4,6 +4,7 @@ import {unitTestPausable} from "./test2/30-Pausable.test";
 import {unitTestERC1363} from "./test2/40-ERC1363.test";
 import {unitTestAccessControl} from "./test2/AccessControl.test";
 import {unitTestERC165} from "./test2/ERC165.test";
+import {unitTestERC20Permit} from "./test2/ERC20Permit.test";
 import {unitTestERC2771} from "./test2/ERC2771.test";
 
 baseContext("MetaStudioToken", function () {
@@ -13,4 +14,5 @@ baseContext("MetaStudioToken", function () {
   unitTestPausable();
   unitTestERC1363();
   unitTestERC2771();
+  unitTestERC20Permit();
 });
