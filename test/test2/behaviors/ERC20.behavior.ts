@@ -239,7 +239,25 @@ export function shouldBehaveLikeERC20(
   });
 
   describe("approve", function () {
-    shouldBehaveLikeERC20Approve(initialHolder, recipient, initialSupply);
+    shouldBehaveLikeERC20Approve(
+      initialHolder,
+      recipient,
+      initialSupply,
+      async function (
+        token: Contract,
+        owner: SignerWithAddress | string,
+        spender: SignerWithAddress | string,
+        amount: BigNumber,
+        forwarder: Contract | null
+      ) {
+        return token
+          .connect(owner)
+          .approve(
+            typeof spender === "string" ? spender : spender.address,
+            amount
+          );
+      }
+    );
   });
 }
 
@@ -321,48 +339,29 @@ export function shouldBehaveLikeERC20Approve(
   owner: SignerWithAddress,
   spender: SignerWithAddress,
   supply: BigNumber,
-  useInternal: boolean = false
+  _doApprove: (
+    token: Contract,
+    owner: SignerWithAddress | string,
+    spender: SignerWithAddress | string,
+    amount: BigNumber,
+    forwarder: Contract | null
+  ) => Promise<any>
 ) {
-  const _doApprove = useInternal
-    ? (
-        token: Contract,
-        owner: SignerWithAddress | string,
-        spender: SignerWithAddress | string,
-        amount: BigNumber
-      ) => {
-        return token.approveInternal(
-          typeof owner === "string" ? owner : owner.address,
-          typeof spender === "string" ? spender : spender.address,
-          amount
-        );
-      }
-    : (
-        token: Contract,
-        owner: SignerWithAddress | string,
-        spender: SignerWithAddress | string,
-        amount: BigNumber
-      ) => {
-        return token
-          .connect(owner)
-          .approve(
-            typeof spender === "string" ? spender : spender.address,
-            amount
-          );
-      };
-
   describe("when the spender is not the zero address", function () {
     describe("when the sender has enough balance", function () {
       const amount = supply;
 
       it("emits an approval event", async function () {
-        await expect(_doApprove(this.token, owner, spender, amount))
+        await expect(
+          _doApprove(this.token, owner, spender, amount, this.forwarder)
+        )
           .to.emit(this.token, "Approval")
           .withArgs(owner.address, spender.address, amount);
       });
 
       describe("when there was no approved amount before", function () {
         it("approves the requested amount", async function () {
-          await _doApprove(this.token, owner, spender, amount);
+          await _doApprove(this.token, owner, spender, amount, this.forwarder);
 
           expect(
             await this.token.allowance(owner.address, spender.address)
@@ -372,11 +371,17 @@ export function shouldBehaveLikeERC20Approve(
 
       describe("when the spender had an approved amount", function () {
         beforeEach(async function () {
-          await _doApprove(this.token, owner, spender, BigNumber.from(1));
+          await _doApprove(
+            this.token,
+            owner,
+            spender,
+            BigNumber.from(1),
+            this.forwarder
+          );
         });
 
         it("approves the requested amount and replaces the previous one", async function () {
-          await _doApprove(this.token, owner, spender, amount);
+          await _doApprove(this.token, owner, spender, amount, this.forwarder);
 
           expect(
             await this.token.allowance(owner.address, spender.address)
@@ -389,14 +394,16 @@ export function shouldBehaveLikeERC20Approve(
       const amount = supply.add(1);
 
       it("emits an approval event", async function () {
-        await expect(_doApprove(this.token, owner, spender, amount))
+        await expect(
+          _doApprove(this.token, owner, spender, amount, this.forwarder)
+        )
           .to.emit(this.token, "Approval")
           .withArgs(owner.address, spender.address, amount);
       });
 
       describe("when there was no approved amount before", function () {
         it("approves the requested amount", async function () {
-          await _doApprove(this.token, owner, spender, amount);
+          await _doApprove(this.token, owner, spender, amount, this.forwarder);
 
           expect(
             await this.token.allowance(owner.address, spender.address)
@@ -406,11 +413,17 @@ export function shouldBehaveLikeERC20Approve(
 
       describe("when the spender had an approved amount", function () {
         beforeEach(async function () {
-          await _doApprove(this.token, owner, spender, BigNumber.from(1));
+          await _doApprove(
+            this.token,
+            owner,
+            spender,
+            BigNumber.from(1),
+            this.forwarder
+          );
         });
 
         it("approves the requested amount and replaces the previous one", async function () {
-          await _doApprove(this.token, owner, spender, amount);
+          await _doApprove(this.token, owner, spender, amount, this.forwarder);
 
           expect(
             await this.token.allowance(owner.address, spender.address)
@@ -423,7 +436,13 @@ export function shouldBehaveLikeERC20Approve(
   describe("when the spender is the zero address", function () {
     it("reverts", async function () {
       await expect(
-        _doApprove(this.token, owner, ethers.constants.AddressZero, supply)
+        _doApprove(
+          this.token,
+          owner,
+          ethers.constants.AddressZero,
+          supply,
+          this.forwarder
+        )
       ).to.be.revertedWith("ERC20: approve to the zero address");
     });
   });

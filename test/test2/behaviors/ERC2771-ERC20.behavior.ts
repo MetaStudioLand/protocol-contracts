@@ -2,7 +2,10 @@ import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
 import {Signers} from "../../shared/types";
 import {functionCallEncodeABI} from "../../shared/utils";
-import {shouldBehaveLikeERC20Transfer} from "./ERC20.behavior";
+import {
+  shouldBehaveLikeERC20Approve,
+  shouldBehaveLikeERC20Transfer,
+} from "./ERC20.behavior";
 
 export function shouldBehaveLikeForwardedRegularERC20(
   signers: Signers,
@@ -41,5 +44,36 @@ export function shouldBehaveLikeForwardedRegularERC20(
     );
   });
 
-  describe("Transfer", function () {});
+  describe("approve", function () {
+    shouldBehaveLikeERC20Approve(
+      signers.initialHolder,
+      signers.recipient,
+      initialSupply,
+      async function (
+        token: Contract,
+        owner: SignerWithAddress | string,
+        spender: SignerWithAddress | string,
+        amount: BigNumber,
+        forwarder: Contract | null
+      ) {
+        const data = functionCallEncodeABI("approve", "address,uint256", [
+          typeof spender === "string" ? spender : spender.address,
+          amount,
+        ]);
+        const fromAddress = typeof owner === "string" ? owner : owner.address;
+        // @ts-ignore
+        const nonce = await forwarder.getNonce(fromAddress);
+        const req = {
+          from: fromAddress,
+          to: token.address,
+          value: 0,
+          gas: "100000",
+          nonce: nonce.toString(),
+          data,
+        };
+        // @ts-ignore
+        return forwarder.connect(owner).execute(req);
+      }
+    );
+  });
 }
