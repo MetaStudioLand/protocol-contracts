@@ -5,21 +5,21 @@ import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import "hardhat-contract-sizer";
-import "hardhat-deploy";
+// import "hardhat-deploy";
 import "hardhat-gas-reporter";
-import "hardhat-gas-trackooor";
-import "hardhat-storage-layout";
+// import "hardhat-gas-trackooor";
+// import "hardhat-storage-layout";
 import "hardhat-tracer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
-import "solidity-coverage";
+// import "solidity-coverage";
 
 dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("storageLayout", "Prints the list of accounts", async (taskArgs, hre) => {
-  await hre.storageLayout.export();
-});
+// task("storageLayout", "Prints the list of accounts", async (taskArgs, hre) => {
+//   await hre.storageLayout.export();
+// });
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -46,7 +46,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 10,
+        runs: 1000,
       },
       outputSelection: {
         "*": {
@@ -55,17 +55,26 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  tracer: {
+    enabled: true,
+    logs: true,
+    calls: true,
+    gasCost: true,
+    sloads: false,
+    sstores: false,
+  },
   contractSizer: {
     alphaSort: true,
     disambiguatePaths: false,
     runOnCompile: true,
     strict: true,
     only: [],
+    except: ["ECDSA", "MinimalForwarder"],
   },
   dodoc: {
     runOnCompile: true,
     include: ["tokens", "metatx", "ERC1363"],
-    exclude: ["IERC2771Upgradeable"],
+    exclude: ["mocks", "elin", "IERC2771Upgradeable"],
     debugMode: false,
   },
   networks: {

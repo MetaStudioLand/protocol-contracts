@@ -5,8 +5,6 @@ import { ethers, tracer } from "hardhat";
 import { Address } from "hardhat-deploy/dist/types";
 import { DATA, NB_DECIMALS, RECEIVER_MAGIC_VALUE, SPENDER_MAGIC_VALUE } from "../shared/constants";
 import { getSuiteSigners, tokens } from "../shared/utils";
-import { shouldBehaveLikeERC20 } from "./ERC20.behavior";
-
 export function unitTestERC1363(): void {
   describe("======== Contract: ERC1363 ========", async function () {
     const signers = getSuiteSigners(this);

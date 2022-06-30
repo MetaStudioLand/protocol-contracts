@@ -3,7 +3,7 @@ import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
 import {NB_DECIMALS} from "../shared/constants";
 import {getSuiteSigners, tokens} from "../shared/utils";
-import {shouldBehaveLikeERC20} from "./ERC20.behavior";
+import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
 
 export function unitTestERC20(): void {
   describe("======== Contract: ERC20 ========", async function () {
