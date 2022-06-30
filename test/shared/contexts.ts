@@ -42,6 +42,9 @@ export async function baseContext(
     rootSuite.ctx.initialSupply = initialSupply;
 
     before(async function () {
+      const network = await ethers.provider.getNetwork();
+      console.log(`network: ${JSON.stringify(network)}`);
+      this.chainId = network.chainId;
       this.name = name;
       this.symbol = symbol;
       this.signers = signers;
