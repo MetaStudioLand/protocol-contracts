@@ -1,9 +1,8 @@
-import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
 
-const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
-const ADMIN_ROLE = keccak256(toUtf8Bytes("ADMIN_ROLE"));
-const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
+// const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
+// const ADMIN_ROLE = keccak256(toUtf8Bytes("ADMIN_ROLE"));
+// const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
 
 export function shouldBehaveLikeAccessControl(
   errorPrefix: string
