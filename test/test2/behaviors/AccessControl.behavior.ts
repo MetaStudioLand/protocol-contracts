@@ -1,284 +1,270 @@
+import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
+import {expect} from "chai";
+import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
 
-// const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
-// const ADMIN_ROLE = keccak256(toUtf8Bytes("ADMIN_ROLE"));
-// const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
+const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
+const ADMIN_ROLE = keccak256(toUtf8Bytes("ADMIN_ROLE"));
+const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
 
 export function shouldBehaveLikeAccessControl(
-  errorPrefix: string
-  // admin,
-  // authorized,
-  // other,
-  // otherAdmin,
+  errorPrefix: string,
+  admin: SignerWithAddress,
+  authorized: SignerWithAddress,
+  other: SignerWithAddress,
+  otherAdmin: SignerWithAddress
   // otherAuthorized
 ) {
   shouldSupportInterface("AccessControl");
 
-  // describe("default admin", function () {
-  //   it("deployer has default admin role", async function () {
-  //     expect(
-  //       await this.accessControl.hasRole(ROLES_ADMIN_ROLE, admin)
-  //     ).to.equal(true);
-  //   });
-  //
-  //   it("other roles's admin is the default admin role", async function () {
-  //     expect(await this.accessControl.getRoleAdmin(ADMIN_ROLE)).to.equal(
-  //       ROLES_ADMIN_ROLE
-  //     );
-  //   });
-  //
-  //   it("default admin role's admin is itself", async function () {
-  //     expect(await this.accessControl.getRoleAdmin(ROLES_ADMIN_ROLE)).to.equal(
-  //       ROLES_ADMIN_ROLE
-  //     );
-  //   });
-  // });
-  //
-  // describe("granting", function () {
-  //   beforeEach(async function () {
-  //     await this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: admin});
-  //   });
-  //
-  //   it("non-admin cannot grant role to other accounts", async function () {
-  //     await expectRevert(
-  //       this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: other}),
-  //       `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
-  //     );
-  //   });
-  //
-  //   it("accounts can be granted a role multiple times", async function () {
-  //     await this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: admin});
-  //     const receipt = await this.accessControl.grantRole(
-  //       ADMIN_ROLE,
-  //       authorized,
-  //       {
-  //         from: admin,
-  //       }
-  //     );
-  //     expectEvent.notEmitted(receipt, "RoleGranted");
-  //   });
-  // });
-  //
-  // describe("revoking", function () {
-  //   it("roles that are not had can be revoked", async function () {
-  //     expect(await this.accessControl.hasRole(ADMIN_ROLE, authorized)).to.equal(
-  //       false
-  //     );
-  //
-  //     const receipt = await this.accessControl.revokeRole(
-  //       ADMIN_ROLE,
-  //       authorized,
-  //       {
-  //         from: admin,
-  //       }
-  //     );
-  //     expectEvent.notEmitted(receipt, "RoleRevoked");
-  //   });
-  //
-  //   context("with granted role", function () {
-  //     beforeEach(async function () {
-  //       await this.accessControl.grantRole(ADMIN_ROLE, authorized, {
-  //         from: admin,
-  //       });
-  //     });
-  //
-  //     it("admin can revoke role", async function () {
-  //       const receipt = await this.accessControl.revokeRole(
-  //         ADMIN_ROLE,
-  //         authorized,
-  //         {
-  //           from: admin,
-  //         }
-  //       );
-  //       expectEvent(receipt, "RoleRevoked", {
-  //         account: authorized,
-  //         role: ADMIN_ROLE,
-  //         sender: admin,
-  //       });
-  //
-  //       expect(
-  //         await this.accessControl.hasRole(ADMIN_ROLE, authorized)
-  //       ).to.equal(false);
-  //     });
-  //
-  //     it("non-admin cannot revoke role", async function () {
-  //       await expectRevert(
-  //         this.accessControl.revokeRole(ADMIN_ROLE, authorized, {from: other}),
-  //         `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
-  //       );
-  //     });
-  //
-  //     it("a role can be revoked multiple times", async function () {
-  //       await this.accessControl.revokeRole(ADMIN_ROLE, authorized, {
-  //         from: admin,
-  //       });
-  //
-  //       const receipt = await this.accessControl.revokeRole(
-  //         ADMIN_ROLE,
-  //         authorized,
-  //         {
-  //           from: admin,
-  //         }
-  //       );
-  //       expectEvent.notEmitted(receipt, "RoleRevoked");
-  //     });
-  //   });
-  // });
-  //
-  // describe("renouncing", function () {
-  //   it("roles that are not had can be renounced", async function () {
-  //     const receipt = await this.accessControl.renounceRole(
-  //       ADMIN_ROLE,
-  //       authorized,
-  //       {
-  //         from: authorized,
-  //       }
-  //     );
-  //     expectEvent.notEmitted(receipt, "RoleRevoked");
-  //   });
-  //
-  //   context("with granted role", function () {
-  //     beforeEach(async function () {
-  //       await this.accessControl.grantRole(ADMIN_ROLE, authorized, {
-  //         from: admin,
-  //       });
-  //     });
-  //
-  //     it("bearer can renounce role", async function () {
-  //       const receipt = await this.accessControl.renounceRole(
-  //         ADMIN_ROLE,
-  //         authorized,
-  //         {from: authorized}
-  //       );
-  //       expectEvent(receipt, "RoleRevoked", {
-  //         account: authorized,
-  //         role: ADMIN_ROLE,
-  //         sender: authorized,
-  //       });
-  //
-  //       expect(
-  //         await this.accessControl.hasRole(ADMIN_ROLE, authorized)
-  //       ).to.equal(false);
-  //     });
-  //
-  //     it("only the sender can renounce their roles", async function () {
-  //       await expectRevert(
-  //         this.accessControl.renounceRole(ADMIN_ROLE, authorized, {
-  //           from: admin,
-  //         }),
-  //         `${errorPrefix}: can only renounce roles for self`
-  //       );
-  //     });
-  //
-  //     it("a role can be renounced multiple times", async function () {
-  //       await this.accessControl.renounceRole(ADMIN_ROLE, authorized, {
-  //         from: authorized,
-  //       });
-  //
-  //       const receipt = await this.accessControl.renounceRole(
-  //         ADMIN_ROLE,
-  //         authorized,
-  //         {from: authorized}
-  //       );
-  //       expectEvent.notEmitted(receipt, "RoleRevoked");
-  //     });
-  //   });
-  // });
-  //
+  describe("default admin", function () {
+    it("deployer has default admin role", async function () {
+      expect(
+        await this.token.hasRole(ROLES_ADMIN_ROLE, admin.address)
+      ).to.equal(true);
+    });
+
+    it("other roles's admin is the default admin role", async function () {
+      expect(await this.token.getRoleAdmin(ADMIN_ROLE)).to.equal(
+        ROLES_ADMIN_ROLE
+      );
+    });
+
+    it("default admin role's admin is itself", async function () {
+      expect(await this.token.getRoleAdmin(ROLES_ADMIN_ROLE)).to.equal(
+        ROLES_ADMIN_ROLE
+      );
+    });
+  });
+
+  describe("granting", function () {
+    beforeEach(async function () {
+      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+    });
+
+    it("non-admin cannot grant role to other accounts", async function () {
+      // await expectRevert(
+      //   this.token.grantRole(ADMIN_ROLE, authorized, {from: other}),
+      //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+      // );
+      expect(
+        this.token.connect(other).grantRole(ADMIN_ROLE, authorized.address)
+      ).to.be.revertedWith(
+        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+      );
+    });
+
+    it("granting a role raise event RoleGranted", async function () {
+      expect(
+        await this.token
+          .connect(admin)
+          .grantRole(ADMIN_ROLE, authorized.address)
+      )
+        .emit(this.token, "RoleGranted")
+        .withArgs(ADMIN_ROLE, authorized.address, admin.address);
+    });
+
+    it("accounts can be granted a role multiple times, but only one event", async function () {
+      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+      expect(
+        await this.token
+          .connect(admin)
+          .grantRole(ADMIN_ROLE, authorized.address)
+      ).to.not.emit(this.token, "RoleGranted");
+    });
+  });
+
+  describe("revoking", function () {
+    it("roles that are not had can be revoked", async function () {
+      expect(await this.token.hasRole(ADMIN_ROLE, authorized.address)).to.equal(
+        false
+      );
+
+      expect(
+        await this.token
+          .connect(admin)
+          .revokeRole(ADMIN_ROLE, authorized.address)
+      ).to.not.emit(this.token, "RoleRevoked");
+    });
+
+    context("with granted role", function () {
+      beforeEach(async function () {
+        await this.token
+          .connect(admin)
+          .grantRole(ADMIN_ROLE, authorized.address);
+      });
+
+      it("admin can revoke role", async function () {
+        expect(
+          await this.token
+            .connect(admin)
+            .revokeRole(ADMIN_ROLE, authorized.address)
+        )
+          .emit(this.token, "RoleRevoked")
+          .withArgs(ADMIN_ROLE, authorized.address, admin.address);
+
+        expect(
+          await this.token.hasRole(ADMIN_ROLE, authorized.address)
+        ).to.equal(false);
+      });
+
+      it("non-admin cannot revoke role", async function () {
+        // await expectRevert(
+        //   this.token.revokeRole(ADMIN_ROLE, authorized, {from: other}),
+        //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+        // );
+        expect(
+          this.token.connect(other).revokeRole(ADMIN_ROLE, authorized.address)
+        ).to.be.revertedWith(
+          `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+        );
+      });
+
+      it("a role can be revoked multiple times", async function () {
+        await this.token
+          .connect(admin)
+          .revokeRole(ADMIN_ROLE, authorized.address);
+
+        expect(
+          await this.token
+            .connect(admin)
+            .revokeRole(ADMIN_ROLE, authorized.address)
+        ).to.not.emit(this.token, "RoleRevoked");
+      });
+    });
+  });
+
+  describe("renouncing", function () {
+    it("roles that are not had can be renounced", async function () {
+      expect(
+        await this.token
+          .connect(authorized)
+          .renounceRole(ADMIN_ROLE, authorized.address)
+      )
+        .to.emit(this.token, "RoleRevoked")
+        .withArgs(ADMIN_ROLE, authorized.address, authorized.address);
+    });
+
+    context("with granted role", function () {
+      beforeEach(async function () {
+        await this.token
+          .connect(admin)
+          .grantRole(ADMIN_ROLE, authorized.address);
+      });
+
+      it("bearer can renounce role", async function () {
+        expect(
+          await this.token
+            .connect(authorized)
+            .renounceRole(ADMIN_ROLE, authorized.address)
+        )
+          .to.emit(this.token, "RoleRevoked")
+          .withArgs(ADMIN_ROLE, authorized.address, authorized.address);
+
+        expect(
+          await this.token.hasRole(ADMIN_ROLE, authorized.address)
+        ).to.equal(false);
+      });
+
+      it("only the sender can renounce their roles", async function () {
+        await expect(
+          this.token.connect(admin).renounceRole(ADMIN_ROLE, authorized.address)
+        ).to.revertedWith(`${errorPrefix}: can only renounce roles for self`);
+      });
+
+      it("a role can be renounced multiple times", async function () {
+        await this.token
+          .connect(authorized)
+          .renounceRole(ADMIN_ROLE, authorized.address);
+
+        expect(
+          await this.token
+            .connect(authorized)
+            .renounceRole(ADMIN_ROLE, authorized.address)
+        ).to.not.emit(this.token, "RoleRevoked");
+      });
+    });
+  });
+
+  // FIXME Not available in MetaStudioToken
   // describe("setting role admin", function () {
   //   beforeEach(async function () {
-  //     const receipt = await this.accessControl.setRoleAdmin(
-  //       ADMIN_ROLE,
-  //       PAUSER_ROLE
-  //     );
-  //     expectEvent(receipt, "RoleAdminChanged", {
-  //       role: ADMIN_ROLE,
-  //       previousAdminRole: ROLES_ADMIN_ROLE,
-  //       newAdminRole: PAUSER_ROLE,
-  //     });
+  //     expect(await this.token.setRoleAdmin(ADMIN_ROLE, PAUSER_ROLE))
+  //       .to.emit(this.token, "RoleAdminChanged")
+  //       .withArgs(ADMIN_ROLE, ROLES_ADMIN_ROLE, PAUSER_ROLE);
   //
-  //     await this.accessControl.grantRole(PAUSER_ROLE, otherAdmin, {
-  //       from: admin,
-  //     });
+  //     await this.token
+  //       .connect(admin)
+  //       .grantRole(PAUSER_ROLE, otherAdmin.address);
   //   });
   //
   //   it("a role's admin role can be changed", async function () {
-  //     expect(await this.accessControl.getRoleAdmin(ADMIN_ROLE)).to.equal(
-  //       PAUSER_ROLE
-  //     );
+  //     expect(await this.token.getRoleAdmin(ADMIN_ROLE)).to.equal(PAUSER_ROLE);
   //   });
   //
   //   it("the new admin can grant roles", async function () {
-  //     const receipt = await this.accessControl.grantRole(
-  //       ADMIN_ROLE,
-  //       authorized,
-  //       {
-  //         from: otherAdmin,
-  //       }
-  //     );
-  //     expectEvent(receipt, "RoleGranted", {
-  //       account: authorized,
-  //       role: ADMIN_ROLE,
-  //       sender: otherAdmin,
-  //     });
+  //     expect(
+  //       await this.token
+  //         .connect(otherAdmin)
+  //         .grantRole(ADMIN_ROLE, authorized.address)
+  //     )
+  //       .to.emit(this.token, "RoleGranted")
+  //       .withArgs(ADMIN_ROLE, authorized.address, otherAdmin.address);
   //   });
   //
   //   it("the new admin can revoke roles", async function () {
-  //     await this.accessControl.grantRole(ADMIN_ROLE, authorized, {
-  //       from: otherAdmin,
-  //     });
-  //     const receipt = await this.accessControl.revokeRole(
-  //       ADMIN_ROLE,
-  //       authorized,
-  //       {
+  //     await this.token
+  //       .connect(otherAdmin)
+  //       .grantRole(ADMIN_ROLE, authorized.address);
+  //     expect(
+  //       await this.token.revokeRole(ADMIN_ROLE, authorized, {
   //         from: otherAdmin,
-  //       }
-  //     );
-  //     expectEvent(receipt, "RoleRevoked", {
-  //       account: authorized,
-  //       role: ADMIN_ROLE,
-  //       sender: otherAdmin,
-  //     });
+  //       })
+  //     )
+  //       .to.emit(this.token, "RoleRevoked")
+  //       .withArgs(ADMIN_ROLE, authorized.address, otherAdmin.address);
   //   });
   //
   //   it("a role's previous admins no longer grant roles", async function () {
-  //     await expectRevert(
-  //       this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: admin}),
-  //       `${errorPrefix}: account ${admin.toLowerCase()} is missing role ${PAUSER_ROLE}`
+  //     await expect(
+  //       this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address)
+  //     ).to.revertedWith(
+  //       `${errorPrefix}: account ${admin.address.toLowerCase()} is missing role ${PAUSER_ROLE}`
   //     );
   //   });
   //
   //   it("a role's previous admins no longer revoke roles", async function () {
-  //     await expectRevert(
-  //       this.accessControl.revokeRole(ADMIN_ROLE, authorized, {from: admin}),
-  //       `${errorPrefix}: account ${admin.toLowerCase()} is missing role ${PAUSER_ROLE}`
+  //     await expect(
+  //       this.token.connect(admin).revokeRole(ADMIN_ROLE, authorized.address)
+  //     ).to.revertedWith(
+  //       `${errorPrefix}: account ${admin.address.toLowerCase()} is missing role ${PAUSER_ROLE}`
   //     );
   //   });
   // });
-  //
-  // describe("onlyRole modifier", function () {
-  //   beforeEach(async function () {
-  //     await this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: admin});
-  //   });
-  //
-  //   it("do not revert if sender has role", async function () {
-  //     await this.accessControl.senderProtected(ADMIN_ROLE, {from: authorized});
-  //   });
-  //
-  //   it("revert if sender doesn't have role #1", async function () {
-  //     await expectRevert(
-  //       this.accessControl.senderProtected(ADMIN_ROLE, {from: other}),
-  //       `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ADMIN_ROLE}`
-  //     );
-  //   });
-  //
-  //   it("revert if sender doesn't have role #2", async function () {
-  //     await expectRevert(
-  //       this.accessControl.senderProtected(PAUSER_ROLE, {from: authorized}),
-  //       `${errorPrefix}: account ${authorized.toLowerCase()} is missing role ${PAUSER_ROLE}`
-  //     );
-  //   });
-  // });
+
+  describe("onlyRole modifier", function () {
+    beforeEach(async function () {
+      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+    });
+
+    it("do not revert if sender has role", async function () {
+      await this.token.connect(authorized).setTrustedForwarder(other.address);
+    });
+
+    it("revert if sender doesn't have role #1", async function () {
+      await expect(
+        this.token.connect(other).setTrustedForwarder(other.address)
+      ).to.revertedWith(
+        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ADMIN_ROLE}`
+      );
+    });
+
+    it("revert if sender doesn't have role #2", async function () {
+      await expect(this.token.connect(authorized).pause()).to.revertedWith(
+        `${errorPrefix}: account ${authorized.address.toLowerCase()} is missing role ${PAUSER_ROLE}`
+      );
+    });
+  });
 }
 
 // function shouldBehaveLikeAccessControlEnumerable(
