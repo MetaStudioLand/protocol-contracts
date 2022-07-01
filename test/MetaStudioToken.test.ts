@@ -14,5 +14,5 @@ baseContext("MetaStudioToken", function () {
   unitTestPausable();
   unitTestERC1363();
   unitTestERC2771();
-  unitTestERC20Permit();
+  // unitTestERC20Permit();
 });
