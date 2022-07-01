@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
@@ -13,9 +14,11 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
 import "../ERC1363/ERC1363ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 import "hardhat/console.sol";
+import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
@@ -26,13 +29,17 @@ contract MetaStudioToken is
   ERC20Upgradeable,
   ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
-  OwnableUpgradeable,
+  AccessControlUpgradeable,
   PausableUpgradeable,
   ERC20PermitUpgradeable,
   ERC20VotesUpgradeable,
   ERC2771ContextUpgradeable,
   UUPSUpgradeable
 {
+  bytes32 public constant ROLES_ADMIN_ROLE = keccak256("ROLES_ADMIN_ROLE");
+  bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+  bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
@@ -49,7 +56,7 @@ contract MetaStudioToken is
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC20_init("MetaStudioToken", "SMV");
-    __Ownable_init();
+    __AccessControl_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
     __Pausable_init();
@@ -58,6 +65,17 @@ contract MetaStudioToken is
     __ERC1363_init();
     __UUPSUpgradeable_init();
 
+    // Defining roles' admin role
+    _setRoleAdmin(ROLES_ADMIN_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(ADMIN_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(PAUSER_ROLE, ROLES_ADMIN_ROLE);
+
+    // Definig defaut roles
+    _grantRole(ROLES_ADMIN_ROLE, _msgSender());
+    _grantRole(ADMIN_ROLE, _msgSender());
+    _grantRole(PAUSER_ROLE, _msgSender());
+
+    // Minting all tokens on creation
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
@@ -67,17 +85,18 @@ contract MetaStudioToken is
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
-    view
-    override(IERC165Upgradeable, ERC1363Upgradeable)
+    pure
+    override(IERC165Upgradeable, AccessControlUpgradeable)
     returns (bool)
   {
     return
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
-      interfaceId == type(IERC20Upgradeable).interfaceId ||
+      interfaceId == type(IPausable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
-      super.supportsInterface(interfaceId);
+      interfaceId == type(IERC1363Upgradeable).interfaceId ||
+      interfaceId == type(IAccessControlUpgradeable).interfaceId;
   }
 
   /*
@@ -86,13 +105,13 @@ contract MetaStudioToken is
 
   /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on it except `unpause`
   /// @dev Only owner can pause
-  function pause() external onlyOwner {
+  function pause() external onlyRole(PAUSER_ROLE) {
     _pause();
   }
 
   /// @notice Unpause the contract.
   /// @dev Only owner can pause
-  function unpause() external onlyOwner {
+  function unpause() external onlyRole(PAUSER_ROLE) {
     _unpause();
   }
 
@@ -108,7 +127,7 @@ contract MetaStudioToken is
   function _authorizeUpgrade(address newImplementation)
     internal
     override
-    onlyOwner
+    onlyRole(ADMIN_ROLE)
   // solhint-disable-next-line no-empty-blocks
   {
 
@@ -227,9 +246,12 @@ contract MetaStudioToken is
   */
 
   /// @notice Allows Contract's owner to change the trusted forwarder
-  /// @dev should be declared here because we need to protect calls with onlyOwner
+  /// @dev should be declared here because we need to protect calls with onlyRole(ADMIN_ROLE)
   /// @param forwarder New tructed forwarder's address
-  function setTrustedForwarder(address forwarder) external onlyOwner {
+  function setTrustedForwarder(address forwarder)
+    external
+    onlyRole(ADMIN_ROLE)
+  {
     super._setTrustedForwarder(forwarder);
   }
 
