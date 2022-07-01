@@ -3,7 +3,6 @@ pragma solidity ^0.8.7;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
@@ -12,7 +11,6 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeabl
 abstract contract ERC1363Upgradeable is
   Initializable,
   ERC20Upgradeable,
-  ERC165Upgradeable,
   IERC1363Upgradeable
 {
   using AddressUpgradeable for address;
@@ -20,18 +18,6 @@ abstract contract ERC1363Upgradeable is
   function __ERC1363_init() internal onlyInitializing {}
 
   function __ERC1363_init_unchained() internal onlyInitializing {}
-
-  function supportsInterface(bytes4 interfaceId)
-    public
-    view
-    virtual
-    override(ERC165Upgradeable, IERC165Upgradeable)
-    returns (bool)
-  {
-    return
-      interfaceId == type(IERC1363Upgradeable).interfaceId ||
-      super.supportsInterface(interfaceId);
-  }
 
   /**
    * @dev Transfer tokens to a specified address and then execute a callback on `to`.
