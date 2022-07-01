@@ -1,31 +1,32 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
+import {BigNumber} from "ethers";
 import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
 
 const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
-const ADMIN_ROLE = keccak256(toUtf8Bytes("ADMIN_ROLE"));
+const PROXY_ROLE = keccak256(toUtf8Bytes("PROXY_ROLE"));
+const FORWARDER_ROLE = keccak256(toUtf8Bytes("FORWARDER_ROLE"));
 const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
 
 export function shouldBehaveLikeAccessControl(
   errorPrefix: string,
-  admin: SignerWithAddress,
+  tokenOwner: SignerWithAddress,
   authorized: SignerWithAddress,
   other: SignerWithAddress,
   otherAdmin: SignerWithAddress
-  // otherAuthorized
 ) {
   shouldSupportInterface("AccessControl");
 
   describe("default admin", function () {
     it("deployer has default admin role", async function () {
       expect(
-        await this.token.hasRole(ROLES_ADMIN_ROLE, admin.address)
+        await this.token.hasRole(ROLES_ADMIN_ROLE, tokenOwner.address)
       ).to.equal(true);
     });
 
     it("other roles's admin is the default admin role", async function () {
-      expect(await this.token.getRoleAdmin(ADMIN_ROLE)).to.equal(
+      expect(await this.token.getRoleAdmin(PROXY_ROLE)).to.equal(
         ROLES_ADMIN_ROLE
       );
     });
@@ -39,7 +40,9 @@ export function shouldBehaveLikeAccessControl(
 
   describe("granting", function () {
     beforeEach(async function () {
-      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(PROXY_ROLE, authorized.address);
     });
 
     it("non-admin cannot grant role to other accounts", async function () {
@@ -48,7 +51,7 @@ export function shouldBehaveLikeAccessControl(
       //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
       // );
       expect(
-        this.token.connect(other).grantRole(ADMIN_ROLE, authorized.address)
+        this.token.connect(other).grantRole(PROXY_ROLE, authorized.address)
       ).to.be.revertedWith(
         `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
       );
@@ -57,54 +60,56 @@ export function shouldBehaveLikeAccessControl(
     it("granting a role raise event RoleGranted", async function () {
       expect(
         await this.token
-          .connect(admin)
-          .grantRole(ADMIN_ROLE, authorized.address)
+          .connect(tokenOwner)
+          .grantRole(PROXY_ROLE, authorized.address)
       )
         .emit(this.token, "RoleGranted")
-        .withArgs(ADMIN_ROLE, authorized.address, admin.address);
+        .withArgs(PROXY_ROLE, authorized.address, tokenOwner.address);
     });
 
     it("accounts can be granted a role multiple times, but only one event", async function () {
-      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(PROXY_ROLE, authorized.address);
       expect(
         await this.token
-          .connect(admin)
-          .grantRole(ADMIN_ROLE, authorized.address)
+          .connect(tokenOwner)
+          .grantRole(PROXY_ROLE, authorized.address)
       ).to.not.emit(this.token, "RoleGranted");
     });
   });
 
   describe("revoking", function () {
     it("roles that are not had can be revoked", async function () {
-      expect(await this.token.hasRole(ADMIN_ROLE, authorized.address)).to.equal(
+      expect(await this.token.hasRole(PROXY_ROLE, authorized.address)).to.equal(
         false
       );
 
       expect(
         await this.token
-          .connect(admin)
-          .revokeRole(ADMIN_ROLE, authorized.address)
+          .connect(tokenOwner)
+          .revokeRole(PROXY_ROLE, authorized.address)
       ).to.not.emit(this.token, "RoleRevoked");
     });
 
     context("with granted role", function () {
       beforeEach(async function () {
         await this.token
-          .connect(admin)
-          .grantRole(ADMIN_ROLE, authorized.address);
+          .connect(tokenOwner)
+          .grantRole(PROXY_ROLE, authorized.address);
       });
 
       it("admin can revoke role", async function () {
         expect(
           await this.token
-            .connect(admin)
-            .revokeRole(ADMIN_ROLE, authorized.address)
+            .connect(tokenOwner)
+            .revokeRole(PROXY_ROLE, authorized.address)
         )
           .emit(this.token, "RoleRevoked")
-          .withArgs(ADMIN_ROLE, authorized.address, admin.address);
+          .withArgs(PROXY_ROLE, authorized.address, tokenOwner.address);
 
         expect(
-          await this.token.hasRole(ADMIN_ROLE, authorized.address)
+          await this.token.hasRole(PROXY_ROLE, authorized.address)
         ).to.equal(false);
       });
 
@@ -114,7 +119,7 @@ export function shouldBehaveLikeAccessControl(
         //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
         // );
         expect(
-          this.token.connect(other).revokeRole(ADMIN_ROLE, authorized.address)
+          this.token.connect(other).revokeRole(PROXY_ROLE, authorized.address)
         ).to.be.revertedWith(
           `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
         );
@@ -122,13 +127,13 @@ export function shouldBehaveLikeAccessControl(
 
       it("a role can be revoked multiple times", async function () {
         await this.token
-          .connect(admin)
-          .revokeRole(ADMIN_ROLE, authorized.address);
+          .connect(tokenOwner)
+          .revokeRole(PROXY_ROLE, authorized.address);
 
         expect(
           await this.token
-            .connect(admin)
-            .revokeRole(ADMIN_ROLE, authorized.address)
+            .connect(tokenOwner)
+            .revokeRole(PROXY_ROLE, authorized.address)
         ).to.not.emit(this.token, "RoleRevoked");
       });
     });
@@ -139,48 +144,50 @@ export function shouldBehaveLikeAccessControl(
       expect(
         await this.token
           .connect(authorized)
-          .renounceRole(ADMIN_ROLE, authorized.address)
+          .renounceRole(PROXY_ROLE, authorized.address)
       )
         .to.emit(this.token, "RoleRevoked")
-        .withArgs(ADMIN_ROLE, authorized.address, authorized.address);
+        .withArgs(PROXY_ROLE, authorized.address, authorized.address);
     });
 
     context("with granted role", function () {
       beforeEach(async function () {
         await this.token
-          .connect(admin)
-          .grantRole(ADMIN_ROLE, authorized.address);
+          .connect(tokenOwner)
+          .grantRole(PROXY_ROLE, authorized.address);
       });
 
       it("bearer can renounce role", async function () {
         expect(
           await this.token
             .connect(authorized)
-            .renounceRole(ADMIN_ROLE, authorized.address)
+            .renounceRole(PROXY_ROLE, authorized.address)
         )
           .to.emit(this.token, "RoleRevoked")
-          .withArgs(ADMIN_ROLE, authorized.address, authorized.address);
+          .withArgs(PROXY_ROLE, authorized.address, authorized.address);
 
         expect(
-          await this.token.hasRole(ADMIN_ROLE, authorized.address)
+          await this.token.hasRole(PROXY_ROLE, authorized.address)
         ).to.equal(false);
       });
 
       it("only the sender can renounce their roles", async function () {
         await expect(
-          this.token.connect(admin).renounceRole(ADMIN_ROLE, authorized.address)
+          this.token
+            .connect(tokenOwner)
+            .renounceRole(PROXY_ROLE, authorized.address)
         ).to.revertedWith(`${errorPrefix}: can only renounce roles for self`);
       });
 
       it("a role can be renounced multiple times", async function () {
         await this.token
           .connect(authorized)
-          .renounceRole(ADMIN_ROLE, authorized.address);
+          .renounceRole(PROXY_ROLE, authorized.address);
 
         expect(
           await this.token
             .connect(authorized)
-            .renounceRole(ADMIN_ROLE, authorized.address)
+            .renounceRole(PROXY_ROLE, authorized.address)
         ).to.not.emit(this.token, "RoleRevoked");
       });
     });
@@ -244,7 +251,9 @@ export function shouldBehaveLikeAccessControl(
 
   describe("onlyRole modifier", function () {
     beforeEach(async function () {
-      await this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address);
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(FORWARDER_ROLE, authorized.address);
     });
 
     it("do not revert if sender has role", async function () {
@@ -255,7 +264,7 @@ export function shouldBehaveLikeAccessControl(
       await expect(
         this.token.connect(other).setTrustedForwarder(other.address)
       ).to.revertedWith(
-        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ADMIN_ROLE}`
+        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${FORWARDER_ROLE}`
       );
     });
 
@@ -267,49 +276,59 @@ export function shouldBehaveLikeAccessControl(
   });
 }
 
-// function shouldBehaveLikeAccessControlEnumerable(
-//   errorPrefix,
-//   admin,
-//   authorized,
-//   other,
-//   otherAdmin,
-//   otherAuthorized
-// ) {
-//   shouldSupportInterfaces(["AccessControlEnumerable"]);
-//
-//   describe("enumerating", function () {
-//     it("role bearers can be enumerated", async function () {
-//       await this.accessControl.grantRole(ADMIN_ROLE, authorized, {from: admin});
-//       await this.accessControl.grantRole(ADMIN_ROLE, other, {from: admin});
-//       await this.accessControl.grantRole(ADMIN_ROLE, otherAuthorized, {
-//         from: admin,
-//       });
-//       await this.accessControl.revokeRole(ADMIN_ROLE, other, {from: admin});
-//
-//       const memberCount = await this.accessControl.getRoleMemberCount(
-//         ADMIN_ROLE
-//       );
-//       expect(memberCount).to.bignumber.equal("2");
-//
-//       const bearers = [];
-//       for (let i = 0; i < memberCount; ++i) {
-//         bearers.push(await this.accessControl.getRoleMember(ADMIN_ROLE, i));
-//       }
-//
-//       expect(bearers).to.have.members([authorized, otherAuthorized]);
-//     });
-//     it("role enumeration should be in sync after renounceRole call", async function () {
-//       expect(
-//         await this.accessControl.getRoleMemberCount(ADMIN_ROLE)
-//       ).to.bignumber.equal("0");
-//       await this.accessControl.grantRole(ADMIN_ROLE, admin, {from: admin});
-//       expect(
-//         await this.accessControl.getRoleMemberCount(ADMIN_ROLE)
-//       ).to.bignumber.equal("1");
-//       await this.accessControl.renounceRole(ADMIN_ROLE, admin, {from: admin});
-//       expect(
-//         await this.accessControl.getRoleMemberCount(ADMIN_ROLE)
-//       ).to.bignumber.equal("0");
-//     });
-//   });
-// }
+export function shouldBehaveLikeAccessControlEnumerable(
+  errorPrefix: string,
+  tokenOwner: SignerWithAddress,
+  authorized: SignerWithAddress,
+  other: SignerWithAddress,
+  otherAuthorized: SignerWithAddress
+) {
+  shouldSupportInterface("AccessControlEnumerable");
+
+  describe("enumerating", function () {
+    it("role bearers can be enumerated", async function () {
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(PROXY_ROLE, authorized.address);
+      await this.token.connect(tokenOwner).grantRole(PROXY_ROLE, other.address);
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(PROXY_ROLE, otherAuthorized.address);
+      await this.token
+        .connect(tokenOwner)
+        .revokeRole(PROXY_ROLE, other.address);
+
+      // tokenOwner has PROXY_ROLE by default
+      const memberCount = await this.token.getRoleMemberCount(PROXY_ROLE);
+      expect(memberCount).to.equal(3);
+
+      const bearers = [];
+      for (let i = 0; i < memberCount; ++i) {
+        bearers.push(await this.token.getRoleMember(PROXY_ROLE, i));
+      }
+      expect(bearers).to.have.members([
+        tokenOwner.address,
+        authorized.address,
+        otherAuthorized.address,
+      ]);
+    });
+
+    it("role enumeration should be in sync after renounceRole call", async function () {
+      const memberCount = await this.token.getRoleMemberCount(PROXY_ROLE);
+      await this.token
+        .connect(tokenOwner)
+        .grantRole(PROXY_ROLE, authorized.address);
+
+      expect(await this.token.getRoleMemberCount(PROXY_ROLE)).to.equal(
+        BigNumber.from(memberCount).add(1)
+      );
+
+      await this.token
+        .connect(tokenOwner)
+        .renounceRole(PROXY_ROLE, tokenOwner.address);
+      expect(await this.token.getRoleMemberCount(PROXY_ROLE)).to.equal(
+        memberCount
+      );
+    });
+  });
+}

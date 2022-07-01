@@ -21,8 +21,8 @@ export function unitTestPausable(): void {
       });
 
       it("allows to transfer when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
+        await this.token.connect(this.signers.initialHolder).pause();
+        await this.token.connect(this.signers.initialHolder).unpause();
 
         await this.token
           .connect(this.signers.initialHolder)
@@ -37,7 +37,7 @@ export function unitTestPausable(): void {
       });
 
       it("reverts when trying to transfer when paused", async function () {
-        await this.token.pause();
+        await this.token.connect(this.signers.initialHolder).pause();
 
         await expect(
           this.token
@@ -74,8 +74,8 @@ export function unitTestPausable(): void {
       });
 
       it("allows to transfer when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
+        await this.token.connect(this.signers.initialHolder).pause();
+        await this.token.connect(this.signers.initialHolder).unpause();
 
         await this.token
           .connect(this.signers.anotherAccount)
@@ -94,7 +94,7 @@ export function unitTestPausable(): void {
       });
 
       it("reverts when trying to transfer from when paused", async function () {
-        await this.token.pause();
+        await this.token.connect(this.signers.initialHolder).pause();
 
         await expect(
           this.token

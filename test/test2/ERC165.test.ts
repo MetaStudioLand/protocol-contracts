@@ -9,6 +9,7 @@ export function unitTestERC165() {
     describe("ERC20 and extensions", function () {
       shouldSupportInterface("ERC20");
       shouldSupportInterface("AccessControl");
+      shouldSupportInterface("AccessControlEnumerable");
       shouldSupportInterface("Pausable");
     });
 

@@ -1,15 +1,25 @@
 import {getSuiteContext} from "../shared/utils";
-import {shouldBehaveLikeAccessControl} from "./behaviors/AccessControl.behavior";
+import {
+  shouldBehaveLikeAccessControl,
+  shouldBehaveLikeAccessControlEnumerable,
+} from "./behaviors/AccessControl.behavior";
 
 export function unitTestAccessControl(): void {
   describe("======== Contract: AccessControl ================================================", async function () {
     const {signers} = getSuiteContext(this);
     shouldBehaveLikeAccessControl(
       "AccessControl",
+      signers.initialHolder,
       signers.owner,
       signers.spender,
-      signers.recipient,
-      signers.initialHolder
+      signers.recipient
+    );
+    shouldBehaveLikeAccessControlEnumerable(
+      "AccessControl",
+      signers.initialHolder,
+      signers.owner,
+      signers.spender,
+      signers.recipient
     );
   });
 }
