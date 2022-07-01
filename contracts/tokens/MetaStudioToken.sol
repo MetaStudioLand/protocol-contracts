@@ -18,6 +18,7 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 
 import "hardhat/console.sol";
+import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
 /// @custom:security-contact it@theblockchainxdev.com:
@@ -35,7 +36,7 @@ contract MetaStudioToken is
   ERC2771ContextUpgradeable,
   UUPSUpgradeable
 {
-  bytes32 public constant ROLE_ADMIN_ROLE = keccak256("ROLE_ADMIN_ROLE");
+  bytes32 public constant ROLES_ADMIN_ROLE = keccak256("ROLES_ADMIN_ROLE");
   bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
@@ -65,12 +66,12 @@ contract MetaStudioToken is
     __UUPSUpgradeable_init();
 
     // Defining roles' admin role
-    _setRoleAdmin(ROLE_ADMIN_ROLE, ROLE_ADMIN_ROLE);
-    _setRoleAdmin(ADMIN_ROLE, ROLE_ADMIN_ROLE);
-    _setRoleAdmin(PAUSER_ROLE, ROLE_ADMIN_ROLE);
+    _setRoleAdmin(ROLES_ADMIN_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(ADMIN_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(PAUSER_ROLE, ROLES_ADMIN_ROLE);
 
     // Definig defaut roles
-    _grantRole(ROLE_ADMIN_ROLE, _msgSender());
+    _grantRole(ROLES_ADMIN_ROLE, _msgSender());
     _grantRole(ADMIN_ROLE, _msgSender());
     _grantRole(PAUSER_ROLE, _msgSender());
 
@@ -84,14 +85,14 @@ contract MetaStudioToken is
   /// @return Returns true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
-    view
+    pure
     override(IERC165Upgradeable, AccessControlUpgradeable)
     returns (bool)
   {
     return
       interfaceId == type(IERC165Upgradeable).interfaceId ||
       interfaceId == type(IERC20Upgradeable).interfaceId ||
-      interfaceId == type(IERC20Upgradeable).interfaceId ||
+      interfaceId == type(IPausable).interfaceId ||
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
       interfaceId == type(IERC1363Upgradeable).interfaceId ||

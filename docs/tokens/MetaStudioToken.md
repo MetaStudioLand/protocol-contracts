@@ -78,10 +78,10 @@ function PAUSER_ROLE() external view returns (bytes32)
 |---|---|---|
 | _0 | bytes32 | undefined |
 
-### ROLE_ADMIN_ROLE
+### ROLES_ADMIN_ROLE
 
 ```solidity
-function ROLE_ADMIN_ROLE() external view returns (bytes32)
+function ROLES_ADMIN_ROLE() external view returns (bytes32)
 ```
 
 
@@ -721,7 +721,7 @@ Allows Contract&#39;s owner to change the trusted forwarder
 ### supportsInterface
 
 ```solidity
-function supportsInterface(bytes4 interfaceId) external view returns (bool)
+function supportsInterface(bytes4 interfaceId) external pure returns (bool)
 ```
 
 Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
