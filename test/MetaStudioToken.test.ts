@@ -1,5 +1,4 @@
 import {expect} from "chai";
-import {beforeEach} from "mocha";
 import {FORWARDER_ROLE, PAUSER_ROLE} from "./shared/constants";
 import {baseContext} from "./shared/contexts";
 import {unitTestERC20} from "./test2/10-ERC20.test";
