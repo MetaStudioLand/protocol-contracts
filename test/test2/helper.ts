@@ -1,5 +1,4 @@
 const ethSigUtil = require("eth-sig-util");
-
 const EIP712Domain = [
   {name: "name", type: "string"},
   {name: "version", type: "string"},

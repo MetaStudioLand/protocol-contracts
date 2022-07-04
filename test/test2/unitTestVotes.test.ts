@@ -1,36 +1,14 @@
 import {expect} from "chai";
-import {BigNumber, Wallet, providers} from "ethers";
-import web3 from "web3";
-import {
-  batchInBlock,
-  Delegation,
-  EIP712Domain,
-  MAX_UINT256,
-  ZERO_ADDRESS,
-} from "../shared/constants";
+import {BigNumber, Wallet} from "ethers";
+import {batchInBlock, ZERO_ADDRESS} from "../shared/constants";
 import {tokens} from "../shared/utils";
 import {domainSeparator} from "./helper";
 import {ethers} from "hardhat";
-const {fromRpcSig} = require("ethereumjs-util");
-const ethSigUtil = require("eth-sig-util");
 export function unitTestVotes() {
   describe("======== ERC20 VOTES ================================================", async function () {
     const name = "MetaStudioToken";
-    const symbol = "SMV";
     const initialSupply = tokens(5_000_000_000);
     const version = "1";
-    const buildData = (
-      chainId: any,
-      verifyingContract: string,
-      message: {delegatee: any; nonce: BigNumber; expiry: BigNumber}
-    ) => ({
-      data: {
-        primaryType: "Delegation",
-        types: {EIP712Domain, Delegation},
-        domain: {name, version, chainId, verifyingContract},
-        message,
-      },
-    });
     it("initial nonce is 0", async function () {
       expect(
         await this.token.nonces(this.signers.initialHolder.address)
@@ -129,9 +107,7 @@ export function unitTestVotes() {
       describe("with signature", async function () {
         beforeEach(async function () {
           this.randomWallet = Wallet.createRandom();
-          this.addrWalet = web3.utils.toChecksumAddress(
-            await this.randomWallet.getAddress()
-          );
+          this.addrWalet = await this.randomWallet.getAddress();
           this.nonce = 0;
           this.token.transfer(this.addrWalet, initialSupply);
         });
@@ -516,19 +492,9 @@ export function unitTestVotes() {
               BigNumber.from(3)
             )
           ).to.be.deep.equal([t4.blockNumber, BigNumber.from(100)]);
-
           const sevenDays = 5 * 24 * 60 * 60;
-
-          const blockNumBefore = await ethers.provider.getBlockNumber();
-          const blockBefore = await ethers.provider.getBlock(blockNumBefore);
-          const timestampBefore = blockBefore.timestamp;
-
           await ethers.provider.send("evm_increaseTime", [sevenDays]);
           await ethers.provider.send("evm_mine", []);
-
-          const blockNumAfter = await ethers.provider.getBlockNumber();
-          const blockAfter = await ethers.provider.getBlock(blockNumAfter);
-          const timestampAfter = blockAfter.timestamp;
           expect(
             await this.token.getPastVotes(
               this.signers.anotherAccount.address,
@@ -563,7 +529,7 @@ export function unitTestVotes() {
             await this.token.numCheckpoints(this.signers.anotherAccount.address)
           ).to.be.equal(BigNumber.from(0));
 
-          const [t1, t2, t3] = await batchInBlock([
+          const [t1] = await batchInBlock([
             () =>
               this.token
                 .connect(this.signers.recipient)
