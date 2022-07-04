@@ -17,7 +17,9 @@ export function unitTestERC2771() {
 
       it(`setting a trusted forwarder should emit "TrustedForwarderChanged"`, async function () {
         await expect(
-          await this.token.setTrustedForwarder(this.signers.forwarder.address)
+          await this.token
+            .connect(this.signers.initialHolder)
+            .setTrustedForwarder(this.signers.forwarder.address)
         )
           .to.emit(this.token, "TrustedForwarderChanged")
           .withArgs(
@@ -41,7 +43,9 @@ export function unitTestERC2771() {
         }
       });
       beforeEach(async function () {
-        await this.token.setTrustedForwarder(this.forwarder.address);
+        await this.token
+          .connect(this.signers.initialHolder)
+          .setTrustedForwarder(this.forwarder.address);
       });
 
       it("recognize trusted forwarder", async function () {
@@ -54,7 +58,6 @@ export function unitTestERC2771() {
 
       describe("forwarding ERC20", function () {
         const {signers, initialSupply} = getSuiteContext(this);
-        console.log(`data: ${signers}, ${initialSupply}`);
         shouldBehaveLikeForwardedRegularERC20(signers, initialSupply);
       });
     });
