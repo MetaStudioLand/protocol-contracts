@@ -349,6 +349,23 @@ function delegates(address account) external view returns (address)
 |---|---|---|
 | _0 | address | undefined |
 
+### getChainId
+
+```solidity
+function getChainId() external view returns (uint256)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
 ### getPastTotalSupply
 
 ```solidity

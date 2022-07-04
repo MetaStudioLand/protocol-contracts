@@ -84,6 +84,10 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
+  function getChainId() external view returns (uint256) {
+    return block.chainid;
+  }
+
   /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
   /// @dev ERC 165 implementation
   /// @param interfaceId interface's id

@@ -1,5 +1,5 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {BigNumber} from "ethers";
+import {BigNumber, ContractReceipt, ContractTransaction} from "ethers";
 import {ethers, tracer} from "hardhat";
 import {Context, Suite} from "mocha";
 import {NB_DECIMALS} from "./constants";
@@ -50,3 +50,9 @@ export const getAddress = (
     ? accountOrAddress
     : accountOrAddress.address;
 };
+
+export function waitFor(
+  p: Promise<ContractTransaction>
+): Promise<ContractReceipt> {
+  return p.then((tx) => tx.wait());
+}
