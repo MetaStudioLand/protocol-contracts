@@ -2,28 +2,24 @@ import {expect} from "chai";
 import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
 import {NB_DECIMALS} from "../shared/constants";
-import {getSuiteContext, tokens} from "../shared/utils";
+import {getSuiteContext} from "../shared/utils";
 import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
 
 export function unitTestERC20(): void {
   describe("======== Contract: ERC20 ================================================", async function () {
-    const name = "MetaStudioToken";
-    const symbol = "SMV";
-    const initialSupply = tokens(5_000_000_000);
-
-    it(`has a name: "${name}"`, async function () {
-      expect(await this.token.name()).to.equal(name);
+    it(`has the good name`, async function () {
+      expect(await this.token.name()).to.equal(this.name);
     });
 
-    it(`has a symbol: "${symbol}"`, async function () {
-      expect(await this.token.symbol()).to.equal(symbol);
+    it(`has the good symbol`, async function () {
+      expect(await this.token.symbol()).to.equal(this.symbol);
     });
 
     it(`has ${NB_DECIMALS} decimals`, async function () {
       expect(await this.token.decimals()).to.be.equal(NB_DECIMALS);
     });
 
-    const {signers} = getSuiteContext(this);
+    const {signers, initialSupply} = getSuiteContext(this);
     shouldBehaveLikeERC20(
       initialSupply,
       signers.initialHolder,

@@ -8,12 +8,11 @@ import {
   RECEIVER_MAGIC_VALUE,
   SPENDER_MAGIC_VALUE,
 } from "../shared/constants";
-import {getSuiteContext, tokens} from "../shared/utils";
+import {getSuiteContext} from "../shared/utils";
 
 export function unitTestERC1363(): void {
   describe("======== Contract: ERC1363 ================================================", async function () {
-    const {signers} = getSuiteContext(this);
-    const initialSupply = tokens(5_000_000_000);
+    const {signers, initialSupply} = getSuiteContext(this);
 
     describe("via transferFromAndCall", function () {
       beforeEach(async function () {

@@ -26,6 +26,8 @@ export async function baseContext(
   signers.spender = accounts[5];
   tracer.nameTags[signers.spender.address] = "Spender";
 
+  const name = "MetaStudioToken";
+  const symbol = "SMV";
   const initialSupply = tokens(5_000_000_000);
 
   /**
@@ -35,11 +37,16 @@ export async function baseContext(
     const rootSuite = this;
     // @ts-ignore
     rootSuite.ctx.signers = signers;
+    rootSuite.ctx.name = name;
+    rootSuite.ctx.symbol = symbol;
     rootSuite.ctx.initialSupply = initialSupply;
 
     before(async function () {
       const network = await ethers.provider.getNetwork();
+      console.log(`network: ${JSON.stringify(network)}`);
       this.chainId = network.chainId;
+      this.name = name;
+      this.symbol = symbol;
       this.signers = signers;
       this.initialSupply = initialSupply;
     });

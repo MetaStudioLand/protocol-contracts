@@ -1,9 +1,11 @@
 import {expect} from "chai";
 import {BigNumber, Wallet} from "ethers";
-import {batchInBlock, ZERO_ADDRESS} from "../shared/constants";
+import {batchInBlock, MAX_UINT256, ZERO_ADDRESS} from "../shared/constants";
 import {tokens} from "../shared/utils";
 import {domainSeparator} from "./helper";
 import {ethers} from "hardhat";
+import { splitSignature } from "ethers/lib/utils";
+import { datanew } from "../helpers/eip712";
 export function unitTestVotes() {
   describe("======== ERC20 VOTES ================================================", async function () {
     const name = "MetaStudioToken";
@@ -108,12 +110,28 @@ export function unitTestVotes() {
         beforeEach(async function () {
           this.randomWallet = Wallet.createRandom();
           this.addrWalet = await this.randomWallet.getAddress();
-          this.nonce = 0;
+          this.nonce = BigNumber.from(0);
           this.token.transfer(this.addrWalet, initialSupply);
         });
 
-        // it('accept signed delegation', async function () {
+        it('accept signed delegation', async function () {
+         const message ={
+            delegatee: this.addrWalet,
+            nonce :this.nonce,
+            expiry: ethers.constants.MaxUint256._hex,
+          }
 
+          const permitData712 = datanew(
+            this.name,
+            this.chainId,
+            this.token,
+            message
+          );
+          const flatSig = await ethers.provider.send("eth_signTypedData_v4", [
+            this.signers.initialHolder.address,
+            permitData712,
+          ]);
+          const sig = splitSignature(flatSig);
         // fromRpcSig(ethSigUtil.signTypedData(
         //   this.randomWallet.privateKey,
         // buildData(this.chainId,
@@ -123,27 +141,34 @@ export function unitTestVotes() {
         //     expiry: MAX_UINT256,
         //   }),
         // ));
-        // expect(await this.token.delegates(this.addrWalet)).to.be.equal(ZERO_ADDRESS);
+        expect(await this.token.delegates(this.addrWalet)).to.be.equal(ZERO_ADDRESS);
 
-        // const  receipt = await this.token.delegateBySig(this.addrWalet, 0, MAX_UINT256, v, r, s);
-        // expectEvent(receipt, 'DelegateChanged', {
-        //   delegator: delegatorAddress,
-        //   fromDelegate: ZERO_ADDRESS,
-        //   toDelegate: delegatorAddress,
-        // });
-        // expectEvent(receipt, 'DelegateVotesChanged', {
-        //   delegate: delegatorAddress,
-        //   previousBalance: '0',
-        //   newBalance: supply,
-        // });
+        const  receipt = await this.token.delegateBySig(this.addrWalet, 0, MAX_UINT256, sig.v, sig.r, sig.s);
+        
+        expect(receipt)
+        .to.emit(this.token, "DelegateChanged")
+        .withArgs(
+          this.addrWalet,
+          ZERO_ADDRESS,
+          this.addrWalet
+        );
 
-        // expect(await this.token.delegates(this.addrWalet)).to.be.equal(this.addrWalet);
+        expect(receipt)
+        .to.emit(this.token, "DelegateVotesChanged")
+        .withArgs(
+          this.addrWalet,
+          '0',
+          this.initialSupply
+        );
+        expect(await this.token.delegates(this.addrWalet)).to.be.equal(this.addrWalet);
 
-        // expect(await this.token.getVotes(this.addrWalet)).to.be.equal(this.initialSupply);
-        // expect(await this.token.getPastVotes(this.addrWalet, receipt.blockNumber - 1)).to.be.equal(BigNumber.from(0));
-        // await time.advanceBlock();
-        // expect(await this.token.getPastVotes(this.addrWalet, receipt.blockNumber)).to.be.equal(this.initialSupply);
-        // });
+        expect(await this.token.getVotes(this.addrWalet)).to.be.equal(this.initialSupply);
+        expect(await this.token.getPastVotes(this.addrWalet, receipt.blockNumber - 1)).to.be.equal(BigNumber.from(0));
+        const sevenDays = 5 * 24 * 60 * 60;
+        await ethers.provider.send("evm_increaseTime", [sevenDays]);
+        await ethers.provider.send("evm_mine", []);
+        expect(await this.token.getPastVotes(this.addrWalet, receipt.blockNumber)).to.be.equal(this.initialSupply);
+        });
 
         // it('rejects reused signature', async function () {
         //   const { v, r, s } = fromRpcSig(ethSigUtil.signTypedMessage(
