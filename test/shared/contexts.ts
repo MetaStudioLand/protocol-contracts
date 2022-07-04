@@ -38,8 +38,11 @@ export async function baseContext(
     rootSuite.ctx.initialSupply = initialSupply;
 
     before(async function () {
+      const network = await ethers.provider.getNetwork();
+      this.chainId = network.chainId;
       this.signers = signers;
       this.initialSupply = initialSupply;
+      
     });
 
     beforeEach(async function () {

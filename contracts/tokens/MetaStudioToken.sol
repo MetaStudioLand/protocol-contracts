@@ -141,7 +141,6 @@ contract MetaStudioToken is
   ) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
     super._afterTokenTransfer(from, to, amount);
   }
-
   /// @inheritdoc ERC20Upgradeable
   function _mint(address to, uint256 amount)
     internal
