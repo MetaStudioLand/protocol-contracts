@@ -1,13 +1,13 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
+import {
+  FORWARDER_ROLE,
+  PAUSER_ROLE,
+  PROXY_ROLE,
+  ROLES_ADMIN_ROLE,
+} from "../../shared/constants";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
-
-const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
-const PROXY_ROLE = keccak256(toUtf8Bytes("PROXY_ROLE"));
-const FORWARDER_ROLE = keccak256(toUtf8Bytes("FORWARDER_ROLE"));
-const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
 
 export function shouldBehaveLikeAccessControl(
   errorPrefix: string,
