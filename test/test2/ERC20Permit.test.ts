@@ -4,7 +4,7 @@ import {BigNumber, constants, Signature} from "ethers";
 import {splitSignature} from "ethers/lib/utils";
 import {ethers} from "hardhat";
 import {Context} from "mocha";
-import {data712, domainSeparator} from "../helpers/eip712";
+import {domainSeparator, getData712ForPermit} from "../helpers/eip712";
 import {waitFor} from "../shared/utils";
 
 export function unitTestERC20Permit(): void {
@@ -40,7 +40,7 @@ export function unitTestERC20Permit(): void {
         deadline: deadline._hex,
       };
 
-      const permitData712 = data712(
+      const permitData712 = getData712ForPermit(
         context.name,
         context.chainId,
         context.token,
