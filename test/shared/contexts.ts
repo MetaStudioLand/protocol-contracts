@@ -42,7 +42,6 @@ export async function baseContext(
       this.chainId = network.chainId;
       this.signers = signers;
       this.initialSupply = initialSupply;
-      
     });
 
     beforeEach(async function () {
