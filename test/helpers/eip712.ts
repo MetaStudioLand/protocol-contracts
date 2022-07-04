@@ -1,3 +1,5 @@
+import * as ethSigUtil from "eth-sig-util";
+
 type Message = {
   owner: string;
   spender: string;
@@ -9,6 +11,13 @@ type Message = {
 type Contract = {
   address: string;
 };
+
+const EIP712Domain = [
+  {name: "name", type: "string"},
+  {name: "version", type: "string"},
+  {name: "chainId", type: "uint256"},
+  {name: "verifyingContract", type: "address"},
+];
 
 type Data712 = {
   types: {
@@ -122,3 +131,19 @@ export const data712 = function (
     message: message,
   };
 };
+
+export async function domainSeparator(
+  name: string,
+  version: string,
+  chainId: number,
+  verifyingContract: Contract
+) {
+  return (
+    "0x" +
+    ethSigUtil.TypedDataUtils.hashStruct(
+      "EIP712Domain",
+      {name, version, chainId, verifyingContract: verifyingContract.address},
+      {EIP712Domain}
+    ).toString("hex")
+  );
+}
