@@ -12,9 +12,12 @@ export interface Signers {
 
 declare module "mocha" {
   export interface Context {
+    chainId: number;
+    name: string;
+    symbol: string;
+    initialSupply: BigNumber;
     token: Contract;
     forwarder: Contract;
     signers: Signers;
-    initialSupply: BigNumber;
   }
 }
