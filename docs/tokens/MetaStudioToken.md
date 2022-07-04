@@ -10,23 +10,6 @@
 
 ## Methods
 
-### ADMIN_ROLE
-
-```solidity
-function ADMIN_ROLE() external view returns (bytes32)
-```
-
-
-
-
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | bytes32 | undefined |
-
 ### DEFAULT_ADMIN_ROLE
 
 ```solidity
@@ -61,10 +44,44 @@ function DOMAIN_SEPARATOR() external view returns (bytes32)
 |---|---|---|
 | _0 | bytes32 | undefined |
 
+### FORWARDER_ROLE
+
+```solidity
+function FORWARDER_ROLE() external view returns (bytes32)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bytes32 | undefined |
+
 ### PAUSER_ROLE
 
 ```solidity
 function PAUSER_ROLE() external view returns (bytes32)
+```
+
+
+
+
+
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bytes32 | undefined |
+
+### PROXY_ROLE
+
+```solidity
+function PROXY_ROLE() external view returns (bytes32)
 ```
 
 
@@ -399,6 +416,51 @@ function getRoleAdmin(bytes32 role) external view returns (bytes32)
 |---|---|---|
 | _0 | bytes32 | undefined |
 
+### getRoleMember
+
+```solidity
+function getRoleMember(bytes32 role, uint256 index) external view returns (address)
+```
+
+
+
+*Returns one of the accounts that have `role`. `index` must be a value between 0 and {getRoleMemberCount}, non-inclusive. Role bearers are not sorted in any particular way, and their ordering may change at any point. WARNING: When using {getRoleMember} and {getRoleMemberCount}, make sure you perform all queries on the same block. See the following https://forum.openzeppelin.com/t/iterating-over-elements-on-enumerableset-in-openzeppelin-contracts/2296[forum post] for more information.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| role | bytes32 | undefined |
+| index | uint256 | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | address | undefined |
+
+### getRoleMemberCount
+
+```solidity
+function getRoleMemberCount(bytes32 role) external view returns (uint256)
+```
+
+
+
+*Returns the number of accounts that have `role`. Can be used together with {getRoleMember} to enumerate all bearers of a role.*
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| role | bytes32 | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
 ### getVotes
 
 ```solidity
@@ -710,7 +772,7 @@ function setTrustedForwarder(address forwarder) external nonpayable
 
 Allows Contract&#39;s owner to change the trusted forwarder
 
-*should be declared here because we need to protect calls with onlyRole(ADMIN_ROLE)*
+*should be declared here because we need to protect calls with onlyRole(FORWARDER_ROLE)*
 
 #### Parameters
 

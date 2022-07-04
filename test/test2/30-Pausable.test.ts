@@ -1,48 +1,45 @@
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {tokens} from "../shared/utils";
 
 export function unitTestPausable(): void {
   describe("======== Contract: Pausable ================================================", async function () {
-    const initialSupply = tokens(5_000_000_000);
-
     describe("transfer", function () {
       it("allows to transfer when unpaused", async function () {
         await this.token
           .connect(this.signers.initialHolder)
-          .transfer(this.signers.recipient.address, initialSupply);
+          .transfer(this.signers.recipient.address, this.initialSupply);
 
         expect(
           await this.token.balanceOf(this.signers.initialHolder.address)
         ).to.be.equal("0");
         expect(
           await this.token.balanceOf(this.signers.recipient.address)
-        ).to.be.equal(initialSupply);
+        ).to.be.equal(this.initialSupply);
       });
 
       it("allows to transfer when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
+        await this.token.connect(this.signers.initialHolder).pause();
+        await this.token.connect(this.signers.initialHolder).unpause();
 
         await this.token
           .connect(this.signers.initialHolder)
-          .transfer(this.signers.recipient.address, initialSupply);
+          .transfer(this.signers.recipient.address, this.initialSupply);
 
         expect(
           await this.token.balanceOf(this.signers.initialHolder.address)
         ).to.be.equal("0");
         expect(
           await this.token.balanceOf(this.signers.recipient.address)
-        ).to.be.equal(initialSupply);
+        ).to.be.equal(this.initialSupply);
       });
 
       it("reverts when trying to transfer when paused", async function () {
-        await this.token.pause();
+        await this.token.connect(this.signers.initialHolder).pause();
 
         await expect(
           this.token
             .connect(this.signers.initialHolder)
-            .transfer(this.signers.recipient.address, initialSupply)
+            .transfer(this.signers.recipient.address, this.initialSupply)
         ).to.be.revertedWith("Pausable: paused");
       });
     });
@@ -70,12 +67,12 @@ export function unitTestPausable(): void {
         ).to.be.equal(allowance);
         expect(
           await this.token.balanceOf(this.signers.initialHolder.address)
-        ).to.be.equal(initialSupply.sub(allowance));
+        ).to.be.equal(this.initialSupply.sub(allowance));
       });
 
       it("allows to transfer when paused and then unpaused", async function () {
-        await this.token.pause();
-        await this.token.unpause();
+        await this.token.connect(this.signers.initialHolder).pause();
+        await this.token.connect(this.signers.initialHolder).unpause();
 
         await this.token
           .connect(this.signers.anotherAccount)
@@ -90,11 +87,11 @@ export function unitTestPausable(): void {
         ).to.be.equal(allowance);
         expect(
           await this.token.balanceOf(this.signers.initialHolder.address)
-        ).to.be.equal(initialSupply.sub(allowance));
+        ).to.be.equal(this.initialSupply.sub(allowance));
       });
 
       it("reverts when trying to transfer from when paused", async function () {
-        await this.token.pause();
+        await this.token.connect(this.signers.initialHolder).pause();
 
         await expect(
           this.token

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/IAccessControlEnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
@@ -29,7 +30,7 @@ contract MetaStudioToken is
   ERC20Upgradeable,
   ERC1363Upgradeable,
   ReentrancyGuardUpgradeable,
-  AccessControlUpgradeable,
+  AccessControlEnumerableUpgradeable,
   PausableUpgradeable,
   ERC20PermitUpgradeable,
   ERC20VotesUpgradeable,
@@ -37,7 +38,8 @@ contract MetaStudioToken is
   UUPSUpgradeable
 {
   bytes32 public constant ROLES_ADMIN_ROLE = keccak256("ROLES_ADMIN_ROLE");
-  bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+  bytes32 public constant PROXY_ROLE = keccak256("PROXY_ROLE");
+  bytes32 public constant FORWARDER_ROLE = keccak256("FORWARDER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @custom:oz-upgrades-unsafe-allow constructor
@@ -56,7 +58,7 @@ contract MetaStudioToken is
     require(tokensOwner != address(0), "tokensOwner is mandatory");
     // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC20_init("MetaStudioToken", "SMV");
-    __AccessControl_init();
+    __AccessControlEnumerable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
     __Pausable_init();
@@ -67,13 +69,16 @@ contract MetaStudioToken is
 
     // Defining roles' admin role
     _setRoleAdmin(ROLES_ADMIN_ROLE, ROLES_ADMIN_ROLE);
-    _setRoleAdmin(ADMIN_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(PROXY_ROLE, ROLES_ADMIN_ROLE);
+    _setRoleAdmin(FORWARDER_ROLE, ROLES_ADMIN_ROLE);
     _setRoleAdmin(PAUSER_ROLE, ROLES_ADMIN_ROLE);
 
     // Definig defaut roles
-    _grantRole(ROLES_ADMIN_ROLE, _msgSender());
-    _grantRole(ADMIN_ROLE, _msgSender());
-    _grantRole(PAUSER_ROLE, _msgSender());
+    // The token Owner is granted to all roles
+    _grantRole(ROLES_ADMIN_ROLE, tokensOwner);
+    _grantRole(PROXY_ROLE, tokensOwner);
+    _grantRole(FORWARDER_ROLE, tokensOwner);
+    _grantRole(PAUSER_ROLE, tokensOwner);
 
     // Minting all tokens on creation
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
@@ -86,7 +91,7 @@ contract MetaStudioToken is
   function supportsInterface(bytes4 interfaceId)
     public
     pure
-    override(IERC165Upgradeable, AccessControlUpgradeable)
+    override(IERC165Upgradeable, AccessControlEnumerableUpgradeable)
     returns (bool)
   {
     return
@@ -96,7 +101,8 @@ contract MetaStudioToken is
       interfaceId == type(IERC2771Upgradeable).interfaceId ||
       interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
       interfaceId == type(IERC1363Upgradeable).interfaceId ||
-      interfaceId == type(IAccessControlUpgradeable).interfaceId;
+      interfaceId == type(IAccessControlUpgradeable).interfaceId ||
+      interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId;
   }
 
   /*
@@ -124,10 +130,11 @@ contract MetaStudioToken is
     super._beforeTokenTransfer(from, to, amount);
   }
 
+  // @dev only PROXY-ROLE granted account can upgrade
   function _authorizeUpgrade(address newImplementation)
     internal
     override
-    onlyRole(ADMIN_ROLE)
+    onlyRole(PROXY_ROLE)
   // solhint-disable-next-line no-empty-blocks
   {
 
@@ -245,11 +252,11 @@ contract MetaStudioToken is
   */
 
   /// @notice Allows Contract's owner to change the trusted forwarder
-  /// @dev should be declared here because we need to protect calls with onlyRole(ADMIN_ROLE)
+  /// @dev should be declared here because we need to protect calls with onlyRole(FORWARDER_ROLE)
   /// @param forwarder New tructed forwarder's address
   function setTrustedForwarder(address forwarder)
     external
-    onlyRole(ADMIN_ROLE)
+    onlyRole(FORWARDER_ROLE)
   {
     super._setTrustedForwarder(forwarder);
   }

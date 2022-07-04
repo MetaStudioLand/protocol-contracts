@@ -7,11 +7,11 @@ import {unitTestERC165} from "./test2/ERC165.test";
 import {unitTestERC2771} from "./test2/ERC2771.test";
 import {unitTestVotes} from "./test2/unitTestVotes.test";
 baseContext("MetaStudioToken", function () {
-  // unitTestERC165();
-  // unitTestERC20();
-  // unitTestAccessControl();
-  // unitTestPausable();
-  // unitTestERC1363();
-  // unitTestERC2771();
+  unitTestERC165();
+  unitTestERC20();
+  unitTestAccessControl();
+  unitTestPausable();
+  unitTestERC1363();
+  unitTestERC2771();
   unitTestVotes();
 });

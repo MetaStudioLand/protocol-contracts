@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { network } from "hardhat";
 import { promisify } from "util";
+import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
 
 export const NB_DECIMALS = 18;
 export const DATA = "0x42000000";
@@ -51,3 +52,8 @@ export async function countPendingTransactions () {
     await network.provider.send('evm_setAutomine', [true]);
   }
 }
+
+export const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
+export const PROXY_ROLE = keccak256(toUtf8Bytes("PROXY_ROLE"));
+export const FORWARDER_ROLE = keccak256(toUtf8Bytes("FORWARDER_ROLE"));
+export const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
