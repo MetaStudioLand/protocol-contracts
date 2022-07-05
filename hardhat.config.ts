@@ -57,7 +57,7 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 10000,
-    fullTrace: false,
+    fullTrace: true,
   },
   tracer: {
     enabled: true,

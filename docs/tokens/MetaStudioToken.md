@@ -602,23 +602,6 @@ Checks if it&#39;s the current trusted forwarder.
 |---|---|---|
 | _0 | bool | true if it is the trusted forwarder |
 
-### msgSender
-
-```solidity
-function msgSender() external view returns (address)
-```
-
-
-
-*specific to tests*
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | address | undefined |
-
 ### name
 
 ```solidity
