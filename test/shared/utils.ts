@@ -1,9 +1,9 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
+import {expect} from "chai";
 import {BigNumber, ContractReceipt, ContractTransaction} from "ethers";
 import {ethers, network, tracer} from "hardhat";
 import {Context, Suite} from "mocha";
-import { promisify } from "util";
+import {promisify} from "util";
 import {NB_DECIMALS} from "./constants";
 
 /**
