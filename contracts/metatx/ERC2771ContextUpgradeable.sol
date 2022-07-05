@@ -4,10 +4,9 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
-
-/**
- * @notice Implementing an updatable Trusted Forwarder
- */
+/// @title Implementation of ERC2771 standart
+/// @notice Implementing an updatable Trusted Forwarder
+/// @dev 
 contract ERC2771ContextUpgradeable is
   Initializable,
   ContextUpgradeable,

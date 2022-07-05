@@ -6,7 +6,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeable.sol";
-
+/// @title Implementation of ERC1363
+/// @dev All function calls are currently implemented using https://github.com/vittominacori/erc1363-payable-token
 abstract contract ERC1363Upgradeable is
   Initializable,
   ERC20Upgradeable,

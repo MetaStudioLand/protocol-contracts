@@ -6,7 +6,7 @@
 
 
 
-
+*This is an ERC20 contract implementing many standards : ERC1363, ERC2771, Pausable , Votes , Permit.*
 
 ## Methods
 
@@ -340,7 +340,7 @@ function getChainId() external view returns (uint256)
 
 
 
-
+*get current block chain identifier*
 
 
 #### Returns

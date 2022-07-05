@@ -4,7 +4,7 @@ pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeable.sol";
 
-// mock class using IERC1363Spender
+/// @title Mock class using IERC1363Spender
 contract ERC1363SpenderMock is IERC1363SpenderUpgradeable {
   bytes4 private _retval;
   bool private _reverts;

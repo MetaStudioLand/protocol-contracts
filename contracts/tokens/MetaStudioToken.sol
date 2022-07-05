@@ -20,6 +20,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
+/// @dev This is an ERC20 contract implementing many standards : ERC1363, ERC2771, Pausable , Votes , Permit.
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
   Initializable,
@@ -67,7 +68,7 @@ contract MetaStudioToken is
     __ERC1363_init();
     __UUPSUpgradeable_init();
 
-    // Defining default roles: The token Owner is granted to all roles
+    // @dev Defining default roles: The token Owner is granted to all roles
     _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
     _grantRole(PROXY_ROLE, tokensOwner);
     _grantRole(FORWARDER_ROLE, tokensOwner);
@@ -77,6 +78,7 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
+/// @dev get current block chain identifier
   function getChainId() external view returns (uint256) {
     return block.chainid;
   }
