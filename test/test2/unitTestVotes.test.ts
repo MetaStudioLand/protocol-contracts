@@ -1,11 +1,10 @@
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {batchInBlock, MAX_UINT256, ZERO_ADDRESS} from "../shared/constants";
+import {batchInBlock} from "../shared/constants";
 import {tokens} from "../shared/utils";
-import {domainSeparator} from "./helper";
 import {ethers} from "hardhat";
 import {splitSignature} from "ethers/lib/utils";
-import {getData712ForDelegation} from "../helpers/eip712";
+import {domainSeparator, getData712ForDelegation} from "../helpers/eip712";
 export function unitTestVotes() {
   describe("======== ERC20 VOTES ================================================", async function () {
     const name = "MetaStudioToken";
@@ -19,7 +18,7 @@ export function unitTestVotes() {
 
     it("domain separator", async function () {
       expect(await this.token.DOMAIN_SEPARATOR()).to.equal(
-        await domainSeparator(name, version, this.chainId, this.token.address)
+        await domainSeparator(name, version, this.chainId, this.token)
       );
     });
 
@@ -35,7 +34,7 @@ export function unitTestVotes() {
         it("delegation with balance", async function () {
           expect(
             await this.token.delegates(this.signers.initialHolder.address)
-          ).to.be.equal(ZERO_ADDRESS);
+          ).to.be.equal(ethers.constants.AddressZero);
 
           const receipt = await this.token
             .connect(this.signers.initialHolder)
@@ -45,7 +44,7 @@ export function unitTestVotes() {
             .to.emit(this.token, "DelegateChanged")
             .withArgs(
               this.signers.initialHolder.address,
-              ZERO_ADDRESS,
+              ethers.constants.AddressZero,
               this.signers.initialHolder.address
             );
           expect(receipt)
@@ -80,7 +79,7 @@ export function unitTestVotes() {
         it("delegation without balance", async function () {
           expect(
             await this.token.delegates(this.signers.initialHolder.address)
-          ).to.be.equal(ZERO_ADDRESS);
+          ).to.be.equal(ethers.constants.AddressZero);
           const receipt = await this.token
             .connect(this.signers.initialHolder)
             .delegate(this.signers.initialHolder.address);
@@ -89,7 +88,7 @@ export function unitTestVotes() {
             .to.emit(this.token, "DelegateChanged")
             .withArgs(
               this.signers.initialHolder.address,
-              ZERO_ADDRESS,
+              ethers.constants.AddressZero,
               this.signers.initialHolder.address
             );
           expect(receipt).not.emit(this.token, "DelegateVotesChanged");
@@ -128,12 +127,12 @@ export function unitTestVotes() {
 
           expect(
             await this.token.delegates(this.signers.anotherAccount.address)
-          ).to.be.equal(ZERO_ADDRESS);
+          ).to.be.equal(ethers.constants.AddressZero);
 
           const receipt = await this.token.delegateBySig(
             this.signers.anotherAccount.address,
             0,
-            MAX_UINT256,
+            ethers.constants.MaxUint256,
             sig.v,
             sig.r,
             sig.s
@@ -143,7 +142,7 @@ export function unitTestVotes() {
             .to.emit(this.token, "DelegateChanged")
             .withArgs(
               this.signers.anotherAccount.address,
-              ZERO_ADDRESS,
+              ethers.constants.AddressZero,
               this.signers.anotherAccount.address
             );
 
@@ -201,7 +200,7 @@ export function unitTestVotes() {
           await this.token.delegateBySig(
             this.signers.anotherAccount.address,
             this.nonce,
-            MAX_UINT256,
+            ethers.constants.MaxUint256,
             sig.v,
             sig.r,
             sig.s
@@ -211,7 +210,7 @@ export function unitTestVotes() {
             this.token.delegateBySig(
               this.signers.anotherAccount.address,
               this.nonce,
-              MAX_UINT256,
+              ethers.constants.MaxUint256,
               sig.v,
               sig.r,
               sig.s
@@ -241,7 +240,7 @@ export function unitTestVotes() {
             await this.token.delegateBySig(
               this.signers.recipient.address,
               this.nonce,
-              MAX_UINT256,
+              ethers.constants.MaxUint256,
               sig.v,
               sig.r,
               sig.s
@@ -250,7 +249,7 @@ export function unitTestVotes() {
             .to.emit(this.token, "DelegateChanged")
             .withArgs([
               this.signers.anotherAccount.address,
-              ZERO_ADDRESS,
+              ethers.constants.AddressZero,
               this.signers.recipient.address,
             ]);
         });
@@ -278,7 +277,7 @@ export function unitTestVotes() {
             this.token.delegateBySig(
               this.signers.anotherAccount.address,
               this.nonce + 1,
-              MAX_UINT256,
+              ethers.constants.MaxUint256,
               sig.v,
               sig.r,
               sig.s
