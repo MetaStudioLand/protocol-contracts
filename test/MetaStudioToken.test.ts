@@ -8,7 +8,7 @@ import {unitTestAccessControl} from "./test2/AccessControl.test";
 import {unitTestERC165} from "./test2/ERC165.test";
 import {unitTestERC20Permit} from "./test2/ERC20Permit.test";
 import {unitTestERC2771} from "./test2/ERC2771.test";
-
+import {unitTestVotes} from "./test2/unitTestVotes.test";
 baseContext("MetaStudioToken", function () {
   unitTestERC165();
   unitTestERC20();
@@ -16,6 +16,7 @@ baseContext("MetaStudioToken", function () {
   unitTestPausable();
   unitTestERC1363();
   unitTestERC2771();
+  unitTestVotes();
   unitTestERC20Permit();
 
   describe("======== MetaStudioToken: Specific tests ================================================", function () {

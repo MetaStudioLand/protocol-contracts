@@ -1,13 +1,17 @@
 import * as ethSigUtil from "eth-sig-util";
 
-type Message = {
+type MessagePermit = {
   owner: string;
   spender: string;
   value: string;
   nonce: string;
   deadline: string;
 };
-
+type MessageDelegation = {
+  delegatee: any;
+  nonce: any;
+  expiry: any;
+};
 type Contract = {
   address: string;
 };
@@ -37,7 +41,7 @@ export const getData712ForPermit = function (
   name: string,
   chainId: number,
   verifyingContract: Contract,
-  message: Message
+  message: MessagePermit
 ) {
   return {
     types: {
@@ -59,7 +63,7 @@ export const getData712ForDelegation = function (
   name: string,
   chainId: number,
   verifyingContract: Contract,
-  message: Message
+  message: MessageDelegation
 ) {
   return {
     types: {

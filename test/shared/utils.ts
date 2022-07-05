@@ -1,7 +1,9 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
+import {expect} from "chai";
 import {BigNumber, ContractReceipt, ContractTransaction} from "ethers";
-import {ethers, tracer} from "hardhat";
+import {ethers, network, tracer} from "hardhat";
 import {Context, Suite} from "mocha";
+import {promisify} from "util";
 import {NB_DECIMALS} from "./constants";
 
 /**
@@ -55,4 +57,37 @@ export function waitFor(
   p: Promise<ContractTransaction>
 ): Promise<ContractReceipt> {
   return p.then((tx) => tx.wait());
+}
+export const queue = promisify(setImmediate);
+export async function countPendingTransactions() {
+  return parseInt(
+    await network.provider.send("eth_getBlockTransactionCountByNumber", [
+      "pending",
+    ])
+  );
+}
+
+export async function batchInBlock(txs: any[]) {
+  try {
+    // disable auto-mining
+    await network.provider.send("evm_setAutomine", [false]);
+    // send all transactions
+    const promises = txs.map((fn: () => any) => fn());
+    // wait for node to have all pending transactions
+    while (txs.length > (await countPendingTransactions())) {
+      await queue();
+    }
+    // mine one block
+    await network.provider.send("evm_mine");
+    // fetch receipts
+    const receipts = await Promise.all(promises);
+    // Sanity check, all tx should be in the same block
+    const minedBlocks = new Set(receipts.map(({receipt}) => receipt));
+    expect(minedBlocks.size).to.equal(1);
+
+    return receipts;
+  } finally {
+    // enable auto-mining
+    await network.provider.send("evm_setAutomine", [true]);
+  }
 }
