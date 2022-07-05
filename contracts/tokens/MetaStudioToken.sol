@@ -78,8 +78,8 @@ contract MetaStudioToken is
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
 
-/// @dev get current block chain identifier
-/// @return number representing current block chain identifier
+  /// @dev get current block chain identifier
+  /// @return number representing current block chain identifier
   function getChainId() external view returns (uint256) {
     return block.chainid;
   }

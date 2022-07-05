@@ -3,7 +3,7 @@
 pragma solidity 0.8.7;
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
 
-/// @title ERC1363ReceiverMock implementation 
+/// @title ERC1363ReceiverMock implementation
 /// @dev Mock class using IERC1363Receiver
 contract ERC1363ReceiverMock is IERC1363ReceiverUpgradeable {
   bytes4 private _retval;
