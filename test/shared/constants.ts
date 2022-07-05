@@ -1,5 +1,4 @@
 import {expect} from "chai";
-import {BigNumber} from "ethers";
 import {network} from "hardhat";
 import {promisify} from "util";
 import {keccak256, toUtf8Bytes} from "ethers/lib/utils";
