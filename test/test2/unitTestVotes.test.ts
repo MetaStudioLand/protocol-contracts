@@ -237,16 +237,22 @@ export function unitTestVotes() {
             permitData712,
           ]);
           const sig = splitSignature(flatSig);
-          expect(await this.token.delegateBySig(
-            this.signers.recipient.address,
-            this.nonce,
-            MAX_UINT256,
-            sig.v,
-            sig.r,
-            sig.s
-          ))
-          .to.emit(this.token, 'DelegateChanged')
-          .withArgs([this.signers.anotherAccount.address, ZERO_ADDRESS, this.signers.recipient.address]);
+          expect(
+            await this.token.delegateBySig(
+              this.signers.recipient.address,
+              this.nonce,
+              MAX_UINT256,
+              sig.v,
+              sig.r,
+              sig.s
+            )
+          )
+            .to.emit(this.token, "DelegateChanged")
+            .withArgs([
+              this.signers.anotherAccount.address,
+              ZERO_ADDRESS,
+              this.signers.recipient.address,
+            ]);
         });
 
         it("rejects bad nonce", async function () {
@@ -433,9 +439,15 @@ export function unitTestVotes() {
             this.initialSupply,
             this.initialSupply.sub(1)
           );
-          const waitedReceipts = await receipt.wait()
-          const logIndex = waitedReceipts.events.find(( event :any ) => event.event == 'Transfer'); 
-          expect(waitedReceipts.events.filter((event:any ) => event.event == 'DelegateVotesChanged').every(( logIndexx:any ) => logIndex.logIndex < logIndexx.logIndex)).to.be.equal(true);
+        const waitedReceipts = await receipt.wait();
+        const logIndex = waitedReceipts.events.find(
+          (event: any) => event.event === "Transfer"
+        );
+        expect(
+          waitedReceipts.events
+            .filter((event: any) => event.event === "DelegateVotesChanged")
+            .every((logIndexx: any) => logIndex.logIndex < logIndexx.logIndex)
+        ).to.be.equal(true);
 
         this.holderVotes = this.initialSupply.sub(1);
         this.recipientVotes = BigNumber.from(0);
@@ -465,12 +477,16 @@ export function unitTestVotes() {
             BigNumber.from(1)
           );
 
-          const waitedReceipts = await receipt.wait()
-          const logIndex = waitedReceipts.events.find(( event :any ) => event.event == 'Transfer'); 
-          expect(waitedReceipts.events.filter((event:any ) => event.event == 'DelegateVotesChanged').every(( logIndexx:any ) => logIndex.logIndex < logIndexx.logIndex)).to.be.equal(true);
+        const waitedReceipts = await receipt.wait();
+        const logIndex = waitedReceipts.events.find(
+          (event: any) => event.event === "Transfer"
+        );
+        expect(
+          waitedReceipts.events
+            .filter((event: any) => event.event === "DelegateVotesChanged")
+            .every((logIndexx: any) => logIndex.logIndex < logIndexx.logIndex)
+        ).to.be.equal(true);
 
-        
-        
         this.holderVotes = BigNumber.from(0);
         this.recipientVotes = BigNumber.from(1);
       });
@@ -507,9 +523,15 @@ export function unitTestVotes() {
             BigNumber.from(1)
           );
 
-          const waitedReceipts = await receipt.wait()
-          const logIndex = waitedReceipts.events.find(( event :any ) => event.event == 'Transfer'); 
-          expect(waitedReceipts.events.filter((event:any ) => event.event == 'DelegateVotesChanged').every(( logIndexx:any ) => logIndex.logIndex < logIndexx.logIndex)).to.be.equal(true);
+        const waitedReceipts = await receipt.wait();
+        const logIndex = waitedReceipts.events.find(
+          (event: any) => event.event === "Transfer"
+        );
+        expect(
+          waitedReceipts.events
+            .filter((event: any) => event.event === "DelegateVotesChanged")
+            .every((logIndexx: any) => logIndex.logIndex < logIndexx.logIndex)
+        ).to.be.equal(true);
 
         this.holderVotes = this.initialSupply.sub(BigNumber.from(1));
         this.recipientVotes = BigNumber.from(1);
