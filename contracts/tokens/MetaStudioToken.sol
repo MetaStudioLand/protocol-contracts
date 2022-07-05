@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
@@ -19,7 +20,7 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IPausable.sol";
 
-/// @title The Metastudio's ERC20 token
+/// @title The MetaStudio ERC20 Token
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
   Initializable,
@@ -47,16 +48,15 @@ contract MetaStudioToken is
     _disableInitializers();
   }
 
-  /// @notice Contract initialisation. 5_000_000_000 tokens are minted
+  /// @notice Contract initialization. 5_000_000_000 tokens are minted
   /// @dev Constructor replacement methods used for Proxified Contract
-  /// @param tokensOwner initianally minted Token's owner address
+  /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
   /// @param forwarder Initial ERC2771 trusted forwarder
   function initialize(address tokensOwner, address forwarder)
     external
     initializer
   {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
-    // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC20_init("MetaStudioToken", "SMV");
     __AccessControlEnumerable_init();
     __ReentrancyGuard_init();
@@ -67,7 +67,7 @@ contract MetaStudioToken is
     __ERC1363_init();
     __UUPSUpgradeable_init();
 
-    // Defining default roles: The token Owner is granted to all roles
+    // Defining default roles: the token owner is granted all roles
     _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
     _grantRole(PROXY_ROLE, tokensOwner);
     _grantRole(FORWARDER_ROLE, tokensOwner);
@@ -127,7 +127,7 @@ contract MetaStudioToken is
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  // @dev only PROXY-ROLE granted account can upgrade
+  // @dev only PROXY_ROLE granted address can upgrade
   function _authorizeUpgrade(address)
     internal
     view
