@@ -8,7 +8,7 @@ import {domainSeparator, getData712ForPermit} from "../helpers/eip712";
 import {waitFor} from "../shared/utils";
 
 export function unitTestERC20Permit(): void {
-  describe("======== Contract: ERC20 Permit ================================================", async function () {
+  describe("======== Contract: ERC20 Permit ================================================", function () {
     const nonce = BigNumber.from("0");
     const deadline = ethers.constants.MaxUint256;
 
@@ -53,7 +53,7 @@ export function unitTestERC20Permit(): void {
       return splitSignature(flatSig);
     }
 
-    describe("when msg signer == owner", async function () {
+    describe("when msg signer == owner", function () {
       it("ERC20 Approval event is emitted", async function () {
         const sig = await _buildSignature(
           this,
@@ -195,7 +195,7 @@ export function unitTestERC20Permit(): void {
       });
     });
 
-    describe("when msg signer != owner", async function () {
+    describe("when msg signer != owner", function () {
       it("rejects other signature", async function () {
         const sig = await _buildSignature(
           this,

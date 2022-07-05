@@ -18,10 +18,10 @@ baseContext("MetaStudioToken", function () {
   unitTestERC2771();
   unitTestERC20Permit();
 
-  describe("======== MetaStudioToken: Specific tests ================================================", async function () {
-    describe("AccessControl", async function () {
-      describe("access control for Pause", async function () {
-        describe("role is not granted", async function () {
+  describe("======== MetaStudioToken: Specific tests ================================================", function () {
+    describe("AccessControl", function () {
+      describe("access control for Pause", function () {
+        describe("role is not granted", function () {
           beforeEach(async function () {
             await this.token
               .connect(this.signers.initialHolder)
@@ -44,7 +44,7 @@ baseContext("MetaStudioToken", function () {
           });
         });
 
-        describe("role is granted", async function () {
+        describe("role is granted", function () {
           beforeEach(async function () {
             await this.token
               .connect(this.signers.initialHolder)
@@ -65,8 +65,8 @@ baseContext("MetaStudioToken", function () {
         });
       });
 
-      describe("access control for Forwarder", async function () {
-        describe("role IS NOT granted", async function () {
+      describe("access control for Forwarder", function () {
+        describe("role IS NOT granted", function () {
           beforeEach(async function () {
             await this.token
               .connect(this.signers.initialHolder)
@@ -84,7 +84,7 @@ baseContext("MetaStudioToken", function () {
           });
         });
 
-        describe("role IS granted", async function () {
+        describe("role IS granted", function () {
           beforeEach(async function () {
             await this.token
               .connect(this.signers.initialHolder)

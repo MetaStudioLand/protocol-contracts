@@ -2,7 +2,7 @@
 
 
 
-
+> Interface &quot;Pausable&quot;
 
 
 
@@ -16,7 +16,7 @@
 function pause() external nonpayable
 ```
 
-
+Set the contract in pause. No transfert is allowed
 
 
 
@@ -27,7 +27,7 @@ function pause() external nonpayable
 function paused() external view returns (bool)
 ```
 
-
+Return true if contract is in `Pause` state
 
 
 
@@ -44,7 +44,7 @@ function paused() external view returns (bool)
 function unpause() external nonpayable
 ```
 
-
+Set the contract in ready state. Transferts are allowed
 
 
 

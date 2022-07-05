@@ -2,10 +2,10 @@ import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {BigNumber} from "ethers";
 import {
+  DEFAULT_ADMIN_ROLE,
   FORWARDER_ROLE,
   PAUSER_ROLE,
   PROXY_ROLE,
-  ROLES_ADMIN_ROLE,
 } from "../../shared/constants";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
 
@@ -21,19 +21,19 @@ export function shouldBehaveLikeAccessControl(
   describe("default admin", function () {
     it("deployer has default admin role", async function () {
       expect(
-        await this.token.hasRole(ROLES_ADMIN_ROLE, tokenOwner.address)
+        await this.token.hasRole(DEFAULT_ADMIN_ROLE, tokenOwner.address)
       ).to.equal(true);
     });
 
     it("other roles's admin is the default admin role", async function () {
       expect(await this.token.getRoleAdmin(PROXY_ROLE)).to.equal(
-        ROLES_ADMIN_ROLE
+        DEFAULT_ADMIN_ROLE
       );
     });
 
     it("default admin role's admin is itself", async function () {
-      expect(await this.token.getRoleAdmin(ROLES_ADMIN_ROLE)).to.equal(
-        ROLES_ADMIN_ROLE
+      expect(await this.token.getRoleAdmin(DEFAULT_ADMIN_ROLE)).to.equal(
+        DEFAULT_ADMIN_ROLE
       );
     });
   });
@@ -46,14 +46,10 @@ export function shouldBehaveLikeAccessControl(
     });
 
     it("non-admin cannot grant role to other accounts", async function () {
-      // await expectRevert(
-      //   this.token.grantRole(ADMIN_ROLE, authorized, {from: other}),
-      //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
-      // );
       expect(
         this.token.connect(other).grantRole(PROXY_ROLE, authorized.address)
       ).to.be.revertedWith(
-        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+        `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`
       );
     });
 
@@ -114,14 +110,10 @@ export function shouldBehaveLikeAccessControl(
       });
 
       it("non-admin cannot revoke role", async function () {
-        // await expectRevert(
-        //   this.token.revokeRole(ADMIN_ROLE, authorized, {from: other}),
-        //   `${errorPrefix}: account ${other.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
-        // );
         expect(
           this.token.connect(other).revokeRole(PROXY_ROLE, authorized.address)
         ).to.be.revertedWith(
-          `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${ROLES_ADMIN_ROLE}`
+          `${errorPrefix}: account ${other.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`
         );
       });
 
@@ -198,7 +190,7 @@ export function shouldBehaveLikeAccessControl(
   //   beforeEach(async function () {
   //     expect(await this.token.setRoleAdmin(ADMIN_ROLE, PAUSER_ROLE))
   //       .to.emit(this.token, "RoleAdminChanged")
-  //       .withArgs(ADMIN_ROLE, ROLES_ADMIN_ROLE, PAUSER_ROLE);
+  //       .withArgs(ADMIN_ROLE, DEFAULT_ADMIN_ROLE, PAUSER_ROLE);
   //
   //     await this.token
   //       .connect(admin)

@@ -64,7 +64,9 @@ export async function baseContext(
     });
 
     afterEach(async function () {
-      delete tracer.nameTags[this.token.address];
+      if (this.token) {
+        delete tracer.nameTags[this.token.address];
+      }
     });
 
     hooks();

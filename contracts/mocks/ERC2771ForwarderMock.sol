@@ -5,7 +5,7 @@ pragma solidity 0.8.7;
 /**
  * @dev Simple minimal forwarder to be used together with an ERC2771 compatible contract. See {ERC2771Context}.
  */
-contract ERC2771Forwarder {
+contract ERC2771ForwarderMock {
   struct ForwardRequest {
     address from;
     address to;

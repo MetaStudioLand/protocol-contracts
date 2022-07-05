@@ -50,7 +50,7 @@ function DOMAIN_SEPARATOR() external view returns (bytes32)
 function FORWARDER_ROLE() external view returns (bytes32)
 ```
 
-
+Role allowed to update the trusted forwarder (meta-tx)
 
 
 
@@ -67,7 +67,7 @@ function FORWARDER_ROLE() external view returns (bytes32)
 function PAUSER_ROLE() external view returns (bytes32)
 ```
 
-
+Role allowed to switch contract between active/paused state
 
 
 
@@ -84,24 +84,7 @@ function PAUSER_ROLE() external view returns (bytes32)
 function PROXY_ROLE() external view returns (bytes32)
 ```
 
-
-
-
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | bytes32 | undefined |
-
-### ROLES_ADMIN_ROLE
-
-```solidity
-function ROLES_ADMIN_ROLE() external view returns (bytes32)
-```
-
-
+Role allowed to update implementation behind Proxy
 
 
 
@@ -601,23 +584,6 @@ Checks if it&#39;s the current trusted forwarder.
 | Name | Type | Description |
 |---|---|---|
 | _0 | bool | true if it is the trusted forwarder |
-
-### msgSender
-
-```solidity
-function msgSender() external view returns (address)
-```
-
-
-
-*specific to tests*
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | address | undefined |
 
 ### name
 
