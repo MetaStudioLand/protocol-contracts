@@ -31,7 +31,7 @@ export function unitTestERC2771() {
 
     describe("a trusted forwarder is defined", function () {
       before(async function () {
-        const Factory = await ethers.getContractFactory("ERC2771Forwarder");
+        const Factory = await ethers.getContractFactory("ERC2771ForwarderMock");
         const minimalForwarder = await Factory.deploy();
         await minimalForwarder.deployed();
         this.forwarder = minimalForwarder;

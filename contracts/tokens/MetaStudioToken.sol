@@ -17,8 +17,6 @@ import "../metatx/IERC2771Upgradeable.sol";
 import "../ERC1363/ERC1363ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
-
-import "hardhat/console.sol";
 import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
@@ -135,8 +133,9 @@ contract MetaStudioToken is
   }
 
   // @dev only PROXY-ROLE granted account can upgrade
-  function _authorizeUpgrade(address newImplementation)
+  function _authorizeUpgrade(address)
     internal
+    view
     override
     onlyRole(PROXY_ROLE)
   // solhint-disable-next-line no-empty-blocks
