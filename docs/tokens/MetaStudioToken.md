@@ -1249,6 +1249,3 @@ event Upgraded(address indexed implementation)
 | Name | Type | Description |
 |---|---|---|
 | implementation `indexed` | address | undefined |
-
-
-
