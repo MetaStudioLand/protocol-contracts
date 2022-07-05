@@ -68,7 +68,7 @@ contract MetaStudioToken is
     __ERC1363_init();
     __UUPSUpgradeable_init();
 
-    // @dev Defining default roles: The token Owner is granted to all roles
+    /// @dev Defining default roles: The token Owner is granted to all roles
     _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
     _grantRole(PROXY_ROLE, tokensOwner);
     _grantRole(FORWARDER_ROLE, tokensOwner);
@@ -79,6 +79,7 @@ contract MetaStudioToken is
   }
 
 /// @dev get current block chain identifier
+/// @return number representing current block chain identifier
   function getChainId() external view returns (uint256) {
     return block.chainid;
   }

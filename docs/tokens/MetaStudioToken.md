@@ -347,7 +347,7 @@ function getChainId() external view returns (uint256)
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | uint256 | undefined |
+| _0 | uint256 | number representing current block chain identifier |
 
 ### getPastTotalSupply
 

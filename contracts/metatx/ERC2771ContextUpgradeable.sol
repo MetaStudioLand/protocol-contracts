@@ -5,8 +5,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 /// @title Implementation of ERC2771 standart
-/// @notice Implementing an updatable Trusted Forwarder
-/// @dev 
+/// @notice Accept forwarding transactions
+/// @dev Implementing an updatable Trusted Forwarder
 contract ERC2771ContextUpgradeable is
   Initializable,
   ContextUpgradeable,
