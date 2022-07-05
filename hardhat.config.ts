@@ -46,7 +46,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000,
+        runs: 100,
       },
       outputSelection: {
         "*": {
@@ -54,6 +54,10 @@ const config: HardhatUserConfig = {
         },
       },
     },
+  },
+  mocha: {
+    timeout: 10000,
+    fullTrace: true,
   },
   tracer: {
     enabled: true,
@@ -77,7 +81,12 @@ const config: HardhatUserConfig = {
     exclude: ["mocks", "elin", "IERC2771Upgradeable"],
     debugMode: false,
   },
+  defaultNetwork: "hardhat",
   networks: {
+    hardhat: {
+      chainId: 1337,
+      allowUnlimitedContractSize: true,
+    },
     goerli: {
       url: process.env.GOERLI_URL || "",
       accounts:

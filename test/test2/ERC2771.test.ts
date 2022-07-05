@@ -5,7 +5,7 @@ import {getSuiteContext} from "../shared/utils";
 import {shouldBehaveLikeForwardedRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
 
 export function unitTestERC2771() {
-  describe("======== ERC2771 ================================================", async function () {
+  describe("======== ERC2771 ================================================", function () {
     describe("no trusted forwarder defined", function () {
       it("unrecognize trusted forwarder", async function () {
         await expect(
@@ -31,7 +31,7 @@ export function unitTestERC2771() {
 
     describe("a trusted forwarder is defined", function () {
       before(async function () {
-        const Factory = await ethers.getContractFactory("ERC2771Forwarder");
+        const Factory = await ethers.getContractFactory("ERC2771ForwarderMock");
         const minimalForwarder = await Factory.deploy();
         await minimalForwarder.deployed();
         this.forwarder = minimalForwarder;

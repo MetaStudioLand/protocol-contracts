@@ -11,7 +11,7 @@ import {
 import {getSuiteContext} from "../shared/utils";
 
 export function unitTestERC1363(): void {
-  describe("======== Contract: ERC1363 ================================================", async function () {
+  describe("======== Contract: ERC1363 ================================================", function () {
     const {signers, initialSupply} = getSuiteContext(this);
 
     describe("via transferFromAndCall", function () {

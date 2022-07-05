@@ -2,7 +2,7 @@ import {expect} from "chai";
 import {BigNumber} from "ethers";
 
 export function unitTestPausable(): void {
-  describe("======== Contract: Pausable ================================================", async function () {
+  describe("======== Contract: Pausable ================================================", function () {
     describe("transfer", function () {
       it("allows to transfer when unpaused", async function () {
         await this.token

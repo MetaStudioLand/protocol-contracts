@@ -57,7 +57,8 @@ export async function batchInBlock(txs: any[]) {
   }
 }
 
-export const ROLES_ADMIN_ROLE = keccak256(toUtf8Bytes("ROLES_ADMIN_ROLE"));
+export const DEFAULT_ADMIN_ROLE =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
 export const PROXY_ROLE = keccak256(toUtf8Bytes("PROXY_ROLE"));
 export const FORWARDER_ROLE = keccak256(toUtf8Bytes("FORWARDER_ROLE"));
 export const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));

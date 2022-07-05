@@ -5,7 +5,7 @@ import {
 } from "./behaviors/AccessControl.behavior";
 
 export function unitTestAccessControl(): void {
-  describe("======== Contract: AccessControl ================================================", async function () {
+  describe("======== Contract: AccessControl ================================================", function () {
     const {signers} = getSuiteContext(this);
     shouldBehaveLikeAccessControl(
       "AccessControl",

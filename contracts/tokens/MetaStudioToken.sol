@@ -14,11 +14,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
 import "../metatx/IERC2771Upgradeable.sol";
-import "../ERC1363/ERC1363ContextUpgradeable.sol";
+import "../ERC1363/ERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
-
-import "hardhat/console.sol";
 import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
@@ -37,9 +35,11 @@ contract MetaStudioToken is
   ERC2771ContextUpgradeable,
   UUPSUpgradeable
 {
-  bytes32 public constant ROLES_ADMIN_ROLE = keccak256("ROLES_ADMIN_ROLE");
+  /// @notice Role allowed to update implementation behind Proxy
   bytes32 public constant PROXY_ROLE = keccak256("PROXY_ROLE");
+  /// @notice Role allowed to update the trusted forwarder (meta-tx)
   bytes32 public constant FORWARDER_ROLE = keccak256("FORWARDER_ROLE");
+  /// @notice Role allowed to switch contract between active/paused state
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @custom:oz-upgrades-unsafe-allow constructor
@@ -67,15 +67,8 @@ contract MetaStudioToken is
     __ERC1363_init();
     __UUPSUpgradeable_init();
 
-    // Defining roles' admin role
-    _setRoleAdmin(ROLES_ADMIN_ROLE, ROLES_ADMIN_ROLE);
-    _setRoleAdmin(PROXY_ROLE, ROLES_ADMIN_ROLE);
-    _setRoleAdmin(FORWARDER_ROLE, ROLES_ADMIN_ROLE);
-    _setRoleAdmin(PAUSER_ROLE, ROLES_ADMIN_ROLE);
-
-    // Definig defaut roles
-    // The token Owner is granted to all roles
-    _grantRole(ROLES_ADMIN_ROLE, tokensOwner);
+    // Defining default roles: The token Owner is granted to all roles
+    _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
     _grantRole(PROXY_ROLE, tokensOwner);
     _grantRole(FORWARDER_ROLE, tokensOwner);
     _grantRole(PAUSER_ROLE, tokensOwner);
@@ -135,8 +128,9 @@ contract MetaStudioToken is
   }
 
   // @dev only PROXY-ROLE granted account can upgrade
-  function _authorizeUpgrade(address newImplementation)
+  function _authorizeUpgrade(address)
     internal
+    view
     override
     onlyRole(PROXY_ROLE)
   // solhint-disable-next-line no-empty-blocks

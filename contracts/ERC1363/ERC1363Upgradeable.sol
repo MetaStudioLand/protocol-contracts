@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
-import "hardhat/console.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -15,9 +14,9 @@ abstract contract ERC1363Upgradeable is
 {
   using AddressUpgradeable for address;
 
-  function __ERC1363_init() internal onlyInitializing {}
+  function __ERC1363_init() internal view onlyInitializing {}
 
-  function __ERC1363_init_unchained() internal onlyInitializing {}
+  function __ERC1363_init_unchained() internal view onlyInitializing {}
 
   /**
    * @dev Transfer tokens to a specified address and then execute a callback on `to`.
