@@ -18,10 +18,8 @@ abstract contract ERC1363Upgradeable is
 {
   using AddressUpgradeable for address;
 
-  // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
   function __ERC1363_init() internal view onlyInitializing {}
 
-  // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
   function __ERC1363_init_unchained() internal view onlyInitializing {}
 
   /**
@@ -52,7 +50,6 @@ abstract contract ERC1363Upgradeable is
     bytes memory data
   ) public virtual override returns (bool) {
     transfer(to, amount);
-    // solhint-disable-next-line reason-string
     require(
       _checkAndCallTransfer(_msgSender(), to, amount, data),
       "ERC1363Upgradeable: _checkAndCallTransfer reverts"
@@ -82,12 +79,11 @@ abstract contract ERC1363Upgradeable is
     bytes memory data
   ) public virtual override returns (bool) {
     transferFrom(from, to, amount);
-    // solhint-disable-next-line reason-string
     require(
       _checkAndCallTransfer(from, to, amount, data),
       "ERC1363Upgradeable: _checkAndCallTransfer reverts"
     );
-    return _transferFromAndCall(from, to, amount, data);
+    return true;
   }
 
   /**
@@ -105,7 +101,6 @@ abstract contract ERC1363Upgradeable is
     bytes memory data
   ) internal returns (bool) {
     transferFrom(from, to, amount);
-    // solhint-disable-next-line reason-string
     require(
       _checkAndCallTransfer(from, to, amount, data),
       "ERC1363Upgradeable: _checkAndCallTransfer reverts"
@@ -141,7 +136,6 @@ abstract contract ERC1363Upgradeable is
     bytes memory data
   ) public virtual override returns (bool) {
     approve(spender, amount);
-    // solhint-disable-next-line reason-string
     require(
       _checkAndCallApprove(spender, amount, data),
       "ERC1363Upgradeable: _checkAndCallApprove reverts"
