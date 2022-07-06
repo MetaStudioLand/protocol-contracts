@@ -21,8 +21,8 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IPausable.sol";
 
 /// @title The Metastudio's ERC20 token
-/// @dev This is an ERC20 contract implementing many standards : ERC1363, ERC2771, Pausable , Votes , Permit.
-/// @custom:security-contact it@theblockchainxdev.com:
+/// @dev This is an ERC20 contract implementing many features: ERC165, ERC1363, ERC2771, ERC20Votes, ERC20Permit, ERC1967, ERC1822, Pausable and AccessControl.
+/// @custom:security-contact it@theblockchainxdev.com
 contract MetaStudioToken is
   Initializable,
   ContextUpgradeable,
@@ -39,16 +39,17 @@ contract MetaStudioToken is
 {
   /// @notice Role allowed to update implementation behind Proxy
   /// @dev Role allowed to update implementation behind Proxy
-  /// @return (bytes32): compute the Keccak-256 hash of the PROXY_ROLE
+  /// @return compute the Keccak-256 hash of the PROXY_ROLE
   bytes32 public constant PROXY_ROLE = keccak256("PROXY_ROLE");
+
   /// @notice Role allowed to update the trusted forwarder (meta-tx)
   /// @dev Role allowed to update the trusted forwarder (meta-tx)
-  /// @return (bytes32): compute the Keccak-256 hash of the FORWARDER_ROLE
+  /// @return compute the Keccak-256 hash of the FORWARDER_ROLE
   bytes32 public constant FORWARDER_ROLE = keccak256("FORWARDER_ROLE");
 
   /// @notice Role allowed to switch contract between active/paused state
   /// @dev Role allowed to switch contract between active/paused state
-  /// @return (bytes32): compute the Keccak-256 hash of the PAUSER_ROLE
+  /// @return compute the Keccak-256 hash of the PAUSER_ROLE
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @custom:oz-upgrades-unsafe-allow constructor
@@ -57,7 +58,7 @@ contract MetaStudioToken is
   }
 
   /// @notice Contract initialization. 5_000_000_000 tokens are minted
-  /// @dev Constructor replacement methods used for Proxified Contract
+  /// @dev Initialization of the contract required by the `proxy pattern` replacing the `constructor`
   /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
   /// @param forwarder Initial ERC2771 trusted forwarder
   function initialize(address tokensOwner, address forwarder)
@@ -86,15 +87,14 @@ contract MetaStudioToken is
 
   /// @dev get current block chain identifier
   /// @return number representing current block chain identifier
-
   function getChainId() external view returns (uint256) {
     return block.chainid;
   }
 
-  /// @notice Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
-  /// @dev ERC 165 implementation
+  /// @notice Supported interface ask machine.
+  /// @dev ERC165 implementation
   /// @param interfaceId interface's id
-  /// @return Returns true if the specified interface is implemented by the contract
+  /// @return true if the specified interface is implemented by the contract
   function supportsInterface(bytes4 interfaceId)
     public
     pure
@@ -112,18 +112,14 @@ contract MetaStudioToken is
       interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId;
   }
 
-  /*
-   * Inheritance extensions
-   */
-
-  /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on it except `unpause`
+  /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
   /// @dev Only owner can pause
   function pause() external onlyRole(PAUSER_ROLE) {
     _pause();
   }
 
   /// @notice Unpause the contract.
-  /// @dev Only owner can pause
+  /// @dev Only owner can unpause
   function unpause() external onlyRole(PAUSER_ROLE) {
     _unpause();
   }
@@ -258,11 +254,11 @@ contract MetaStudioToken is
 
   /*
     Extended ERC2771
-  */
+   */
 
-  /// @notice Allows Contract's owner to change the trusted forwarder
+  /// @notice Allows FORWARDER_ROLE granted account to change the `trusted forwarder`
   /// @dev should be declared here because we need to protect calls with onlyRole(FORWARDER_ROLE)
-  /// @param forwarder New tructed forwarder's address
+  /// @param forwarder New trusted forwarder's address
   function setTrustedForwarder(address forwarder)
     external
     onlyRole(FORWARDER_ROLE)

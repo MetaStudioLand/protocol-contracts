@@ -6,7 +6,7 @@
 
 
 
-*This is an ERC20 contract implementing many standards : ERC1363, ERC2771, Pausable , Votes , Permit.*
+*This is an ERC20 contract implementing many features: ERC165, ERC1363, ERC2771, ERC20Votes, ERC20Permit, ERC1967, ERC1822, Pausable and AccessControl.*
 
 ## Methods
 
@@ -59,7 +59,7 @@ Role allowed to update the trusted forwarder (meta-tx)
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the FORWARDER_ROLE |
+| _0 | bytes32 | compute the Keccak-256 hash of the FORWARDER_ROLE |
 
 ### PAUSER_ROLE
 
@@ -76,7 +76,7 @@ Role allowed to switch contract between active/paused state
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the PAUSER_ROLE |
+| _0 | bytes32 | compute the Keccak-256 hash of the PAUSER_ROLE |
 
 ### PROXY_ROLE
 
@@ -93,7 +93,7 @@ Role allowed to update implementation behind Proxy
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the PROXY_ROLE |
+| _0 | bytes32 | compute the Keccak-256 hash of the PROXY_ROLE |
 
 ### allowance
 
@@ -554,7 +554,7 @@ function initialize(address tokensOwner, address forwarder) external nonpayable
 
 Contract initialization. 5_000_000_000 tokens are minted
 
-*Constructor replacement methods used for Proxified Contract*
+*Initialization of the contract required by the `proxy pattern` replacing the `constructor`*
 
 #### Parameters
 
@@ -569,21 +569,21 @@ Contract initialization. 5_000_000_000 tokens are minted
 function isTrustedForwarder(address forwarder) external view returns (bool)
 ```
 
-Checks if it&#39;s the current trusted forwarder.
+Checks if the address is the current trusted forwarder.
 
-*ERC 2771 implementation*
+*ERC2771 implementation*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| forwarder | address | canditate forwarder address |
+| forwarder | address | address to check |
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | true if it is the trusted forwarder |
+| _0 | bool | true if it&#39;s the trusted forwarder |
 
 ### name
 
@@ -652,7 +652,7 @@ function numCheckpoints(address account) external view returns (uint32)
 function pause() external nonpayable
 ```
 
-Pause the contract aka `Emergency Stop Mechanism`. No action available on it except `unpause`
+Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
 
 *Only owner can pause*
 
@@ -753,7 +753,7 @@ function revokeRole(bytes32 role, address account) external nonpayable
 function setTrustedForwarder(address forwarder) external nonpayable
 ```
 
-Allows Contract&#39;s owner to change the trusted forwarder
+Allows FORWARDER_ROLE granted account to change the `trusted forwarder`
 
 *should be declared here because we need to protect calls with onlyRole(FORWARDER_ROLE)*
 
@@ -761,7 +761,7 @@ Allows Contract&#39;s owner to change the trusted forwarder
 
 | Name | Type | Description |
 |---|---|---|
-| forwarder | address | New tructed forwarder&#39;s address |
+| forwarder | address | New trusted forwarder&#39;s address |
 
 ### supportsInterface
 
@@ -769,9 +769,9 @@ Allows Contract&#39;s owner to change the trusted forwarder
 function supportsInterface(bytes4 interfaceId) external pure returns (bool)
 ```
 
-Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, `IERC2771`, `IERC20Permit`, `IERC1363`
+Supported interface ask machine.
 
-*ERC 165 implementation*
+*ERC165 implementation*
 
 #### Parameters
 
@@ -783,7 +783,7 @@ Supported interface ask machine. Implemented interface are `IERC165`, `IERC20`, 
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | Returns true if the specified interface is implemented by the contract |
+| _0 | bool | true if the specified interface is implemented by the contract |
 
 ### symbol
 
@@ -921,22 +921,22 @@ function transferFromAndCall(address from, address to, uint256 amount, bytes dat
 
 
 
-
+*Transfer tokens from one address to another and then execute a callback on `to`.*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| from | address | undefined |
-| to | address | undefined |
-| amount | uint256 | undefined |
-| data | bytes | undefined |
+| from | address | The address which you want to send tokens from |
+| to | address | The address which you want to transfer to |
+| amount | uint256 | The amount of tokens to be transferred |
+| data | bytes | Additional data with no specified format |
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | undefined |
+| _0 | bool | A boolean that indicates if the operation was successful. |
 
 ### transferFromAndCall
 
@@ -970,7 +970,7 @@ function unpause() external nonpayable
 
 Unpause the contract.
 
-*Only owner can pause*
+*Only owner can unpause*
 
 
 ### upgradeTo
@@ -1207,7 +1207,7 @@ event Transfer(address indexed from, address indexed to, uint256 value)
 event TrustedForwarderChanged(address oldTF, address newTF)
 ```
 
-Emitted when the trusted forwarder have been successfully changed
+Emitted when the trusted forwarder has been successfully changed
 
 
 
@@ -1249,3 +1249,6 @@ event Upgraded(address indexed implementation)
 | Name | Type | Description |
 |---|---|---|
 | implementation `indexed` | address | undefined |
+
+
+

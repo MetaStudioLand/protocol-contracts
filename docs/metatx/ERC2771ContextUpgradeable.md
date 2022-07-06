@@ -2,11 +2,11 @@
 
 
 
-> Implementation of ERC2771 standart
+> Implementation of ERC2771 standard
 
-Accept forwarding transactions
+`Meta Transactions` implementation
 
-*Implementing an updatable Trusted Forwarder*
+*Implementing an updatable `trusted forwarder`*
 
 ## Methods
 
@@ -16,21 +16,21 @@ Accept forwarding transactions
 function isTrustedForwarder(address forwarder) external view returns (bool)
 ```
 
-Checks if it&#39;s the current trusted forwarder.
+Checks if the address is the current trusted forwarder.
 
-*ERC 2771 implementation*
+*ERC2771 implementation*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| forwarder | address | canditate forwarder address |
+| forwarder | address | address to check |
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | true if it is the trusted forwarder |
+| _0 | bool | true if it&#39;s the trusted forwarder |
 
 
 
@@ -58,7 +58,7 @@ event Initialized(uint8 version)
 event TrustedForwarderChanged(address oldTF, address newTF)
 ```
 
-Emitted when the trusted forwarder have been successfully changed
+Emitted when the trusted forwarder has been successfully changed
 
 
 
@@ -67,7 +67,7 @@ Emitted when the trusted forwarder have been successfully changed
 | Name | Type | Description |
 |---|---|---|
 | oldTF  | address | previous trusted forwader |
-| newTF  | address | new registred trusted forwader |
+| newTF  | address | new registered trusted forwarder |
 
 
 

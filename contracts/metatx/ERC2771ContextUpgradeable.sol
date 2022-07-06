@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 
-/// @title Implementation of ERC2771 standart
-/// @notice Accept forwarding transactions
-/// @dev Implementing an updatable Trusted Forwarder
+/// @title Implementation of ERC2771 standard
+/// @notice `Meta Transactions` implementation
+/// @dev Implementing an updatable `trusted forwarder`
 contract ERC2771ContextUpgradeable is
   Initializable,
   ContextUpgradeable,
@@ -16,9 +16,9 @@ contract ERC2771ContextUpgradeable is
 {
   address private _trustedForwarder;
 
-  /// @notice Emitted when the trusted forwarder have been successfully changed
+  /// @notice Emitted when the trusted forwarder has been successfully changed
   /// @param oldTF previous trusted forwader
-  /// @param newTF new registred trusted forwader
+  /// @param newTF new registered trusted forwarder
   event TrustedForwarderChanged(address oldTF, address newTF);
 
   // solhint-disable-next-line func-name-mixedcase
@@ -28,10 +28,10 @@ contract ERC2771ContextUpgradeable is
     }
   }
 
-  /// @notice Checks if it's the current trusted forwarder.
-  /// @dev ERC 2771 implementation
-  /// @param forwarder canditate forwarder address
-  /// @return true if it is the trusted forwarder
+  /// @notice Checks if the address is the current trusted forwarder.
+  /// @dev ERC2771 implementation
+  /// @param forwarder address to check
+  /// @return true if it's the trusted forwarder
   function isTrustedForwarder(address forwarder)
     public
     view
@@ -42,9 +42,6 @@ contract ERC2771ContextUpgradeable is
     return forwarder == _trustedForwarder;
   }
 
-  /**
-   * @dev Only callable by the owner. Allows change of the trusted forwarder
-   */
   function _setTrustedForwarder(address forwarder) internal {
     address currentTrustedForwarder = _trustedForwarder;
     _trustedForwarder = forwarder;

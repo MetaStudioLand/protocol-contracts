@@ -9,8 +9,8 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363ReceiverUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363SpenderUpgradeable.sol";
 
-/// @title Implementation of ERC1363
-/// @dev All function calls are currently implemented using https://github.com/vittominacori/erc1363-payable-token
+/// @title ERC1363 upgradeable implementation
+/// @dev implementation is inspired by https://github.com/vittominacori/erc1363-payable-token
 abstract contract ERC1363Upgradeable is
   Initializable,
   ERC20Upgradeable,
@@ -74,6 +74,14 @@ abstract contract ERC1363Upgradeable is
     return _transferFromAndCall(from, to, amount, "");
   }
 
+  /**
+   * @dev Transfer tokens from one address to another and then execute a callback on `to`.
+   * @param from The address which you want to send tokens from
+   * @param to The address which you want to transfer to
+   * @param amount The amount of tokens to be transferred
+   * @param data Additional data with no specified format
+   * @return A boolean that indicates if the operation was successful.
+   */
   function transferFromAndCall(
     address from,
     address to,
