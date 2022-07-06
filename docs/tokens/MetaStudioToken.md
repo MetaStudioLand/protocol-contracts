@@ -2,7 +2,7 @@
 
 
 
-> The MetaStudio ERC20 Token
+> The Metastudio&#39;s ERC20 token
 
 
 
