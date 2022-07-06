@@ -5,6 +5,7 @@ import {splitSignature} from "ethers/lib/utils";
 import {ethers} from "hardhat";
 import {Context} from "mocha";
 import {domainSeparator, getData712ForPermit} from "../../helpers/eip712";
+import {DOMAIN_VERSION} from "../../shared/constants";
 import {waitFor} from "../../shared/utils";
 
 export function unitTestERC20Permit(): void {
@@ -20,7 +21,12 @@ export function unitTestERC20Permit(): void {
 
     it("domain separator", async function () {
       expect(await this.token.DOMAIN_SEPARATOR()).to.equal(
-        await domainSeparator(this.name, "1", this.chainId, this.token)
+        await domainSeparator(
+          this.name,
+          DOMAIN_VERSION,
+          this.chainId,
+          this.token
+        )
       );
     });
 

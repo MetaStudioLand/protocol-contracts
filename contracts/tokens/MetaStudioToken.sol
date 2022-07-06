@@ -65,12 +65,12 @@ contract MetaStudioToken is
     initializer
   {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
-    __ERC20_init("MetaStudioToken", "SMV");
+    __ERC20_init("METAS", "METAS");
     __AccessControlEnumerable_init();
     __ReentrancyGuard_init();
     __ERC2771_init(forwarder);
     __Pausable_init();
-    __ERC20Permit_init("MetaStudioToken");
+    __ERC20Permit_init("METAS");
     __ERC20Votes_init();
     __ERC1363_init();
 

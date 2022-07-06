@@ -1,14 +1,13 @@
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {batchInBlock, tokens} from "../../shared/utils";
-import {ethers} from "hardhat";
 import {splitSignature} from "ethers/lib/utils";
+import {ethers} from "hardhat";
 import {domainSeparator, getData712ForDelegation} from "../../helpers/eip712";
+import {DOMAIN_VERSION} from "../../shared/constants";
+import {batchInBlock} from "../../shared/utils";
+
 export function unitTestVotes() {
   describe("======== ERC20 VOTES ================================================", async function () {
-    const name = "MetaStudioToken";
-    const initialSupply = tokens(5_000_000_000);
-    const version = "1";
     it("initial nonce is 0", async function () {
       expect(
         await this.token.nonces(this.signers.initialHolder.address)
@@ -17,7 +16,12 @@ export function unitTestVotes() {
 
     it("domain separator", async function () {
       expect(await this.token.DOMAIN_SEPARATOR()).to.equal(
-        await domainSeparator(name, version, this.chainId, this.token)
+        await domainSeparator(
+          this.name,
+          DOMAIN_VERSION,
+          this.chainId,
+          this.token
+        )
       );
     });
 
@@ -101,7 +105,7 @@ export function unitTestVotes() {
           this.nonce = BigNumber.from("0");
           await this.token
             .connect(this.signers.initialHolder)
-            .transfer(this.signers.anotherAccount.address, initialSupply);
+            .transfer(this.signers.anotherAccount.address, this.initialSupply);
         });
 
         it("accept signed delegation", async function () {

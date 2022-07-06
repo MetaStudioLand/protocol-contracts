@@ -26,8 +26,8 @@ export async function baseContext(
   signers.spender = accounts[5];
   tracer.nameTags[signers.spender.address] = "Spender";
 
-  const name = "MetaStudioToken";
-  const symbol = "SMV";
+  const name = "METAS";
+  const symbol = "METAS";
   const initialSupply = tokens(5_000_000_000);
 
   /**
@@ -60,7 +60,7 @@ export async function baseContext(
       );
       await proxyContract.deployed();
       this.token = proxyContract;
-      tracer.nameTags[this.token.address] = "Contract: MetaStudioToken";
+      tracer.nameTags[this.token.address] = "Contract: METAS";
     });
 
     afterEach(async function () {
