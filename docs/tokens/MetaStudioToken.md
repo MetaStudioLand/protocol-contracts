@@ -2,7 +2,7 @@
 
 
 
-> The Metastudio&#39;s ERC20 token
+> The MetaStudio ERC20 Token
 
 
 
@@ -552,7 +552,7 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 function initialize(address tokensOwner, address forwarder) external nonpayable
 ```
 
-Contract initialisation. 5_000_000_000 tokens are minted
+Contract initialization. 5_000_000_000 tokens are minted
 
 *Constructor replacement methods used for Proxified Contract*
 
@@ -560,7 +560,7 @@ Contract initialisation. 5_000_000_000 tokens are minted
 
 | Name | Type | Description |
 |---|---|---|
-| tokensOwner | address | initianally minted Token&#39;s owner address |
+| tokensOwner | address | Admin of the contract &amp; recipient address of the minted tokens |
 | forwarder | address | Initial ERC2771 trusted forwarder |
 
 ### isTrustedForwarder

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
@@ -55,16 +56,15 @@ contract MetaStudioToken is
     _disableInitializers();
   }
 
-  /// @notice Contract initialisation. 5_000_000_000 tokens are minted
+  /// @notice Contract initialization. 5_000_000_000 tokens are minted
   /// @dev Constructor replacement methods used for Proxified Contract
-  /// @param tokensOwner initianally minted Token's owner address
+  /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
   /// @param forwarder Initial ERC2771 trusted forwarder
   function initialize(address tokensOwner, address forwarder)
     external
     initializer
   {
     require(tokensOwner != address(0), "tokensOwner is mandatory");
-    // @defaultOperators_ : the list of default operators. These accounts are operators for all token holders, even if authorizeOperator was never called on them
     __ERC20_init("MetaStudioToken", "SMV");
     __AccessControlEnumerable_init();
     __ReentrancyGuard_init();
@@ -73,7 +73,6 @@ contract MetaStudioToken is
     __ERC20Permit_init("MetaStudioToken");
     __ERC20Votes_init();
     __ERC1363_init();
-    __UUPSUpgradeable_init();
 
     /// @dev Defining default roles: The token Owner is granted to all roles
     _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
@@ -138,7 +137,7 @@ contract MetaStudioToken is
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  // @dev only PROXY-ROLE granted account can upgrade
+  // @dev only PROXY_ROLE granted address can upgrade
   function _authorizeUpgrade(address)
     internal
     view

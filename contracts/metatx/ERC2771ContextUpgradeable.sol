@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -42,7 +43,7 @@ contract ERC2771ContextUpgradeable is
   }
 
   /**
-   * @dev Only callable by the owner. Allows change of the trusted forwarder (in case of bankrupt)
+   * @dev Only callable by the owner. Allows change of the trusted forwarder
    */
   function _setTrustedForwarder(address forwarder) internal {
     address currentTrustedForwarder = _trustedForwarder;
