@@ -18,10 +18,6 @@ abstract contract ERC1363Upgradeable is
 {
   using AddressUpgradeable for address;
 
-  function __ERC1363_init() internal view onlyInitializing {}
-
-  function __ERC1363_init_unchained() internal view onlyInitializing {}
-
   /**
    * @dev Transfer tokens to a specified address and then execute a callback on `to`.
    * @param to The address to transfer to.
@@ -52,7 +48,7 @@ abstract contract ERC1363Upgradeable is
     transfer(to, amount);
     require(
       _checkAndCallTransfer(_msgSender(), to, amount, data),
-      "ERC1363Upgradeable: _checkAndCallTransfer reverts"
+      "ERC1363: _checkAndCallTransfer"
     );
     return true;
   }
@@ -81,7 +77,7 @@ abstract contract ERC1363Upgradeable is
     transferFrom(from, to, amount);
     require(
       _checkAndCallTransfer(from, to, amount, data),
-      "ERC1363Upgradeable: _checkAndCallTransfer reverts"
+      "ERC1363: _checkAndCallTransfer"
     );
     return true;
   }
@@ -103,7 +99,7 @@ abstract contract ERC1363Upgradeable is
     transferFrom(from, to, amount);
     require(
       _checkAndCallTransfer(from, to, amount, data),
-      "ERC1363Upgradeable: _checkAndCallTransfer reverts"
+      "ERC1363: _checkAndCallTransfer"
     );
     return true;
   }
@@ -138,7 +134,7 @@ abstract contract ERC1363Upgradeable is
     approve(spender, amount);
     require(
       _checkAndCallApprove(spender, amount, data),
-      "ERC1363Upgradeable: _checkAndCallApprove reverts"
+      "ERC1363: _checkAndCallTransfer"
     );
     return true;
   }

@@ -253,9 +253,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               signers.spender
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallTransfer reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
@@ -282,9 +280,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               signers.spender
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallTransfer reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
@@ -514,9 +510,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               signers.initialHolder
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallTransfer reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
@@ -538,9 +532,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               this.signers.initialHolder
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallTransfer reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
@@ -736,9 +728,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               signers.owner
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallApprove reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
@@ -758,9 +748,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               this.signers.initialHolder
             )
-          ).to.be.revertedWith(
-            "ERC1363Upgradeable: _checkAndCallApprove reverts"
-          );
+          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
         });
       });
 
