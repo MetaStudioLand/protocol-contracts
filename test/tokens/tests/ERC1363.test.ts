@@ -68,10 +68,7 @@ export function unitTestERC1363(): void {
           it("should call onTransferReceived", async function () {
             const tx = await this.token
               .connect(this.signers.initialHolder)
-              .increaseAllowance(
-                this.signers.spender.address,
-                initialSupply
-              );
+              .increaseAllowance(this.signers.spender.address, initialSupply);
             await tx.wait();
             const receipt =
               data != null
