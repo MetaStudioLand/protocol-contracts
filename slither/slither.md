@@ -23,8 +23,8 @@ node_modules/@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpg
 Impact: High
 Confidence: High
  - [ ] ID-1
-[MetaStudioToken](contracts/tokens/MetaStudioToken.sol#L24-L281) is an upgradeable contract that does not protect its initiliaze functions: [MetaStudioToken.initialize(address,address)](contracts/tokens/MetaStudioToken.sol#L54-L77). Anyone can delete the contract with: [UUPSUpgradeable.upgradeTo(address)](node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#L72-L75)[UUPSUpgradeable.upgradeToAndCall(address,bytes)](node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#L85-L88)
-contracts/tokens/MetaStudioToken.sol#L24-L281
+[MetaStudioToken](contracts/tokens/MetaStudioToken.sol#L26-L292) is an upgradeable contract that does not protect its initiliaze functions: [MetaStudioToken.initialize(address,address)](contracts/tokens/MetaStudioToken.sol#L63-L85). Anyone can delete the contract with: [UUPSUpgradeable.upgradeTo(address)](node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#L72-L75)[UUPSUpgradeable.upgradeToAndCall(address,bytes)](node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol#L85-L88)
+contracts/tokens/MetaStudioToken.sol#L26-L292
 
 
 ## divide-before-multiply
