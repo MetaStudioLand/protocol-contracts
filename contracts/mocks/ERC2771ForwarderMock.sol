@@ -36,6 +36,7 @@ contract ERC2771ForwarderMock {
   {
     _nonces[req.from] = req.nonce + 1;
 
+    // solhint-disable-next-line avoid-low-level-calls
     (bool success, bytes memory returndata) = req.to.call{
       gas: req.gas,
       value: req.value
@@ -60,6 +61,7 @@ contract ERC2771ForwarderMock {
     // If the _res length is less than 68, then the transaction failed silently (without a revert message)
     if (_returnData.length < 68) return "Transaction reverted silently";
 
+    // solhint-disable-next-line no-inline-assembly
     assembly {
       // Slice the sighash.
       _returnData := add(_returnData, 0x04)
