@@ -18,6 +18,12 @@ abstract contract ERC1363Upgradeable is
 {
   using AddressUpgradeable for address;
 
+  // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+  function __ERC1363_init() internal view onlyInitializing {}
+
+  // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+  function __ERC1363_init_unchained() internal view onlyInitializing {}
+
   /**
    * @dev Transfer tokens to a specified address and then execute a callback on `to`.
    * @param to The address to transfer to.
