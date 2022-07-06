@@ -5,23 +5,12 @@ import "@primitivefi/hardhat-dodoc";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import "hardhat-contract-sizer";
-// import "hardhat-deploy";
 import "hardhat-gas-reporter";
-// import "hardhat-gas-trackooor";
-// import "hardhat-storage-layout";
 import "hardhat-tracer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 import "hardhat-output-validator";
-
 dotenv.config();
-
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-// task("storageLayout", "Prints the list of accounts", async (taskArgs, hre) => {
-//   await hre.storageLayout.export();
-// });
-
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
