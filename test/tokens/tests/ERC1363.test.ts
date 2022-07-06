@@ -68,7 +68,7 @@ export function unitTestERC1363(): void {
           it("should call onTransferReceived", async function () {
             const tx = await this.token
               .connect(this.signers.initialHolder)
-              .increaseAllowance(this.signers.spender.address, initialSupply);
+              .increaseAllowance(this.signers.spender.address, this.initialSupply);
             await tx.wait();
             const receipt =
               data != null
@@ -77,7 +77,7 @@ export function unitTestERC1363(): void {
                     ["transferFromAndCall(address,address,uint256,bytes)"](
                       this.signers.initialHolder.address,
                       this.erc1363Receiver.address,
-                      initialSupply,
+                      this.initialSupply,
                       DATA
                     )
                 : await this.token
@@ -85,14 +85,14 @@ export function unitTestERC1363(): void {
                     ["transferFromAndCall(address,address,uint256)"](
                       this.signers.initialHolder.address,
                       this.erc1363Receiver.address,
-                      initialSupply
+                      this.initialSupply
                     );
             expect(receipt)
               .to.emit(this.erc1363Receiver, "Received")
               .withArgs(
                 this.signers.spender.address,
                 this.signers.initialHolder.address,
-                initialSupply,
+                this.initialSupply,
                 data,
                 1_000_000_000
               );

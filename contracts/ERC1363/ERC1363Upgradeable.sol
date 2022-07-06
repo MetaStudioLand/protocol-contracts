@@ -83,7 +83,7 @@ abstract contract ERC1363Upgradeable is
       _checkAndCallTransfer(from, to, amount, data),
       "ERC1363Upgradeable: _checkAndCallTransfer reverts"
     );
-    return true;
+    return _transferFromAndCall(from, to,amount,data);
   }
 
   /**
