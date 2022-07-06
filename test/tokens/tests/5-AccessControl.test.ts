@@ -1,4 +1,4 @@
-import {getSuiteContext} from "../shared/utils";
+import {getSuiteContext} from "../../shared/utils";
 import {
   shouldBehaveLikeAccessControl,
   shouldBehaveLikeAccessControlEnumerable,

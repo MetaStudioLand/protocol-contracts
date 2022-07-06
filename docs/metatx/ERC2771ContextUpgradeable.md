@@ -2,11 +2,11 @@
 
 
 
+> Implementation of ERC2771 standart
 
+Accept forwarding transactions
 
-Implementing an updatable Trusted Forwarder
-
-
+*Implementing an updatable Trusted Forwarder*
 
 ## Methods
 

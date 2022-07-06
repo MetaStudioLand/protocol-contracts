@@ -2,9 +2,8 @@
 
 pragma solidity 0.8.7;
 
-/**
- * @dev Simple minimal forwarder to be used together with an ERC2771 compatible contract. See {ERC2771Context}.
- */
+/// @title Mock class using IERC2771Upgradeable
+/// @dev Simple minimal forwarder to be used together with an ERC2771 compatible contract. See {ERC2771Context}.
 contract ERC2771ForwarderMock {
   struct ForwardRequest {
     address from;
@@ -17,11 +16,19 @@ contract ERC2771ForwarderMock {
 
   mapping(address => uint256) private _nonces;
 
+  /// @dev Get nonce implementation
+  /// @param from addresswhere to get the Nonce
+  /// @return a number representing the nonce
   function getNonce(address from) public view returns (uint256) {
     return _nonces[from];
   }
 
   event Forwarded(bool, bytes);
+
+  /// @notice dd
+  /// @dev Execute forwarding request implementation
+  /// @param req the forwarder request
+  /// @return boolean and bytes data
 
   function execute(ForwardRequest calldata req)
     public
@@ -44,9 +51,7 @@ contract ERC2771ForwarderMock {
     }
   }
 
-  /**
-   * @dev https://ethereum.stackexchange.com/a/83577/61294
-   */
+  /// @dev https://ethereum.stackexchange.com/a/83577/61294
   function _getRevertMsg(bytes memory _returnData)
     internal
     pure

@@ -20,7 +20,8 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC1363Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IPausable.sol";
 
-/// @title The MetaStudio ERC20 Token
+/// @title The Metastudio's ERC20 token
+/// @dev This is an ERC20 contract implementing many standards : ERC1363, ERC2771, Pausable , Votes , Permit.
 /// @custom:security-contact it@theblockchainxdev.com:
 contract MetaStudioToken is
   Initializable,
@@ -37,10 +38,17 @@ contract MetaStudioToken is
   UUPSUpgradeable
 {
   /// @notice Role allowed to update implementation behind Proxy
+  /// @dev Role allowed to update implementation behind Proxy
+  /// @return (bytes32): compute the Keccak-256 hash of the PROXY_ROLE
   bytes32 public constant PROXY_ROLE = keccak256("PROXY_ROLE");
   /// @notice Role allowed to update the trusted forwarder (meta-tx)
+  /// @dev Role allowed to update the trusted forwarder (meta-tx)
+  /// @return (bytes32): compute the Keccak-256 hash of the FORWARDER_ROLE
   bytes32 public constant FORWARDER_ROLE = keccak256("FORWARDER_ROLE");
+
   /// @notice Role allowed to switch contract between active/paused state
+  /// @dev Role allowed to switch contract between active/paused state
+  /// @return (bytes32): compute the Keccak-256 hash of the PAUSER_ROLE
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @custom:oz-upgrades-unsafe-allow constructor
@@ -65,9 +73,8 @@ contract MetaStudioToken is
     __ERC20Permit_init("MetaStudioToken");
     __ERC20Votes_init();
     __ERC1363_init();
-    __UUPSUpgradeable_init();
 
-    // Defining default roles: the token owner is granted all roles
+    /// @dev Defining default roles: The token Owner is granted to all roles
     _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
     _grantRole(PROXY_ROLE, tokensOwner);
     _grantRole(FORWARDER_ROLE, tokensOwner);
@@ -76,6 +83,9 @@ contract MetaStudioToken is
     // Minting all tokens on creation
     _mint(tokensOwner, 5_000_000_000 * 10**decimals());
   }
+
+  /// @dev get current block chain identifier
+  /// @return number representing current block chain identifier
 
   function getChainId() external view returns (uint256) {
     return block.chainid;

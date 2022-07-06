@@ -2,11 +2,11 @@
 
 
 
+> Implementation of ERC1363
 
 
 
-
-
+*All function calls are currently implemented using https://github.com/vittominacori/erc1363-payable-token*
 
 ## Methods
 

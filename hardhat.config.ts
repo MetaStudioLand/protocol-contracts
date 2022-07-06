@@ -12,6 +12,7 @@ import "hardhat-gas-reporter";
 import "hardhat-tracer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
+import "hardhat-output-validator";
 
 dotenv.config();
 
@@ -106,6 +107,11 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+  outputValidator: {
+    runOnCompile: true,
+    errorMode: false,
+    exclude: ["contracts/mocks"],
   },
 };
 

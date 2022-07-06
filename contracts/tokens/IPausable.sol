@@ -3,8 +3,10 @@
 pragma solidity 0.8.7;
 
 /// @title Interface "Pausable"
+/// @dev declaration of Ipausable methodes
 interface IPausable {
-  /// @notice Return true if contract is in `Pause` state
+  /// @notice check if a contract is in `Pause` state
+  /// @return Return true if the contract is in `Pause` otherwise false
   function paused() external view returns (bool);
 
   /// @notice Set the contract in pause. No transfert is allowed

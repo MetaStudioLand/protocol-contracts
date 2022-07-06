@@ -6,7 +6,7 @@
 
 
 
-
+*declaration of Ipausable methodes*
 
 ## Methods
 
@@ -27,7 +27,7 @@ Set the contract in pause. No transfert is allowed
 function paused() external view returns (bool)
 ```
 
-Return true if contract is in `Pause` state
+check if a contract is in `Pause` state
 
 
 
@@ -36,7 +36,7 @@ Return true if contract is in `Pause` state
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | undefined |
+| _0 | bool | Return true if the contract is in `Pause` otherwise false |
 
 ### unpause
 

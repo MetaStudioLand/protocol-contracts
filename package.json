@@ -49,6 +49,7 @@
         "hardhat-deploy": "^0.11.11",
         "hardhat-gas-reporter": "^1.0.8",
         "hardhat-gas-trackooor": "^1.0.2",
+        "hardhat-output-validator": "^0.1.19",
         "hardhat-storage-layout": "^0.1.6",
         "hardhat-tracer": "^1.1.0-rc.6",
         "lodash": "^4.17.21",
