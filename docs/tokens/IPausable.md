@@ -6,7 +6,7 @@
 
 
 
-*declaration of Ipausable methodes*
+*declaration of IPausable methods*
 
 ## Methods
 
@@ -16,7 +16,7 @@
 function pause() external nonpayable
 ```
 
-Set the contract in pause. No transfert is allowed
+Set the contract in pause. No transfer is allowed
 
 
 
@@ -36,7 +36,7 @@ check if a contract is in `Pause` state
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | Return true if the contract is in `Pause` otherwise false |
+| _0 | bool | true if the contract is in `Pause` otherwise false |
 
 ### unpause
 
@@ -44,7 +44,7 @@ check if a contract is in `Pause` state
 function unpause() external nonpayable
 ```
 
-Set the contract in ready state. Transferts are allowed
+Set the contract in ready state. Transfers are allowed
 
 
 

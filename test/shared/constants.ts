@@ -9,3 +9,5 @@ export const DEFAULT_ADMIN_ROLE =
 export const PROXY_ROLE = keccak256(toUtf8Bytes("PROXY_ROLE"));
 export const FORWARDER_ROLE = keccak256(toUtf8Bytes("FORWARDER_ROLE"));
 export const PAUSER_ROLE = keccak256(toUtf8Bytes("PAUSER_ROLE"));
+
+export const DOMAIN_VERSION = "1";

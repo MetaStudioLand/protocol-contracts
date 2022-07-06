@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 100,
+        runs: 1000,
       },
       outputSelection: {
         "*": {
@@ -63,7 +63,7 @@ const config: HardhatUserConfig = {
     runOnCompile: true,
     strict: true,
     only: [],
-    except: ["ECDSA", "MinimalForwarder"],
+    except: ["ECDSA"],
   },
   dodoc: {
     runOnCompile: true,
@@ -76,6 +76,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
       allowUnlimitedContractSize: true,
+      loggingEnabled: false,
     },
     goerli: {
       url: process.env.GOERLI_URL || "",

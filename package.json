@@ -1,5 +1,6 @@
 {
     "name": "metastudio",
+    "license": "MIT",
     "packageManager": "yarn@1.22.19",
     "scripts": {
         "lint": "eslint '**/*.{js,ts}'",
@@ -9,7 +10,9 @@
         "test": "hardhat test",
         "test-trace": "hardhat test --trace",
         "test-fulltrace": "hardhat test --fulltrace",
-        "dodoc": "hardhat dodoc"
+        "dodoc": "hardhat dodoc",
+        "slither": "yarn run hardhat clean && slither . --checklist > ./slither/slither.md",
+        "slither-inheritance": "slither . --print inheritance-graph && dot inheritance-graph.dot -Tsvg -o ./slither/inheritance-graph.svg"
     },
     "devDependencies": {
         "@ethersproject/abi": "^5.6.4",
@@ -64,6 +67,5 @@
     "engines": {
         "npm": "^8.9.0",
         "node": "^16.9.0"
-    },
-    "license": "MIT"
+    }
 }
