@@ -1,7 +1,7 @@
 import {expect} from "chai";
 import {ethers, tracer} from "hardhat";
 import {after} from "mocha";
-import {getSuiteContext} from "../shared/utils";
+import {getSuiteContext} from "../../shared/utils";
 import {shouldBehaveLikeForwardedRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
 
 export function unitTestERC2771() {

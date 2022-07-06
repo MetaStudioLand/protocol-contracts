@@ -1,7 +1,7 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
-import {Signers} from "../../shared/types";
-import {functionCallEncodeABI, getAddress} from "../../shared/utils";
+import {Signers} from "../../../shared/types";
+import {functionCallEncodeABI, getAddress} from "../../../shared/utils";
 import {
   shouldBehaveLikeERC20Approve,
   shouldBehaveLikeERC20Transfer,

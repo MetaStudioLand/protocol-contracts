@@ -37,10 +37,17 @@ contract MetaStudioToken is
   UUPSUpgradeable
 {
   /// @notice Role allowed to update implementation behind Proxy
+  /// @dev Role allowed to update implementation behind Proxy
+  /// @return (bytes32): compute the Keccak-256 hash of the PROXY_ROLE
   bytes32 public constant PROXY_ROLE = keccak256("PROXY_ROLE");
   /// @notice Role allowed to update the trusted forwarder (meta-tx)
+  /// @dev Role allowed to update the trusted forwarder (meta-tx)
+  /// @return (bytes32): compute the Keccak-256 hash of the FORWARDER_ROLE
   bytes32 public constant FORWARDER_ROLE = keccak256("FORWARDER_ROLE");
+
   /// @notice Role allowed to switch contract between active/paused state
+  /// @dev Role allowed to switch contract between active/paused state
+  /// @return (bytes32): compute the Keccak-256 hash of the PAUSER_ROLE
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
   /// @custom:oz-upgrades-unsafe-allow constructor
@@ -80,6 +87,7 @@ contract MetaStudioToken is
 
   /// @dev get current block chain identifier
   /// @return number representing current block chain identifier
+
   function getChainId() external view returns (uint256) {
     return block.chainid;
   }

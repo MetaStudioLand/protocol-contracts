@@ -110,7 +110,8 @@ const config: HardhatUserConfig = {
   },
   outputValidator: {
     runOnCompile: true,
-    errorMode: true,
+    errorMode: false,
+    exclude: ["contracts/mocks"],
   },
 };
 

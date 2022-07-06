@@ -6,7 +6,7 @@ import {
   FORWARDER_ROLE,
   PAUSER_ROLE,
   PROXY_ROLE,
-} from "../../shared/constants";
+} from "../../../shared/constants";
 import {shouldSupportInterface} from "./SupportsInterface.behavior";
 
 export function shouldBehaveLikeAccessControl(
@@ -184,62 +184,6 @@ export function shouldBehaveLikeAccessControl(
       });
     });
   });
-
-  // FIXME Not available in MetaStudioToken
-  // describe("setting role admin", function () {
-  //   beforeEach(async function () {
-  //     expect(await this.token.setRoleAdmin(ADMIN_ROLE, PAUSER_ROLE))
-  //       .to.emit(this.token, "RoleAdminChanged")
-  //       .withArgs(ADMIN_ROLE, DEFAULT_ADMIN_ROLE, PAUSER_ROLE);
-  //
-  //     await this.token
-  //       .connect(admin)
-  //       .grantRole(PAUSER_ROLE, otherAdmin.address);
-  //   });
-  //
-  //   it("a role's admin role can be changed", async function () {
-  //     expect(await this.token.getRoleAdmin(ADMIN_ROLE)).to.equal(PAUSER_ROLE);
-  //   });
-  //
-  //   it("the new admin can grant roles", async function () {
-  //     expect(
-  //       await this.token
-  //         .connect(otherAdmin)
-  //         .grantRole(ADMIN_ROLE, authorized.address)
-  //     )
-  //       .to.emit(this.token, "RoleGranted")
-  //       .withArgs(ADMIN_ROLE, authorized.address, otherAdmin.address);
-  //   });
-  //
-  //   it("the new admin can revoke roles", async function () {
-  //     await this.token
-  //       .connect(otherAdmin)
-  //       .grantRole(ADMIN_ROLE, authorized.address);
-  //     expect(
-  //       await this.token.revokeRole(ADMIN_ROLE, authorized, {
-  //         from: otherAdmin,
-  //       })
-  //     )
-  //       .to.emit(this.token, "RoleRevoked")
-  //       .withArgs(ADMIN_ROLE, authorized.address, otherAdmin.address);
-  //   });
-  //
-  //   it("a role's previous admins no longer grant roles", async function () {
-  //     await expect(
-  //       this.token.connect(admin).grantRole(ADMIN_ROLE, authorized.address)
-  //     ).to.revertedWith(
-  //       `${errorPrefix}: account ${admin.address.toLowerCase()} is missing role ${PAUSER_ROLE}`
-  //     );
-  //   });
-  //
-  //   it("a role's previous admins no longer revoke roles", async function () {
-  //     await expect(
-  //       this.token.connect(admin).revokeRole(ADMIN_ROLE, authorized.address)
-  //     ).to.revertedWith(
-  //       `${errorPrefix}: account ${admin.address.toLowerCase()} is missing role ${PAUSER_ROLE}`
-  //     );
-  //   });
-  // });
 
   describe("onlyRole modifier", function () {
     beforeEach(async function () {

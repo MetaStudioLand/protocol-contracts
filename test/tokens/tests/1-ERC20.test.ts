@@ -1,8 +1,9 @@
 import {expect} from "chai";
 import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
-import {NB_DECIMALS} from "../shared/constants";
-import {getSuiteContext} from "../shared/utils";
+import {NB_DECIMALS} from "../../shared/constants";
+import {getSuiteContext} from "../../shared/utils";
+
 import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
 
 export function unitTestERC20(): void {

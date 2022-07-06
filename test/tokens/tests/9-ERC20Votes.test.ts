@@ -1,9 +1,9 @@
 import {expect} from "chai";
 import {BigNumber} from "ethers";
-import {batchInBlock, tokens} from "../shared/utils";
+import {batchInBlock, tokens} from "../../shared/utils";
 import {ethers} from "hardhat";
 import {splitSignature} from "ethers/lib/utils";
-import {domainSeparator, getData712ForDelegation} from "../helpers/eip712";
+import {domainSeparator, getData712ForDelegation} from "../../helpers/eip712";
 export function unitTestVotes() {
   describe("======== ERC20 VOTES ================================================", async function () {
     const name = "MetaStudioToken";

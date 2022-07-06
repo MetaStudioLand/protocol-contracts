@@ -52,14 +52,14 @@ function FORWARDER_ROLE() external view returns (bytes32)
 
 Role allowed to update the trusted forwarder (meta-tx)
 
-
+*Role allowed to update the trusted forwarder (meta-tx)*
 
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | undefined |
+| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the FORWARDER_ROLE |
 
 ### PAUSER_ROLE
 
@@ -69,14 +69,14 @@ function PAUSER_ROLE() external view returns (bytes32)
 
 Role allowed to switch contract between active/paused state
 
-
+*Role allowed to switch contract between active/paused state*
 
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | undefined |
+| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the PAUSER_ROLE |
 
 ### PROXY_ROLE
 
@@ -86,14 +86,14 @@ function PROXY_ROLE() external view returns (bytes32)
 
 Role allowed to update implementation behind Proxy
 
-
+*Role allowed to update implementation behind Proxy*
 
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bytes32 | undefined |
+| _0 | bytes32 | (bytes32): compute the Keccak-256 hash of the PROXY_ROLE |
 
 ### allowance
 

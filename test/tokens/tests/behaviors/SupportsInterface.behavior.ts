@@ -151,18 +151,6 @@ for (const k of Object.getOwnPropertyNames(INTERFACES)) {
 
 export function shouldSupportInterface(interfaceName: string) {
   describe(`ERC165 is checking ${interfaceName}...`, function () {
-    // FIXME How to convert to ethers.js ?
-    // it("supportsInterface uses less than 30k gas", async function () {
-    //   for (const k of interfaces) {
-    //     const interfaceId = INTERFACE_IDS[k];
-    //     expect(
-    //       await this.token.supportsInterface.estimateGas(
-    //         interfaceId
-    //       )
-    //     ).to.be.lte(30000);
-    //   }
-    // });
-
     it("interface is reported as supported", async function () {
       const interfaceId = INTERFACE_IDS[interfaceName];
       expect(await this.token.supportsInterface(interfaceId)).to.equal(true);

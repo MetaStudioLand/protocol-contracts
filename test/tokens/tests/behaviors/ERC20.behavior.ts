@@ -2,7 +2,7 @@ import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {expect} from "chai";
 import {BigNumber, Contract} from "ethers";
 import {ethers} from "hardhat";
-import {getAddress} from "../../shared/utils";
+import {getAddress} from "../../../shared/utils";
 
 export function shouldBehaveLikeERC20(
   initialSupply: BigNumber,
