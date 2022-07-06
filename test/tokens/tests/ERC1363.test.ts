@@ -728,7 +728,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               signers.owner
             )
-          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
+          ).to.be.revertedWith("ERC1363: _checkAndCallApprove");
         });
       });
 
@@ -748,7 +748,7 @@ export function unitTestERC1363(): void {
               initialSupply,
               this.signers.initialHolder
             )
-          ).to.be.revertedWith("ERC1363: _checkAndCallTransfer");
+          ).to.be.revertedWith("ERC1363: _checkAndCallApprove");
         });
       });
 

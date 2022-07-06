@@ -140,7 +140,7 @@ abstract contract ERC1363Upgradeable is
     approve(spender, amount);
     require(
       _checkAndCallApprove(spender, amount, data),
-      "ERC1363: _checkAndCallTransfer"
+      "ERC1363: _checkAndCallApprove"
     );
     return true;
   }
