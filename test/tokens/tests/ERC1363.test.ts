@@ -70,7 +70,7 @@ export function unitTestERC1363(): void {
               .connect(this.signers.initialHolder)
               .increaseAllowance(
                 this.signers.spender.address,
-                this.initialSupply
+                initialSupply
               );
             await tx.wait();
             const receipt =
@@ -80,7 +80,7 @@ export function unitTestERC1363(): void {
                     ["transferFromAndCall(address,address,uint256,bytes)"](
                       this.signers.initialHolder.address,
                       this.erc1363Receiver.address,
-                      this.initialSupply,
+                      initialSupply,
                       DATA
                     )
                 : await this.token
@@ -88,14 +88,14 @@ export function unitTestERC1363(): void {
                     ["transferFromAndCall(address,address,uint256)"](
                       this.signers.initialHolder.address,
                       this.erc1363Receiver.address,
-                      this.initialSupply
+                      initialSupply
                     );
             expect(receipt)
               .to.emit(this.erc1363Receiver, "Received")
               .withArgs(
                 this.signers.spender.address,
                 this.signers.initialHolder.address,
-                this.initialSupply,
+                initialSupply,
                 data,
                 1_000_000_000
               );
