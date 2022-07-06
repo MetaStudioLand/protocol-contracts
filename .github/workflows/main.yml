@@ -89,7 +89,7 @@ jobs:
         run: yarn install
 
       - name: Solhint
-        run: yarn solhint
+        run: yarn solhint -w 0
 
   tests:
     runs-on: ubuntu-latest
