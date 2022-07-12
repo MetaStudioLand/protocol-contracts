@@ -1,4 +1,5 @@
-import {expect} from "chai";
+// import {expect} from "chai";
+import { expect } from "../../../deploy/chai-setup";
 import {BigNumber} from "ethers";
 
 export function unitTestPausable(): void {

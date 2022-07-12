@@ -1,4 +1,5 @@
-import {expect} from "chai";
+// import {expect} from "chai";
+import { expect } from "../../../deploy/chai-setup";
 import {ethers, tracer} from "hardhat";
 import {after} from "mocha";
 import {getSuiteContext} from "../../shared/utils";

@@ -1,4 +1,5 @@
-import {expect} from "chai";
+// import {expect} from "chai";
+import { expect } from "../../../deploy/chai-setup";
 import {ethers} from "hardhat";
 
 export function unitTestOwnable() {

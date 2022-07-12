@@ -1,9 +1,9 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {ethers, tracer, upgrades} from "hardhat";
+import {deployments, ethers, tracer} from "hardhat";
 import {Suite} from "mocha";
 import {Signers} from "./types";
 import {tokens} from "./utils";
-
+import  'hardhat-deploy';
 export async function baseContext(
   description: string,
   hooks: () => void
@@ -29,7 +29,11 @@ export async function baseContext(
   const name = "METAS";
   const symbol = "METAS";
   const initialSupply = tokens(5_000_000_000);
+  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
+  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
+  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
 
+  const lockedAmount = ethers.utils.parseEther("1");
   /**
    * Main Suite
    */
@@ -52,15 +56,83 @@ export async function baseContext(
     });
 
     beforeEach(async function () {
-      const Factory = await ethers.getContractFactory("MetaStudioToken");
-      const proxyContract = await upgrades.deployProxy(
-        Factory,
-        [this.signers.initialHolder.address, ethers.constants.AddressZero],
-        {kind: "uups"}
-      );
-      await proxyContract.deployed();
-      this.token = proxyContract;
-      tracer.nameTags[this.token.address] = "Contract: METAS";
+      let Factory = await ethers.getContractFactory("MetaStudioToken");
+  //     const [deployer] = await ethers.getSigners();
+  // const MetaStudioToken = await ethers.getContractFactory(
+  //   "MetaStudioToken",
+  //   deployer
+  // );
+  // console.log("Processing");
+  
+ const deployement = await deployments.fixture(["MetaStudioToken"]);
+
+ 
+
+// const {deployments, getNamedAccounts} = hre;
+// const {deploy} = deployments.de;
+// await deployments.fixture(["MetaStudioToken"]);
+// await Factory.deploy()
+
+// let Factory = await ethers.getContractFactory("MetaStudioToken");
+//   const mc = await upgrades.deployProxy("MetaStudioToken", [this.signers.initialHolder.address, ethers.constants.AddressZero]);
+
+//   await mc.deployed();
+const myContract = await deployments.get("MetaStudioToken");
+
+
+  
+  const contract = await ethers.getContractAt(
+   "MetaStudioToken",
+   myContract.address
+  );
+//  const contract = await ethers.getContractAt(
+//   "MetaStudioToken"
+//       deployment.address
+//     );
+  // console.log("OK");
+  
+
+
+  // let Factory = await ethers.getContractFactory("MetaStudioToken");
+  // const mc = await upgrades.deployProxy(MetaStudioToken, [this.signers.initialHolder.address, ethers.constants.AddressZero]);
+
+  // await mc.deployed();
+      // const proxyContract = await deploy(Factory, [this.signers.initialHolder.address, ethers.constants.AddressZero], {kind: "uups"} );
+      // console.log("---------------------------------");
+      
+      // console.log(proxyContract);
+      
+      // let factoryDeployed = await  Factory.deploy()
+
+      // const proxyContract = await  upgrades.deployProxy(
+      //   Factory,
+      //   [this.signers.initialHolder.address, ethers.constants.AddressZero],
+      //   {kind: "uups"}
+      // );
+      
+      // await factoryDeployed.deployed(); 
+      // console.log("---_______-------");     
+    //  await deploy(Factory, {
+    //     proxy:  true ,
+    //     args: [this.signers.initialHolder.address, ethers.constants.AddressZero],
+
+    //     log:true
+    //   });
+
+      // console.log("_______-------");
+      
+      // console.log(deployResult);
+      
+
+     
+        // console.log(
+        //   `contract Sale deployed at ${deployResult.address} using ${deployResult.txHash} gas ${deployResult.deployTransaction}`
+        // );
+     
+
+      // f.
+      this.token = contract;
+      // tracer.nameTags[this.token.address] = "Contract: METAS";
     });
 
     afterEach(async function () {

@@ -1,4 +1,5 @@
-import {expect} from "chai";
+// import {expect} from "chai";
+import { expect } from "../../deploy/chai-setup";
 import {FORWARDER_ROLE, PAUSER_ROLE} from "../shared/constants";
 import {baseContext} from "../shared/contexts";
 import {unitTestERC20} from "./tests/ERC20.test";

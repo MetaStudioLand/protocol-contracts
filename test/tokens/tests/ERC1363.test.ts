@@ -1,5 +1,6 @@
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {expect} from "chai";
+// import {expect} from "chai";
+import { expect } from "../../../deploy/chai-setup";
 import {BigNumber, Contract} from "ethers";
 import {ethers, tracer} from "hardhat";
 import {Address} from "hardhat-deploy/dist/types";

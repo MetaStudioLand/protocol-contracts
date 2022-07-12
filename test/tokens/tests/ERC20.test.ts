@@ -1,6 +1,8 @@
-import {expect} from "chai";
+// import {expect} from "chai";
+
 import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
+import { expect } from "../../../deploy/chai-setup";
 import {NB_DECIMALS} from "../../shared/constants";
 import {getSuiteContext} from "../../shared/utils";
 
