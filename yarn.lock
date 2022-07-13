@@ -766,13 +766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers@0.3.0-beta.12":
-  version: 0.3.0-beta.12
-  resolution: "hardhat-deploy-ethers@npm:0.3.0-beta.12"
+"@nomiclabs/hardhat-ethers@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.1.0"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: 4db85163ee0a58f0aa330a5bf63df33aef6fc99138829f51fd736c68e4058a4c3c70772e603d30d32a183d15f562d8cae32fc442b2184f9b1fcc8c6ad415c11b
+  checksum: 16fcde7fbce0b953daa3520148b0054d4951434d39d454b13dedb795d10b89893b199f1c3ed2856c196a229fc470c6cbd3ceff5895a94f52996b99a55515525d
   languageName: node
   linkType: hard
 
@@ -6912,7 +6912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:^2.9.2":
+"hardhat@npm:^2.10.0":
   version: 2.10.0
   resolution: "hardhat@npm:2.10.0"
   dependencies:
@@ -9013,7 +9013,7 @@ __metadata:
     "@ethersproject/keccak256": ^5.6.1
     "@ethersproject/providers": ^5.6.8
     "@ethersproject/strings": ^5.6.1
-    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12"
+    "@nomiclabs/hardhat-ethers": ^2.1.0
     "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@nomiclabs/hardhat-waffle": ^2.0.3
     "@openzeppelin/contracts": ^4.7.0
@@ -9041,7 +9041,7 @@ __metadata:
     eth-sig-util: ^3.0.1
     ethereum-waffle: ^3.4.4
     ethers: ^5.6.9
-    hardhat: ^2.9.2
+    hardhat: ^2.10.0
     hardhat-contract-sizer: ^2.6.1
     hardhat-deploy: ^0.11.11
     hardhat-deploy-ethers: ^0.3.0-beta.13

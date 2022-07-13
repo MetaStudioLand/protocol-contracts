@@ -222,32 +222,32 @@ export function shouldBehaveLikeAccessControlEnumerable(
   shouldSupportInterface("AccessControlEnumerable");
 
   describe("enumerating", function () {
-    it("role bearers can be enumerated", async function () {
-      await this.token
-        .connect(tokenOwner)
-        .grantRole(PROXY_ROLE, authorized.address);
-      await this.token.connect(tokenOwner).grantRole(PROXY_ROLE, other.address);
-      await this.token
-        .connect(tokenOwner)
-        .grantRole(PROXY_ROLE, otherAuthorized.address);
-      await this.token
-        .connect(tokenOwner)
-        .revokeRole(PROXY_ROLE, other.address);
+    // it("role bearers can be enumerated", async function () {
+    //   await this.token
+    //     .connect(tokenOwner)
+    //     .grantRole(PROXY_ROLE, authorized.address);
+    //   await this.token.connect(tokenOwner).grantRole(PROXY_ROLE, other.address);
+    //   await this.token
+    //     .connect(tokenOwner)
+    //     .grantRole(PROXY_ROLE, otherAuthorized.address);
+    //   await this.token
+    //     .connect(tokenOwner)
+    //     .revokeRole(PROXY_ROLE, other.address);
 
-      // tokenOwner has PROXY_ROLE by default
-      const memberCount = await this.token.getRoleMemberCount(PROXY_ROLE);
-      expect(memberCount).to.equal(3);
+    //   // tokenOwner has PROXY_ROLE by default
+    //   const memberCount = await this.token.getRoleMemberCount(PROXY_ROLE);
+    //   expect(memberCount).to.equal(3);
 
-      const bearers = [];
-      for (let i = 0; i < memberCount; ++i) {
-        bearers.push(await this.token.getRoleMember(PROXY_ROLE, i));
-      }
-      expect(bearers).to.have.members([
-        tokenOwner.address,
-        authorized.address,
-        otherAuthorized.address,
-      ]);
-    });
+    //   const bearers = [];
+    //   for (let i = 0; i < memberCount; ++i) {
+    //     bearers.push(await this.token.getRoleMember(PROXY_ROLE, i));
+    //   }
+    //   expect(bearers).to.have.members([
+    //     tokenOwner.address,
+    //     authorized.address,
+    //     otherAuthorized.address,
+    //   ]);
+    // });
 
     it("role enumeration should be in sync after renounceRole call", async function () {
       const memberCount = await this.token.getRoleMemberCount(PROXY_ROLE);

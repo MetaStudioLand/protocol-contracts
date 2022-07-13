@@ -10,6 +10,7 @@ import "hardhat-tracer";
 import {extendEnvironment, HardhatUserConfig, task} from "hardhat/config";
 import "solidity-coverage";
 import "hardhat-output-validator";
+import "@nomiclabs/hardhat-ethers";
 dotenv.config();
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -31,6 +32,7 @@ extendEnvironment(async (env) => {
 // Go to https://hardhat.org/config/ to learn more
 
 const config: HardhatUserConfig = {
+ 
   solidity: {
     version: "0.8.7",
     settings: {
@@ -44,6 +46,10 @@ const config: HardhatUserConfig = {
         },
       },
     },
+  },
+  namedAccounts: {
+    deployer: 0,
+    initialHolder: 1,
   },
   mocha: {
     timeout: 10000,
@@ -77,6 +83,8 @@ const config: HardhatUserConfig = {
       chainId: 1337,
       allowUnlimitedContractSize: true,
       loggingEnabled: false,
+      blockGasLimit:10995106504550
+     
     },
     goerli: {
       url: process.env.GOERLI_URL || "",
@@ -94,6 +102,7 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
+    gasPrice:10000
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,

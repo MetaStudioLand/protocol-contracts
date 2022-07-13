@@ -64,7 +64,7 @@ export async function baseContext(
   // );
   // console.log("Processing");
   
- const deployement = await deployments.fixture(["MetaStudioToken"]);
+  await deployments.fixture(["MetaStudioToken"]);
 
  
 
@@ -85,6 +85,17 @@ const myContract = await deployments.get("MetaStudioToken");
    "MetaStudioToken",
    myContract.address
   );
+  
+  
+
+  
+  // console.log("_-_-_-_-_-_-_-__-_-_-_-");
+  // console.log(await contract.decimals());
+  // console.log("________------------_");
+  
+  
+  
+  
 //  const contract = await ethers.getContractAt(
 //   "MetaStudioToken"
 //       deployment.address
@@ -132,6 +143,7 @@ const myContract = await deployments.get("MetaStudioToken");
 
       // f.
       this.token = contract;
+
       // tracer.nameTags[this.token.address] = "Contract: METAS";
     });
 
