@@ -6,8 +6,6 @@ describe("Test", function () {
     await deployments.fixture(["Test"]);
     const test = await ethers.getContract("Test");
 
-    console.log(await test.getVariable());
-
-    expect(1).to.be.equal(1);
+    expect(await test.getVariable()).to.be.equal(100);
   });
 });
