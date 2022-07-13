@@ -1,13 +1,13 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
+import {Address} from "hardhat-deploy/types";
 
 export interface Signers {
-  owner: SignerWithAddress;
-  initialHolder: SignerWithAddress;
-  recipient: SignerWithAddress;
-  spender: SignerWithAddress;
-  anotherAccount: SignerWithAddress;
-  forwarder: SignerWithAddress;
+  owner: Address;
+  initialHolder: Address;
+  recipient: Address;
+  spender: Address;
+  anotherAccount: Address;
+  forwarder: Address;
 }
 
 declare module "mocha" {

@@ -1,15 +1,15 @@
 // import {expect} from "chai";
-import { expect } from "../../deploy/chai-setup";
+import {expect} from "../../deploy/chai-setup";
 import {FORWARDER_ROLE, PAUSER_ROLE} from "../shared/constants";
 import {baseContext} from "../shared/contexts";
 import {unitTestERC20} from "./tests/ERC20.test";
 import {unitTestPausable} from "./tests/Pausable.test";
 import {unitTestERC1363} from "./tests/ERC1363.test";
 import {unitTestAccessControl} from "./tests/AccessControl.test";
-import {unitTestERC20Permit} from "./tests/ERC20Permit.test";
+// import {unitTestERC20Permit} from "./tests/ERC20Permit.test";
 import {unitTestERC165} from "./tests/ERC165.test";
 import {unitTestERC2771} from "./tests/ERC2771.test";
-import {unitTestVotes} from "./tests/ERC20Votes.test";
+// import {unitTestVotes} from "./tests/ERC20Votes.test";
 baseContext("MetaStudioToken", function () {
   // unitTestERC165();
   unitTestERC20();

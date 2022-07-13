@@ -1,15 +1,15 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 // import {expect} from "chai";
-import { expect } from "../../../deploy/chai-setup";
+import {expect} from "../../../deploy/chai-setup";
 import {BigNumber, Contract} from "ethers";
-import {ethers, tracer} from "hardhat";
-import {Address} from "hardhat-deploy/dist/types";
+import {ethers} from "hardhat";
+
 import {
   DATA,
   RECEIVER_MAGIC_VALUE,
   SPENDER_MAGIC_VALUE,
 } from "../../shared/constants";
 import {getSuiteContext} from "../../shared/utils";
+import {Address} from "hardhat-deploy/types";
 
 export function unitTestERC1363(): void {
   describe("======== Contract: ERC1363 ================================================", function () {
@@ -19,7 +19,7 @@ export function unitTestERC1363(): void {
       beforeEach(async function () {
         await this.token
           .connect(this.signers.owner)
-          .approve(this.signers.spender.address, initialSupply);
+          .approve(this.signers.spender, initialSupply);
       });
 
       function transferFromAndCallWithData(
@@ -27,7 +27,7 @@ export function unitTestERC1363(): void {
         from: Address,
         to: Address,
         value: BigNumber,
-        opts: SignerWithAddress
+        opts: Address
       ) {
         return token
           .connect(opts)
@@ -62,21 +62,19 @@ export function unitTestERC1363(): void {
             await contextMockFactoryERC1363Receiver.deployed();
             const erc1363Receiver = contextMockFactoryERC1363Receiver;
             this.erc1363Receiver = erc1363Receiver;
-            tracer.nameTags[this.erc1363Receiver.address] =
-              "Contract: erc1363Receiver";
           });
 
           it("should call onTransferReceived", async function () {
             const tx = await this.token
               .connect(this.signers.initialHolder)
-              .increaseAllowance(this.signers.spender.address, initialSupply);
+              .increaseAllowance(this.signers.spender, initialSupply);
             await tx.wait();
             const receipt =
               data != null
                 ? await this.token
                     .connect(this.signers.spender)
                     ["transferFromAndCall(address,address,uint256,bytes)"](
-                      this.signers.initialHolder.address,
+                      this.signers.initialHolder,
                       this.erc1363Receiver.address,
                       initialSupply,
                       DATA
@@ -84,15 +82,15 @@ export function unitTestERC1363(): void {
                 : await this.token
                     .connect(this.signers.spender)
                     ["transferFromAndCall(address,address,uint256)"](
-                      this.signers.initialHolder.address,
+                      this.signers.initialHolder,
                       this.erc1363Receiver.address,
                       initialSupply
                     );
             expect(receipt)
               .to.emit(this.erc1363Receiver, "Received")
               .withArgs(
-                this.signers.spender.address,
-                this.signers.initialHolder.address,
+                this.signers.spender,
+                this.signers.initialHolder,
                 initialSupply,
                 data,
                 1_000_000_000
@@ -102,8 +100,8 @@ export function unitTestERC1363(): void {
       }
 
       function transferFromWasSuccessful(
-        sender: SignerWithAddress,
-        spender: SignerWithAddress,
+        sender: Address,
+        spender: Address,
         balance: BigNumber
       ) {
         beforeEach(async function () {
@@ -117,7 +115,7 @@ export function unitTestERC1363(): void {
           this.erc1363Receiver = erc1363Receiver;
           const tx = await this.token
             .connect(sender)
-            .increaseAllowance(spender.address, balance);
+            .increaseAllowance(spender, balance);
           await tx.wait();
         });
 
@@ -129,7 +127,7 @@ export function unitTestERC1363(): void {
               expect(
                 transferFromAndCallWithData(
                   this.token,
-                  sender.address,
+                  sender,
                   this.erc1363Receiver.address,
                   amount,
                   spender
@@ -143,7 +141,7 @@ export function unitTestERC1363(): void {
               await expect(
                 transferFromAndCallWithoutData(
                   this.token,
-                  sender.address,
+                  sender,
                   this.erc1363Receiver.address,
                   amount,
                   spender
@@ -159,12 +157,12 @@ export function unitTestERC1363(): void {
             it("transfers the requested amount", async function () {
               await transferFromAndCallWithData(
                 this.token,
-                sender.address,
+                sender,
                 this.erc1363Receiver.address,
                 amount,
                 spender
               );
-              const senderBalance = await this.token.balanceOf(sender.address);
+              const senderBalance = await this.token.balanceOf(sender);
               expect(senderBalance).to.be.equal(BigNumber.from(0));
               const recipientBalance = await this.token.balanceOf(
                 this.erc1363Receiver.address
@@ -175,18 +173,18 @@ export function unitTestERC1363(): void {
             it("emits a transfer event", async function () {
               const tx = await this.token
                 .connect(sender)
-                .increaseAllowance(spender.address, amount);
+                .increaseAllowance(spender, amount);
               await tx.wait();
               const logs = await transferFromAndCallWithData(
                 this.token,
-                sender.address,
+                sender,
                 this.erc1363Receiver.address,
                 amount,
                 spender
               );
               await expect(logs)
                 .to.emit(this.token, "Transfer")
-                .withArgs(sender.address, this.erc1363Receiver.address, amount);
+                .withArgs(sender, this.erc1363Receiver.address, amount);
             });
           });
 
@@ -194,13 +192,13 @@ export function unitTestERC1363(): void {
             it("transfers the requested amount", async function () {
               await transferFromAndCallWithoutData(
                 this.token,
-                sender.address,
+                sender,
                 this.erc1363Receiver.address,
                 amount,
                 spender
               );
 
-              const senderBalance = await this.token.balanceOf(sender.address);
+              const senderBalance = await this.token.balanceOf(sender);
               expect(senderBalance).to.be.equal(BigNumber.from(0));
 
               const recipientBalance = await this.token.balanceOf(
@@ -211,14 +209,14 @@ export function unitTestERC1363(): void {
             it("emits a transfer event", async function () {
               const logs = await transferFromAndCallWithoutData(
                 this.token,
-                sender.address,
+                sender,
                 this.erc1363Receiver.address,
                 amount,
                 spender
               );
               await expect(logs)
                 .to.emit(this.token, "Transfer")
-                .withArgs(sender.address, this.erc1363Receiver.address, amount);
+                .withArgs(sender, this.erc1363Receiver.address, amount);
             });
           });
         });
@@ -244,13 +242,13 @@ export function unitTestERC1363(): void {
         it("reverts", async function () {
           const tx = await this.token
             .connect(signers.initialHolder)
-            .increaseAllowance(signers.spender.address, initialSupply);
+            .increaseAllowance(signers.spender, initialSupply);
           await tx.wait();
           await expect(
             transferFromAndCallWithoutData(
               this.token,
-              signers.initialHolder.address,
-              signers.recipient.address,
+              signers.initialHolder,
+              signers.recipient,
               initialSupply,
               signers.spender
             )
@@ -269,14 +267,14 @@ export function unitTestERC1363(): void {
           this.erc1363Receiver = contextMockFactoryERC1363Receiver;
           const tx = await this.token
             .connect(signers.initialHolder)
-            .increaseAllowance(signers.spender.address, initialSupply);
+            .increaseAllowance(signers.spender, initialSupply);
           await tx.wait();
         });
         it("reverts", async function () {
           expect(
             transferFromAndCallWithoutData(
               this.token,
-              signers.initialHolder.address,
+              signers.initialHolder,
               this.erc1363Receiver.address,
               initialSupply,
               signers.spender
@@ -289,7 +287,7 @@ export function unitTestERC1363(): void {
         this.beforeEach(async function () {
           const tx = await this.token
             .connect(signers.initialHolder)
-            .increaseAllowance(signers.spender.address, initialSupply);
+            .increaseAllowance(signers.spender, initialSupply);
           await tx.wait();
         });
         it("reverts", async function () {
@@ -303,7 +301,7 @@ export function unitTestERC1363(): void {
           await expect(
             transferFromAndCallWithoutData(
               this.token,
-              signers.initialHolder.address,
+              signers.initialHolder,
               this.erc1363Receiver.address,
               initialSupply,
               signers.spender
@@ -317,7 +315,7 @@ export function unitTestERC1363(): void {
           await expect(
             transferFromAndCallWithoutData(
               this.token,
-              signers.owner.address,
+              signers.owner,
               this.token.address,
               initialSupply,
               signers.spender
@@ -381,8 +379,8 @@ export function unitTestERC1363(): void {
             expect(receipt)
               .to.emit(this.erc1363Receiver, "Received")
               .withArgs(
-                signers.initialHolder.address,
-                signers.initialHolder.address,
+                signers.initialHolder,
+                signers.initialHolder,
                 initialSupply,
                 data,
                 1_000_000_000
@@ -391,10 +389,7 @@ export function unitTestERC1363(): void {
         });
       }
 
-      function transferWasSuccessful(
-        sender: SignerWithAddress,
-        balance: BigNumber
-      ) {
+      function transferWasSuccessful(sender: Address, balance: BigNumber) {
         let receiver: any;
 
         beforeEach(async function () {
@@ -440,7 +435,7 @@ export function unitTestERC1363(): void {
                 sender
               );
 
-              const senderBalance = await this.token.balanceOf(sender.address);
+              const senderBalance = await this.token.balanceOf(sender);
               expect(senderBalance).to.equal(BigNumber.from(0));
               const recipientBalance = await this.token.balanceOf(receiver);
               expect(recipientBalance).to.equal(amount);
@@ -455,7 +450,7 @@ export function unitTestERC1363(): void {
               );
               await expect(logs)
                 .to.emit(this.token, "Transfer")
-                .withArgs(sender.address, receiver, amount);
+                .withArgs(sender, receiver, amount);
             });
           });
 
@@ -468,7 +463,7 @@ export function unitTestERC1363(): void {
                 sender
               );
 
-              const senderBalance = await this.token.balanceOf(sender.address);
+              const senderBalance = await this.token.balanceOf(sender);
               expect(senderBalance).to.equal(BigNumber.from(0));
               const recipientBalance = await this.token.balanceOf(receiver);
               expect(recipientBalance).to.equal(amount);
@@ -483,7 +478,7 @@ export function unitTestERC1363(): void {
               );
               await expect(logs)
                 .to.emit(this.token, "Transfer")
-                .withArgs(sender.address, receiver, amount);
+                .withArgs(sender, receiver, amount);
             });
           });
         });
@@ -507,7 +502,7 @@ export function unitTestERC1363(): void {
           await expect(
             transferAndCallWithoutData(
               this.token,
-              signers.recipient.address,
+              signers.recipient,
               initialSupply,
               signers.initialHolder
             )
@@ -614,20 +609,20 @@ export function unitTestERC1363(): void {
               data != null
                 ? await approveAndCallWithData(
                     this.token,
-                    this.erc1363Spender.address,
+                    this.erc1363spender,
                     initialSupply,
                     signers.initialHolder
                   )
                 : await approveAndCallWithoutData(
                     this.token,
-                    this.erc1363Spender.address,
+                    this.erc1363spender,
                     initialSupply,
                     signers.initialHolder
                   );
             expect(receipt)
               .to.emit(this.erc1363Spender, "Approved")
               .withArgs(
-                signers.initialHolder.address,
+                signers.initialHolder,
                 initialSupply,
                 data,
                 BigNumber.from(28063946)
@@ -636,10 +631,7 @@ export function unitTestERC1363(): void {
         });
       }
 
-      function approveWasSuccessful(
-        sender: SignerWithAddress,
-        amount: BigNumber
-      ) {
+      function approveWasSuccessful(sender: Address, amount: BigNumber) {
         let spender: any;
 
         beforeEach(async function () {
@@ -659,7 +651,7 @@ export function unitTestERC1363(): void {
             await approveAndCallWithData(this.token, spender, amount, sender);
 
             const spenderAllowance = await this.token.allowance(
-              sender.address,
+              sender,
               spender
             );
             expect(spenderAllowance).to.be.equal(amount);
@@ -674,7 +666,7 @@ export function unitTestERC1363(): void {
             );
             await expect(logs)
               .to.emit(this.token, "Approval")
-              .withArgs(sender.address, spender, amount);
+              .withArgs(sender, spender, amount);
           });
         });
 
@@ -688,7 +680,7 @@ export function unitTestERC1363(): void {
             );
 
             const spenderAllowance = await this.token.allowance(
-              sender.address,
+              sender,
               spender
             );
             expect(spenderAllowance).to.be.equal(amount);
@@ -703,7 +695,7 @@ export function unitTestERC1363(): void {
             );
             await expect(logs)
               .to.emit(this.token, "Approval")
-              .withArgs(sender.address, spender, amount);
+              .withArgs(sender, spender, amount);
           });
         });
       }
@@ -725,7 +717,7 @@ export function unitTestERC1363(): void {
           await expect(
             approveAndCallWithoutData(
               this.token,
-              signers.recipient.address,
+              signers.recipient,
               initialSupply,
               signers.owner
             )
@@ -745,7 +737,7 @@ export function unitTestERC1363(): void {
           expect(
             approveAndCallWithoutData(
               this.token,
-              this.erc1363Spender.address,
+              this.erc1363spender,
               initialSupply,
               this.signers.initialHolder
             )
@@ -765,7 +757,7 @@ export function unitTestERC1363(): void {
           expect(
             approveAndCallWithoutData(
               this.token,
-              this.erc1363Spender.address,
+              this.erc1363spender,
               initialSupply,
               this.signers.initialHolder
             )
@@ -780,7 +772,7 @@ export function unitTestERC1363(): void {
           await expect(
             approveAndCallWithoutData(
               this.token,
-              invalidSpender.address,
+              invalidSpender,
               initialSupply,
               signers.owner
             )

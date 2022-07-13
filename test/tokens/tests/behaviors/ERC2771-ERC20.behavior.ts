@@ -1,5 +1,5 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 import {BigNumber, Contract} from "ethers";
+import {Address} from "hardhat-deploy/types";
 import {Signers} from "../../../shared/types";
 import {functionCallEncodeABI, getAddress} from "../../../shared/utils";
 import {
@@ -19,17 +19,17 @@ export function shouldBehaveLikeForwardedRegularERC20(
       initialSupply,
       async function (
         token: Contract,
-        from: SignerWithAddress | string,
-        to: SignerWithAddress | string,
+        from: Address | string,
+        to: Address | string,
         amount: BigNumber,
         forwarder: Contract | null
       ) {
         const data = functionCallEncodeABI("transfer", "address,uint256", [
-          getAddress(to),
+          to,
           amount,
         ]);
-        const fromAddress = getAddress(from);
-        // @ts-ignore
+        const fromAddress = from;
+        // @ts-ignore/
         const nonce = await forwarder.getNonce(fromAddress);
         const req = {
           from: fromAddress,
@@ -53,16 +53,16 @@ export function shouldBehaveLikeForwardedRegularERC20(
       initialSupply,
       async function (
         token: Contract,
-        spender: SignerWithAddress | string,
-        tokenOwner: SignerWithAddress | string,
-        to: SignerWithAddress | string,
+        spender: Address | string,
+        tokenOwner: Address | string,
+        to: Address | string,
         amount: BigNumber,
         forwarder: Contract | null
       ) {
         const data = functionCallEncodeABI(
           "transferFrom",
           "address,address,uint256",
-          [getAddress(tokenOwner), getAddress(to), amount]
+          [getAddress(tokenOwner), to, amount]
         );
         // @ts-ignore
         const nonce = await forwarder.getNonce(getAddress(spender));
@@ -87,8 +87,8 @@ export function shouldBehaveLikeForwardedRegularERC20(
       initialSupply,
       async function (
         token: Contract,
-        owner: SignerWithAddress | string,
-        spender: SignerWithAddress | string,
+        owner: Address | string,
+        spender: Address | string,
         amount: BigNumber,
         forwarder: Contract | null
       ) {

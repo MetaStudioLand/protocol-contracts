@@ -1,6 +1,6 @@
 // import {expect} from "chai";
-import { expect } from "../../../deploy/chai-setup";
-import {ethers, tracer} from "hardhat";
+import {expect} from "../../../deploy/chai-setup";
+import {ethers} from "hardhat";
 import {after} from "mocha";
 import {getSuiteContext} from "../../shared/utils";
 import {shouldBehaveLikeForwardedRegularERC20} from "./behaviors/ERC2771-ERC20.behavior";
@@ -12,7 +12,7 @@ export function unitTestERC2771() {
         await expect(
           await this.token
             .connect(this.signers.recipient)
-            .isTrustedForwarder(this.signers.forwarder.address)
+            .isTrustedForwarder(this.signers.forwarder)
         ).to.be.false;
       });
 
@@ -20,13 +20,10 @@ export function unitTestERC2771() {
         await expect(
           await this.token
             .connect(this.signers.initialHolder)
-            .setTrustedForwarder(this.signers.forwarder.address)
+            .setTrustedForwarder(this.signers.forwarder)
         )
           .to.emit(this.token, "TrustedForwarderChanged")
-          .withArgs(
-            ethers.constants.AddressZero,
-            this.signers.forwarder.address
-          );
+          .withArgs(ethers.constants.AddressZero, this.signers.forwarder);
       });
     });
 
@@ -36,12 +33,6 @@ export function unitTestERC2771() {
         const minimalForwarder = await Factory.deploy();
         await minimalForwarder.deployed();
         this.forwarder = minimalForwarder;
-        tracer.nameTags[this.forwarder.address] = "Contract: Forwarder";
-      });
-      after(function () {
-        if (this.forwarder) {
-          delete tracer.nameTags[this.forwarder.address];
-        }
       });
       beforeEach(async function () {
         await this.token

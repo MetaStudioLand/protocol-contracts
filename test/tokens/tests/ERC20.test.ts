@@ -1,6 +1,6 @@
 // import {expect} from "chai";
 
-import { expect } from "chai";
+import {expect} from "chai";
 import {BigNumber} from "ethers";
 import {ethers} from "hardhat";
 // import { expect } from "../../../deploy/chai-setup";
@@ -14,12 +14,10 @@ export function unitTestERC20(): void {
     it(`has the good name`, async function () {
       console.log(this.name);
       console.log("----------------");
-      
+
       console.log(await this.token.name());
       console.log("____________");
-      
-      
-      
+
       expect(await this.token.name()).to.equal(this.name);
     });
 

@@ -1,7 +1,7 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
+import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/dist/src/signers";
 import {expect} from "chai";
 import {BigNumber, ContractReceipt, ContractTransaction} from "ethers";
-import {ethers, network, tracer} from "hardhat";
+import {ethers, network} from "hardhat";
 import {Context, Suite} from "mocha";
 import {promisify} from "util";
 import {NB_DECIMALS} from "./constants";
@@ -39,10 +39,6 @@ export const functionCallEncodeABI = (
   // console.log(`ABI: ${ABI}`);
   const iface = new ethers.utils.Interface(ABI);
   return iface.encodeFunctionData(functionName, paramsValues);
-};
-
-export const logNameTags = () => {
-  console.log(`Names: ${JSON.stringify(tracer.nameTags, null, 3)}`);
 };
 
 export const getAddress = (
