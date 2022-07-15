@@ -12,19 +12,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../../common";
+} from 'ethers';
+import type {FunctionFragment, Result, EventFragment} from '@ethersproject/abi';
+import type {Listener, Provider} from '@ethersproject/providers';
+import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
 
 export declare namespace ERC2771ForwarderMock {
   export type ForwardRequestStruct = {
@@ -36,14 +27,7 @@ export declare namespace ERC2771ForwarderMock {
     data: BytesLike;
   };
 
-  export type ForwardRequestStructOutput = [
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    string
-  ] & {
+  export type ForwardRequestStructOutput = [string, string, BigNumber, BigNumber, BigNumber, string] & {
     from: string;
     to: string;
     value: BigNumber;
@@ -55,36 +39,30 @@ export declare namespace ERC2771ForwarderMock {
 
 export interface ERC2771ForwarderMockInterface extends utils.Interface {
   functions: {
-    "execute((address,address,uint256,uint256,uint256,bytes))": FunctionFragment;
-    "getNonce(address)": FunctionFragment;
+    'execute((address,address,uint256,uint256,uint256,bytes))': FunctionFragment;
+    'getNonce(address)': FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "execute" | "getNonce"): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'execute' | 'getNonce'): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "execute",
-    values: [ERC2771ForwarderMock.ForwardRequestStruct]
-  ): string;
-  encodeFunctionData(functionFragment: "getNonce", values: [string]): string;
+  encodeFunctionData(functionFragment: 'execute', values: [ERC2771ForwarderMock.ForwardRequestStruct]): string;
+  encodeFunctionData(functionFragment: 'getNonce', values: [string]): string;
 
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'execute', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getNonce', data: BytesLike): Result;
 
   events: {
-    "Forwarded(bool,bytes)": EventFragment;
+    'Forwarded(bool,bytes)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Forwarded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Forwarded'): EventFragment;
 }
 
 export interface ForwardedEventObject {
   arg0: boolean;
   arg1: string;
 }
-export type ForwardedEvent = TypedEvent<
-  [boolean, string],
-  ForwardedEventObject
->;
+export type ForwardedEvent = TypedEvent<[boolean, string], ForwardedEventObject>;
 
 export type ForwardedEventFilter = TypedEventFilter<ForwardedEvent>;
 
@@ -101,13 +79,9 @@ export interface ERC2771ForwarderMock extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -117,7 +91,7 @@ export interface ERC2771ForwarderMock extends BaseContract {
   functions: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     getNonce(from: string, overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -125,29 +99,26 @@ export interface ERC2771ForwarderMock extends BaseContract {
 
   execute(
     req: ERC2771ForwarderMock.ForwardRequestStruct,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    execute(
-      req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: CallOverrides
-    ): Promise<[boolean, string]>;
+    execute(req: ERC2771ForwarderMock.ForwardRequestStruct, overrides?: CallOverrides): Promise<[boolean, string]>;
 
     getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {
-    "Forwarded(bool,bytes)"(arg0?: null, arg1?: null): ForwardedEventFilter;
+    'Forwarded(bool,bytes)'(arg0?: null, arg1?: null): ForwardedEventFilter;
     Forwarded(arg0?: null, arg1?: null): ForwardedEventFilter;
   };
 
   estimateGas: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -156,12 +127,9 @@ export interface ERC2771ForwarderMock extends BaseContract {
   populateTransaction: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    getNonce(
-      from: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getNonce(from: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

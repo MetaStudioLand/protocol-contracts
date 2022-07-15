@@ -6,8 +6,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, getNamedAccounts} = hre;
   const {deployer, initialHolder} = await getNamedAccounts();
   const {deploy} = deployments;
-  const accounts: SignerWithAddress[] = await ethers.getSigners();
-
   await deploy('MetaStudioToken', {
     contract: 'MetaStudioToken',
     from: deployer,

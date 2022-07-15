@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import {Contract, Signer, utils} from 'ethers';
+import type {Provider} from '@ethersproject/providers';
 import type {
   ERC1967UpgradeUpgradeable,
   ERC1967UpgradeUpgradeableInterface,
-} from "../../../../../@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable";
+} from '../../../../../@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable';
 
 const _abi = [
   {
@@ -15,58 +15,58 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "previousAdmin",
-        type: "address",
+        internalType: 'address',
+        name: 'previousAdmin',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "newAdmin",
-        type: "address",
+        internalType: 'address',
+        name: 'newAdmin',
+        type: 'address',
       },
     ],
-    name: "AdminChanged",
-    type: "event",
+    name: 'AdminChanged',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "beacon",
-        type: "address",
+        internalType: 'address',
+        name: 'beacon',
+        type: 'address',
       },
     ],
-    name: "BeaconUpgraded",
-    type: "event",
+    name: 'BeaconUpgraded',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint8",
-        name: "version",
-        type: "uint8",
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
       },
     ],
-    name: "Initialized",
-    type: "event",
+    name: 'Initialized',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "implementation",
-        type: "address",
+        internalType: 'address',
+        name: 'implementation',
+        type: 'address',
       },
     ],
-    name: "Upgraded",
-    type: "event",
+    name: 'Upgraded',
+    type: 'event',
   },
 ];
 
@@ -75,14 +75,7 @@ export class ERC1967UpgradeUpgradeable__factory {
   static createInterface(): ERC1967UpgradeUpgradeableInterface {
     return new utils.Interface(_abi) as ERC1967UpgradeUpgradeableInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ERC1967UpgradeUpgradeable {
-    return new Contract(
-      address,
-      _abi,
-      signerOrProvider
-    ) as ERC1967UpgradeUpgradeable;
+  static connect(address: string, signerOrProvider: Signer | Provider): ERC1967UpgradeUpgradeable {
+    return new Contract(address, _abi, signerOrProvider) as ERC1967UpgradeUpgradeable;
   }
 }

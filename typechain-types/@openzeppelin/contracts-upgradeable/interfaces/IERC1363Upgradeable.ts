@@ -12,152 +12,92 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../../common";
+} from 'ethers';
+import type {FunctionFragment, Result, EventFragment} from '@ethersproject/abi';
+import type {Listener, Provider} from '@ethersproject/providers';
+import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
 
 export interface IERC1363UpgradeableInterface extends utils.Interface {
   functions: {
-    "allowance(address,address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "approveAndCall(address,uint256)": FunctionFragment;
-    "approveAndCall(address,uint256,bytes)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "supportsInterface(bytes4)": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferAndCall(address,uint256)": FunctionFragment;
-    "transferAndCall(address,uint256,bytes)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "transferFromAndCall(address,address,uint256,bytes)": FunctionFragment;
-    "transferFromAndCall(address,address,uint256)": FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'approveAndCall(address,uint256)': FunctionFragment;
+    'approveAndCall(address,uint256,bytes)': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'supportsInterface(bytes4)': FunctionFragment;
+    'totalSupply()': FunctionFragment;
+    'transfer(address,uint256)': FunctionFragment;
+    'transferAndCall(address,uint256)': FunctionFragment;
+    'transferAndCall(address,uint256,bytes)': FunctionFragment;
+    'transferFrom(address,address,uint256)': FunctionFragment;
+    'transferFromAndCall(address,address,uint256,bytes)': FunctionFragment;
+    'transferFromAndCall(address,address,uint256)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "allowance"
-      | "approve"
-      | "approveAndCall(address,uint256)"
-      | "approveAndCall(address,uint256,bytes)"
-      | "balanceOf"
-      | "supportsInterface"
-      | "totalSupply"
-      | "transfer"
-      | "transferAndCall(address,uint256)"
-      | "transferAndCall(address,uint256,bytes)"
-      | "transferFrom"
-      | "transferFromAndCall(address,address,uint256,bytes)"
-      | "transferFromAndCall(address,address,uint256)"
+      | 'allowance'
+      | 'approve'
+      | 'approveAndCall(address,uint256)'
+      | 'approveAndCall(address,uint256,bytes)'
+      | 'balanceOf'
+      | 'supportsInterface'
+      | 'totalSupply'
+      | 'transfer'
+      | 'transferAndCall(address,uint256)'
+      | 'transferAndCall(address,uint256,bytes)'
+      | 'transferFrom'
+      | 'transferFromAndCall(address,address,uint256,bytes)'
+      | 'transferFromAndCall(address,address,uint256)'
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'allowance', values: [string, string]): string;
+  encodeFunctionData(functionFragment: 'approve', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'approveAndCall(address,uint256)', values: [string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approveAndCall(address,uint256)",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approveAndCall(address,uint256,bytes)",
+    functionFragment: 'approveAndCall(address,uint256,bytes)',
     values: [string, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
+  encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: 'totalSupply', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'transfer', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'transferAndCall(address,uint256)', values: [string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "supportsInterface",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferAndCall(address,uint256)",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferAndCall(address,uint256,bytes)",
+    functionFragment: 'transferAndCall(address,uint256,bytes)',
     values: [string, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: 'transferFrom', values: [string, string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFromAndCall(address,address,uint256,bytes)",
+    functionFragment: 'transferFromAndCall(address,address,uint256,bytes)',
     values: [string, string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFromAndCall(address,address,uint256)",
+    functionFragment: 'transferFromAndCall(address,address,uint256)',
     values: [string, string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "approveAndCall(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "approveAndCall(address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "supportsInterface",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferAndCall(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferAndCall(address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFromAndCall(address,address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFromAndCall(address,address,uint256)",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approveAndCall(address,uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approveAndCall(address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalSupply', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferAndCall(address,uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferAndCall(address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFrom', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFromAndCall(address,address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFromAndCall(address,address,uint256)', data: BytesLike): Result;
 
   events: {
-    "Approval(address,address,uint256)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
+    'Approval(address,address,uint256)': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
 }
 
 export interface ApprovalEventObject {
@@ -165,10 +105,7 @@ export interface ApprovalEventObject {
   spender: string;
   value: BigNumber;
 }
-export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber],
-  ApprovalEventObject
->;
+export type ApprovalEvent = TypedEvent<[string, string, BigNumber], ApprovalEventObject>;
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
 
@@ -177,10 +114,7 @@ export interface TransferEventObject {
   to: string;
   value: BigNumber;
 }
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  TransferEventObject
->;
+export type TransferEvent = TypedEvent<[string, string, BigNumber], TransferEventObject>;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
@@ -197,13 +131,9 @@ export interface IERC1363Upgradeable extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -211,177 +141,155 @@ export interface IERC1363Upgradeable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     transferFrom(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
   };
 
-  allowance(
-    owner: string,
-    spender: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   approve(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "approveAndCall(address,uint256)"(
+  'approveAndCall(address,uint256)'(
     spender: string,
     value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "approveAndCall(address,uint256,bytes)"(
+  'approveAndCall(address,uint256,bytes)'(
     spender: string,
     value: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
     to: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferAndCall(address,uint256)"(
+  'transferAndCall(address,uint256)'(
     to: string,
     value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferAndCall(address,uint256,bytes)"(
+  'transferAndCall(address,uint256,bytes)'(
     to: string,
     value: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   transferFrom(
     from: string,
     to: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferFromAndCall(address,address,uint256,bytes)"(
+  'transferFromAndCall(address,address,uint256,bytes)'(
     from: string,
     to: string,
     value: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferFromAndCall(address,address,uint256)"(
+  'transferFromAndCall(address,address,uint256)'(
     from: string,
     to: string,
     value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    approve(spender: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       value: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       value: BigNumberish,
       data: BytesLike,
@@ -390,40 +298,24 @@ export interface IERC1363Upgradeable extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    transfer(to: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferAndCall(address,uint256)"(
-      to: string,
-      value: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    'transferAndCall(address,uint256)'(to: string, value: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       value: BigNumberish,
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    transferFrom(from: string, to: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       value: BigNumberish,
@@ -431,7 +323,7 @@ export interface IERC1363Upgradeable extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       value: BigNumberish,
@@ -440,183 +332,154 @@ export interface IERC1363Upgradeable extends BaseContract {
   };
 
   filters: {
-    "Approval(address,address,uint256)"(
+    'Approval(address,address,uint256)'(
       owner?: string | null,
       spender?: string | null,
       value?: null
     ): ApprovalEventFilter;
-    Approval(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
+    Approval(owner?: string | null, spender?: string | null, value?: null): ApprovalEventFilter;
 
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
+    'Transfer(address,address,uint256)'(from?: string | null, to?: string | null, value?: null): TransferEventFilter;
+    Transfer(from?: string | null, to?: string | null, value?: null): TransferEventFilter;
   };
 
   estimateGas: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     transferFrom(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    allowance(
-      owner: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    balanceOf(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
   };
 }

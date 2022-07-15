@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import {Contract, Signer, utils} from 'ethers';
+import type {Provider} from '@ethersproject/providers';
 import type {
   IVotesUpgradeable,
   IVotesUpgradeableInterface,
-} from "../../../../../@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable";
+} from '../../../../../@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable';
 
 const _abi = [
   {
@@ -15,182 +15,182 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "delegator",
-        type: "address",
+        internalType: 'address',
+        name: 'delegator',
+        type: 'address',
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "fromDelegate",
-        type: "address",
+        internalType: 'address',
+        name: 'fromDelegate',
+        type: 'address',
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "toDelegate",
-        type: "address",
+        internalType: 'address',
+        name: 'toDelegate',
+        type: 'address',
       },
     ],
-    name: "DelegateChanged",
-    type: "event",
+    name: 'DelegateChanged',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "delegate",
-        type: "address",
+        internalType: 'address',
+        name: 'delegate',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "previousBalance",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'previousBalance',
+        type: 'uint256',
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "newBalance",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'newBalance',
+        type: 'uint256',
       },
     ],
-    name: "DelegateVotesChanged",
-    type: "event",
+    name: 'DelegateVotesChanged',
+    type: 'event',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "delegatee",
-        type: "address",
+        internalType: 'address',
+        name: 'delegatee',
+        type: 'address',
       },
     ],
-    name: "delegate",
+    name: 'delegate',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "delegatee",
-        type: "address",
+        internalType: 'address',
+        name: 'delegatee',
+        type: 'address',
       },
       {
-        internalType: "uint256",
-        name: "nonce",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'nonce',
+        type: 'uint256',
       },
       {
-        internalType: "uint256",
-        name: "expiry",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'expiry',
+        type: 'uint256',
       },
       {
-        internalType: "uint8",
-        name: "v",
-        type: "uint8",
+        internalType: 'uint8',
+        name: 'v',
+        type: 'uint8',
       },
       {
-        internalType: "bytes32",
-        name: "r",
-        type: "bytes32",
+        internalType: 'bytes32',
+        name: 'r',
+        type: 'bytes32',
       },
       {
-        internalType: "bytes32",
-        name: "s",
-        type: "bytes32",
+        internalType: 'bytes32',
+        name: 's',
+        type: 'bytes32',
       },
     ],
-    name: "delegateBySig",
+    name: 'delegateBySig',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "account",
-        type: "address",
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
       },
     ],
-    name: "delegates",
+    name: 'delegates',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "blockNumber",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'blockNumber',
+        type: 'uint256',
       },
     ],
-    name: "getPastTotalSupply",
+    name: 'getPastTotalSupply',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "account",
-        type: "address",
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
       },
       {
-        internalType: "uint256",
-        name: "blockNumber",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'blockNumber',
+        type: 'uint256',
       },
     ],
-    name: "getPastVotes",
+    name: 'getPastVotes',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "account",
-        type: "address",
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
       },
     ],
-    name: "getVotes",
+    name: 'getVotes',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
 ];
 
@@ -199,10 +199,7 @@ export class IVotesUpgradeable__factory {
   static createInterface(): IVotesUpgradeableInterface {
     return new utils.Interface(_abi) as IVotesUpgradeableInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IVotesUpgradeable {
+  static connect(address: string, signerOrProvider: Signer | Provider): IVotesUpgradeable {
     return new Contract(address, _abi, signerOrProvider) as IVotesUpgradeable;
   }
 }

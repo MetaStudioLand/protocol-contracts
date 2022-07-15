@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import {Contract, Signer, utils} from 'ethers';
+import type {Provider} from '@ethersproject/providers';
 import type {
   ERC165Upgradeable,
   ERC165UpgradeableInterface,
-} from "../../../../../@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable";
+} from '../../../../../@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable';
 
 const _abi = [
   {
@@ -15,32 +15,32 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "uint8",
-        name: "version",
-        type: "uint8",
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
       },
     ],
-    name: "Initialized",
-    type: "event",
+    name: 'Initialized',
+    type: 'event',
   },
   {
     inputs: [
       {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4",
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4',
       },
     ],
-    name: "supportsInterface",
+    name: 'supportsInterface',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
 ];
 
@@ -49,10 +49,7 @@ export class ERC165Upgradeable__factory {
   static createInterface(): ERC165UpgradeableInterface {
     return new utils.Interface(_abi) as ERC165UpgradeableInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ERC165Upgradeable {
+  static connect(address: string, signerOrProvider: Signer | Provider): ERC165Upgradeable {
     return new Contract(address, _abi, signerOrProvider) as ERC165Upgradeable;
   }
 }

@@ -21,13 +21,11 @@ export async function baseContext(description: string, hooks: () => void): Promi
   const symbol = 'METAS';
   const initialSupply = tokens(5_000_000_000);
 
-
   /**
    * Main Suite
    */
   describe(description, function (this: Suite) {
     const rootSuite = this;
-    // @ts-ignore
     rootSuite.ctx.signers = signers;
     rootSuite.ctx.name = name;
     rootSuite.ctx.symbol = symbol;

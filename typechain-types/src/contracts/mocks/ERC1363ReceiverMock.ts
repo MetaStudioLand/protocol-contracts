@@ -12,42 +12,27 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../../common";
+} from 'ethers';
+import type {FunctionFragment, Result, EventFragment} from '@ethersproject/abi';
+import type {Listener, Provider} from '@ethersproject/providers';
+import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
 
 export interface ERC1363ReceiverMockInterface extends utils.Interface {
   functions: {
-    "onTransferReceived(address,address,uint256,bytes)": FunctionFragment;
+    'onTransferReceived(address,address,uint256,bytes)': FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "onTransferReceived"): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'onTransferReceived'): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "onTransferReceived",
-    values: [string, string, BigNumberish, BytesLike]
-  ): string;
+  encodeFunctionData(functionFragment: 'onTransferReceived', values: [string, string, BigNumberish, BytesLike]): string;
 
-  decodeFunctionResult(
-    functionFragment: "onTransferReceived",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'onTransferReceived', data: BytesLike): Result;
 
   events: {
-    "Received(address,address,uint256,bytes,uint256)": EventFragment;
+    'Received(address,address,uint256,bytes,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Received"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Received'): EventFragment;
 }
 
 export interface ReceivedEventObject {
@@ -57,10 +42,7 @@ export interface ReceivedEventObject {
   data: string;
   gas: BigNumber;
 }
-export type ReceivedEvent = TypedEvent<
-  [string, string, BigNumber, string, BigNumber],
-  ReceivedEventObject
->;
+export type ReceivedEvent = TypedEvent<[string, string, BigNumber, string, BigNumber], ReceivedEventObject>;
 
 export type ReceivedEventFilter = TypedEventFilter<ReceivedEvent>;
 
@@ -77,13 +59,9 @@ export interface ERC1363ReceiverMock extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -96,7 +74,7 @@ export interface ERC1363ReceiverMock extends BaseContract {
       sender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
   };
 
@@ -105,7 +83,7 @@ export interface ERC1363ReceiverMock extends BaseContract {
     sender: string,
     amount: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -119,20 +97,14 @@ export interface ERC1363ReceiverMock extends BaseContract {
   };
 
   filters: {
-    "Received(address,address,uint256,bytes,uint256)"(
+    'Received(address,address,uint256,bytes,uint256)'(
       operator?: null,
       sender?: null,
       amount?: null,
       data?: null,
       gas?: null
     ): ReceivedEventFilter;
-    Received(
-      operator?: null,
-      sender?: null,
-      amount?: null,
-      data?: null,
-      gas?: null
-    ): ReceivedEventFilter;
+    Received(operator?: null, sender?: null, amount?: null, data?: null, gas?: null): ReceivedEventFilter;
   };
 
   estimateGas: {
@@ -141,7 +113,7 @@ export interface ERC1363ReceiverMock extends BaseContract {
       sender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
   };
 
@@ -151,7 +123,7 @@ export interface ERC1363ReceiverMock extends BaseContract {
       sender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
   };
 }

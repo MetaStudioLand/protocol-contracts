@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import {Contract, Signer, utils} from 'ethers';
+import type {Provider} from '@ethersproject/providers';
 import type {
   UUPSUpgradeable,
   UUPSUpgradeableInterface,
-} from "../../../../../@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable";
+} from '../../../../../@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable';
 
 const _abi = [
   {
@@ -15,102 +15,102 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "previousAdmin",
-        type: "address",
+        internalType: 'address',
+        name: 'previousAdmin',
+        type: 'address',
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "newAdmin",
-        type: "address",
+        internalType: 'address',
+        name: 'newAdmin',
+        type: 'address',
       },
     ],
-    name: "AdminChanged",
-    type: "event",
+    name: 'AdminChanged',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "beacon",
-        type: "address",
+        internalType: 'address',
+        name: 'beacon',
+        type: 'address',
       },
     ],
-    name: "BeaconUpgraded",
-    type: "event",
+    name: 'BeaconUpgraded',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint8",
-        name: "version",
-        type: "uint8",
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
       },
     ],
-    name: "Initialized",
-    type: "event",
+    name: 'Initialized',
+    type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "implementation",
-        type: "address",
+        internalType: 'address',
+        name: 'implementation',
+        type: 'address',
       },
     ],
-    name: "Upgraded",
-    type: "event",
+    name: 'Upgraded',
+    type: 'event',
   },
   {
     inputs: [],
-    name: "proxiableUUID",
+    name: 'proxiableUUID',
     outputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
       },
     ],
-    name: "upgradeTo",
+    name: 'upgradeTo',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
       },
       {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
       },
     ],
-    name: "upgradeToAndCall",
+    name: 'upgradeToAndCall',
     outputs: [],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
 ];
 
@@ -119,10 +119,7 @@ export class UUPSUpgradeable__factory {
   static createInterface(): UUPSUpgradeableInterface {
     return new utils.Interface(_abi) as UUPSUpgradeableInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): UUPSUpgradeable {
+  static connect(address: string, signerOrProvider: Signer | Provider): UUPSUpgradeable {
     return new Contract(address, _abi, signerOrProvider) as UUPSUpgradeable;
   }
 }

@@ -13,19 +13,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../../common";
+} from 'ethers';
+import type {FunctionFragment, Result, EventFragment} from '@ethersproject/abi';
+import type {Listener, Provider} from '@ethersproject/providers';
+import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
 
 export declare namespace ERC20VotesUpgradeable {
   export type CheckpointStruct = {
@@ -41,468 +32,270 @@ export declare namespace ERC20VotesUpgradeable {
 
 export interface MetaStudioTokenInterface extends utils.Interface {
   functions: {
-    "DEFAULT_ADMIN_ROLE()": FunctionFragment;
-    "DOMAIN_SEPARATOR()": FunctionFragment;
-    "FORWARDER_ROLE()": FunctionFragment;
-    "PAUSER_ROLE()": FunctionFragment;
-    "PROXY_ROLE()": FunctionFragment;
-    "allowance(address,address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "approveAndCall(address,uint256)": FunctionFragment;
-    "approveAndCall(address,uint256,bytes)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "checkpoints(address,uint32)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseAllowance(address,uint256)": FunctionFragment;
-    "delegate(address)": FunctionFragment;
-    "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "delegates(address)": FunctionFragment;
-    "getChainId()": FunctionFragment;
-    "getPastTotalSupply(uint256)": FunctionFragment;
-    "getPastVotes(address,uint256)": FunctionFragment;
-    "getRoleAdmin(bytes32)": FunctionFragment;
-    "getRoleMember(bytes32,uint256)": FunctionFragment;
-    "getRoleMemberCount(bytes32)": FunctionFragment;
-    "getVotes(address)": FunctionFragment;
-    "grantRole(bytes32,address)": FunctionFragment;
-    "hasRole(bytes32,address)": FunctionFragment;
-    "increaseAllowance(address,uint256)": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
-    "isTrustedForwarder(address)": FunctionFragment;
-    "name()": FunctionFragment;
-    "nonces(address)": FunctionFragment;
-    "numCheckpoints(address)": FunctionFragment;
-    "pause()": FunctionFragment;
-    "paused()": FunctionFragment;
-    "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "proxiableUUID()": FunctionFragment;
-    "renounceRole(bytes32,address)": FunctionFragment;
-    "revokeRole(bytes32,address)": FunctionFragment;
-    "setTrustedForwarder(address)": FunctionFragment;
-    "supportsInterface(bytes4)": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferAndCall(address,uint256)": FunctionFragment;
-    "transferAndCall(address,uint256,bytes)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "transferFromAndCall(address,address,uint256,bytes)": FunctionFragment;
-    "transferFromAndCall(address,address,uint256)": FunctionFragment;
-    "unpause()": FunctionFragment;
-    "upgradeTo(address)": FunctionFragment;
-    "upgradeToAndCall(address,bytes)": FunctionFragment;
+    'DEFAULT_ADMIN_ROLE()': FunctionFragment;
+    'DOMAIN_SEPARATOR()': FunctionFragment;
+    'FORWARDER_ROLE()': FunctionFragment;
+    'PAUSER_ROLE()': FunctionFragment;
+    'PROXY_ROLE()': FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'approveAndCall(address,uint256)': FunctionFragment;
+    'approveAndCall(address,uint256,bytes)': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'checkpoints(address,uint32)': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'decreaseAllowance(address,uint256)': FunctionFragment;
+    'delegate(address)': FunctionFragment;
+    'delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)': FunctionFragment;
+    'delegates(address)': FunctionFragment;
+    'getChainId()': FunctionFragment;
+    'getPastTotalSupply(uint256)': FunctionFragment;
+    'getPastVotes(address,uint256)': FunctionFragment;
+    'getRoleAdmin(bytes32)': FunctionFragment;
+    'getRoleMember(bytes32,uint256)': FunctionFragment;
+    'getRoleMemberCount(bytes32)': FunctionFragment;
+    'getVotes(address)': FunctionFragment;
+    'grantRole(bytes32,address)': FunctionFragment;
+    'hasRole(bytes32,address)': FunctionFragment;
+    'increaseAllowance(address,uint256)': FunctionFragment;
+    'initialize(address,address)': FunctionFragment;
+    'isTrustedForwarder(address)': FunctionFragment;
+    'name()': FunctionFragment;
+    'nonces(address)': FunctionFragment;
+    'numCheckpoints(address)': FunctionFragment;
+    'pause()': FunctionFragment;
+    'paused()': FunctionFragment;
+    'permit(address,address,uint256,uint256,uint8,bytes32,bytes32)': FunctionFragment;
+    'proxiableUUID()': FunctionFragment;
+    'renounceRole(bytes32,address)': FunctionFragment;
+    'revokeRole(bytes32,address)': FunctionFragment;
+    'setTrustedForwarder(address)': FunctionFragment;
+    'supportsInterface(bytes4)': FunctionFragment;
+    'symbol()': FunctionFragment;
+    'totalSupply()': FunctionFragment;
+    'transfer(address,uint256)': FunctionFragment;
+    'transferAndCall(address,uint256)': FunctionFragment;
+    'transferAndCall(address,uint256,bytes)': FunctionFragment;
+    'transferFrom(address,address,uint256)': FunctionFragment;
+    'transferFromAndCall(address,address,uint256,bytes)': FunctionFragment;
+    'transferFromAndCall(address,address,uint256)': FunctionFragment;
+    'unpause()': FunctionFragment;
+    'upgradeTo(address)': FunctionFragment;
+    'upgradeToAndCall(address,bytes)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "DEFAULT_ADMIN_ROLE"
-      | "DOMAIN_SEPARATOR"
-      | "FORWARDER_ROLE"
-      | "PAUSER_ROLE"
-      | "PROXY_ROLE"
-      | "allowance"
-      | "approve"
-      | "approveAndCall(address,uint256)"
-      | "approveAndCall(address,uint256,bytes)"
-      | "balanceOf"
-      | "checkpoints"
-      | "decimals"
-      | "decreaseAllowance"
-      | "delegate"
-      | "delegateBySig"
-      | "delegates"
-      | "getChainId"
-      | "getPastTotalSupply"
-      | "getPastVotes"
-      | "getRoleAdmin"
-      | "getRoleMember"
-      | "getRoleMemberCount"
-      | "getVotes"
-      | "grantRole"
-      | "hasRole"
-      | "increaseAllowance"
-      | "initialize"
-      | "isTrustedForwarder"
-      | "name"
-      | "nonces"
-      | "numCheckpoints"
-      | "pause"
-      | "paused"
-      | "permit"
-      | "proxiableUUID"
-      | "renounceRole"
-      | "revokeRole"
-      | "setTrustedForwarder"
-      | "supportsInterface"
-      | "symbol"
-      | "totalSupply"
-      | "transfer"
-      | "transferAndCall(address,uint256)"
-      | "transferAndCall(address,uint256,bytes)"
-      | "transferFrom"
-      | "transferFromAndCall(address,address,uint256,bytes)"
-      | "transferFromAndCall(address,address,uint256)"
-      | "unpause"
-      | "upgradeTo"
-      | "upgradeToAndCall"
+      | 'DEFAULT_ADMIN_ROLE'
+      | 'DOMAIN_SEPARATOR'
+      | 'FORWARDER_ROLE'
+      | 'PAUSER_ROLE'
+      | 'PROXY_ROLE'
+      | 'allowance'
+      | 'approve'
+      | 'approveAndCall(address,uint256)'
+      | 'approveAndCall(address,uint256,bytes)'
+      | 'balanceOf'
+      | 'checkpoints'
+      | 'decimals'
+      | 'decreaseAllowance'
+      | 'delegate'
+      | 'delegateBySig'
+      | 'delegates'
+      | 'getChainId'
+      | 'getPastTotalSupply'
+      | 'getPastVotes'
+      | 'getRoleAdmin'
+      | 'getRoleMember'
+      | 'getRoleMemberCount'
+      | 'getVotes'
+      | 'grantRole'
+      | 'hasRole'
+      | 'increaseAllowance'
+      | 'initialize'
+      | 'isTrustedForwarder'
+      | 'name'
+      | 'nonces'
+      | 'numCheckpoints'
+      | 'pause'
+      | 'paused'
+      | 'permit'
+      | 'proxiableUUID'
+      | 'renounceRole'
+      | 'revokeRole'
+      | 'setTrustedForwarder'
+      | 'supportsInterface'
+      | 'symbol'
+      | 'totalSupply'
+      | 'transfer'
+      | 'transferAndCall(address,uint256)'
+      | 'transferAndCall(address,uint256,bytes)'
+      | 'transferFrom'
+      | 'transferFromAndCall(address,address,uint256,bytes)'
+      | 'transferFromAndCall(address,address,uint256)'
+      | 'unpause'
+      | 'upgradeTo'
+      | 'upgradeToAndCall'
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: 'DEFAULT_ADMIN_ROLE', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'DOMAIN_SEPARATOR', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'FORWARDER_ROLE', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'PAUSER_ROLE', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'PROXY_ROLE', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'allowance', values: [string, string]): string;
+  encodeFunctionData(functionFragment: 'approve', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'approveAndCall(address,uint256)', values: [string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "DEFAULT_ADMIN_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "DOMAIN_SEPARATOR",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "FORWARDER_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "PAUSER_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "PROXY_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approveAndCall(address,uint256)",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "approveAndCall(address,uint256,bytes)",
+    functionFragment: 'approveAndCall(address,uint256,bytes)',
     values: [string, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
+  encodeFunctionData(functionFragment: 'checkpoints', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'decreaseAllowance', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'delegate', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "checkpoints",
-    values: [string, BigNumberish]
+    functionFragment: 'delegateBySig',
+    values: [string, BigNumberish, BigNumberish, BigNumberish, BytesLike, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'delegates', values: [string]): string;
+  encodeFunctionData(functionFragment: 'getChainId', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getPastTotalSupply', values: [BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'getPastVotes', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'getRoleAdmin', values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: 'getRoleMember', values: [BytesLike, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'getRoleMemberCount', values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: 'getVotes', values: [string]): string;
+  encodeFunctionData(functionFragment: 'grantRole', values: [BytesLike, string]): string;
+  encodeFunctionData(functionFragment: 'hasRole', values: [BytesLike, string]): string;
+  encodeFunctionData(functionFragment: 'increaseAllowance', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'initialize', values: [string, string]): string;
+  encodeFunctionData(functionFragment: 'isTrustedForwarder', values: [string]): string;
+  encodeFunctionData(functionFragment: 'name', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'nonces', values: [string]): string;
+  encodeFunctionData(functionFragment: 'numCheckpoints', values: [string]): string;
+  encodeFunctionData(functionFragment: 'pause', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'paused', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
+    functionFragment: 'permit',
+    values: [string, string, BigNumberish, BigNumberish, BigNumberish, BytesLike, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "delegate", values: [string]): string;
+  encodeFunctionData(functionFragment: 'proxiableUUID', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'renounceRole', values: [BytesLike, string]): string;
+  encodeFunctionData(functionFragment: 'revokeRole', values: [BytesLike, string]): string;
+  encodeFunctionData(functionFragment: 'setTrustedForwarder', values: [string]): string;
+  encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: 'symbol', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'totalSupply', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'transfer', values: [string, BigNumberish]): string;
+  encodeFunctionData(functionFragment: 'transferAndCall(address,uint256)', values: [string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "delegateBySig",
-    values: [
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(functionFragment: "delegates", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "getChainId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPastTotalSupply",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPastVotes",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRoleAdmin",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRoleMember",
-    values: [BytesLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRoleMemberCount",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: "getVotes", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "grantRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "hasRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isTrustedForwarder",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "nonces", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "numCheckpoints",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "permit",
-    values: [
-      string,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "proxiableUUID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "renounceRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revokeRole",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setTrustedForwarder",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "supportsInterface",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferAndCall(address,uint256)",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferAndCall(address,uint256,bytes)",
+    functionFragment: 'transferAndCall(address,uint256,bytes)',
     values: [string, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: 'transferFrom', values: [string, string, BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFromAndCall(address,address,uint256,bytes)",
+    functionFragment: 'transferFromAndCall(address,address,uint256,bytes)',
     values: [string, string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFromAndCall(address,address,uint256)",
+    functionFragment: 'transferFromAndCall(address,address,uint256)',
     values: [string, string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
-  ): string;
+  encodeFunctionData(functionFragment: 'unpause', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
+  encodeFunctionData(functionFragment: 'upgradeToAndCall', values: [string, BytesLike]): string;
 
-  decodeFunctionResult(
-    functionFragment: "DEFAULT_ADMIN_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "DOMAIN_SEPARATOR",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "FORWARDER_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "PAUSER_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "PROXY_ROLE", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "approveAndCall(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "approveAndCall(address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "checkpoints",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "decreaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "delegate", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "delegateBySig",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "delegates", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getChainId", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getPastTotalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPastVotes",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRoleAdmin",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRoleMember",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRoleMemberCount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "increaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "isTrustedForwarder",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "numCheckpoints",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "proxiableUUID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceRole",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setTrustedForwarder",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "supportsInterface",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferAndCall(address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferAndCall(address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFromAndCall(address,address,uint256,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFromAndCall(address,address,uint256)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "upgradeToAndCall",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'DEFAULT_ADMIN_ROLE', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'DOMAIN_SEPARATOR', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'FORWARDER_ROLE', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'PAUSER_ROLE', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'PROXY_ROLE', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approveAndCall(address,uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approveAndCall(address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'checkpoints', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decreaseAllowance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'delegate', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'delegateBySig', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'delegates', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getChainId', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getPastTotalSupply', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getPastVotes', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getRoleAdmin', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getRoleMember', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getRoleMemberCount', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getVotes', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'grantRole', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'increaseAllowance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'isTrustedForwarder', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'nonces', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'numCheckpoints', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'pause', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'paused', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'permit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'proxiableUUID', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'renounceRole', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setTrustedForwarder', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalSupply', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferAndCall(address,uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferAndCall(address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFrom', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFromAndCall(address,address,uint256,bytes)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferFromAndCall(address,address,uint256)', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'unpause', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'upgradeToAndCall', data: BytesLike): Result;
 
   events: {
-    "AdminChanged(address,address)": EventFragment;
-    "Approval(address,address,uint256)": EventFragment;
-    "BeaconUpgraded(address)": EventFragment;
-    "DelegateChanged(address,address,address)": EventFragment;
-    "DelegateVotesChanged(address,uint256,uint256)": EventFragment;
-    "Initialized(uint8)": EventFragment;
-    "Paused(address)": EventFragment;
-    "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
-    "RoleGranted(bytes32,address,address)": EventFragment;
-    "RoleRevoked(bytes32,address,address)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
-    "TrustedForwarderChanged(address,address)": EventFragment;
-    "Unpaused(address)": EventFragment;
-    "Upgraded(address)": EventFragment;
+    'AdminChanged(address,address)': EventFragment;
+    'Approval(address,address,uint256)': EventFragment;
+    'BeaconUpgraded(address)': EventFragment;
+    'DelegateChanged(address,address,address)': EventFragment;
+    'DelegateVotesChanged(address,uint256,uint256)': EventFragment;
+    'Initialized(uint8)': EventFragment;
+    'Paused(address)': EventFragment;
+    'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
+    'RoleGranted(bytes32,address,address)': EventFragment;
+    'RoleRevoked(bytes32,address,address)': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
+    'TrustedForwarderChanged(address,address)': EventFragment;
+    'Unpaused(address)': EventFragment;
+    'Upgraded(address)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DelegateChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TrustedForwarderChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'DelegateChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'DelegateVotesChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Initialized'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Paused'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TrustedForwarderChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Unpaused'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
 
 export interface AdminChangedEventObject {
   previousAdmin: string;
   newAdmin: string;
 }
-export type AdminChangedEvent = TypedEvent<
-  [string, string],
-  AdminChangedEventObject
->;
+export type AdminChangedEvent = TypedEvent<[string, string], AdminChangedEventObject>;
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
@@ -511,20 +304,14 @@ export interface ApprovalEventObject {
   spender: string;
   value: BigNumber;
 }
-export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber],
-  ApprovalEventObject
->;
+export type ApprovalEvent = TypedEvent<[string, string, BigNumber], ApprovalEventObject>;
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
 
 export interface BeaconUpgradedEventObject {
   beacon: string;
 }
-export type BeaconUpgradedEvent = TypedEvent<
-  [string],
-  BeaconUpgradedEventObject
->;
+export type BeaconUpgradedEvent = TypedEvent<[string], BeaconUpgradedEventObject>;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
@@ -533,10 +320,7 @@ export interface DelegateChangedEventObject {
   fromDelegate: string;
   toDelegate: string;
 }
-export type DelegateChangedEvent = TypedEvent<
-  [string, string, string],
-  DelegateChangedEventObject
->;
+export type DelegateChangedEvent = TypedEvent<[string, string, string], DelegateChangedEventObject>;
 
 export type DelegateChangedEventFilter = TypedEventFilter<DelegateChangedEvent>;
 
@@ -545,13 +329,9 @@ export interface DelegateVotesChangedEventObject {
   previousBalance: BigNumber;
   newBalance: BigNumber;
 }
-export type DelegateVotesChangedEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
-  DelegateVotesChangedEventObject
->;
+export type DelegateVotesChangedEvent = TypedEvent<[string, BigNumber, BigNumber], DelegateVotesChangedEventObject>;
 
-export type DelegateVotesChangedEventFilter =
-  TypedEventFilter<DelegateVotesChangedEvent>;
+export type DelegateVotesChangedEventFilter = TypedEventFilter<DelegateVotesChangedEvent>;
 
 export interface InitializedEventObject {
   version: number;
@@ -572,23 +352,16 @@ export interface RoleAdminChangedEventObject {
   previousAdminRole: string;
   newAdminRole: string;
 }
-export type RoleAdminChangedEvent = TypedEvent<
-  [string, string, string],
-  RoleAdminChangedEventObject
->;
+export type RoleAdminChangedEvent = TypedEvent<[string, string, string], RoleAdminChangedEventObject>;
 
-export type RoleAdminChangedEventFilter =
-  TypedEventFilter<RoleAdminChangedEvent>;
+export type RoleAdminChangedEventFilter = TypedEventFilter<RoleAdminChangedEvent>;
 
 export interface RoleGrantedEventObject {
   role: string;
   account: string;
   sender: string;
 }
-export type RoleGrantedEvent = TypedEvent<
-  [string, string, string],
-  RoleGrantedEventObject
->;
+export type RoleGrantedEvent = TypedEvent<[string, string, string], RoleGrantedEventObject>;
 
 export type RoleGrantedEventFilter = TypedEventFilter<RoleGrantedEvent>;
 
@@ -597,10 +370,7 @@ export interface RoleRevokedEventObject {
   account: string;
   sender: string;
 }
-export type RoleRevokedEvent = TypedEvent<
-  [string, string, string],
-  RoleRevokedEventObject
->;
+export type RoleRevokedEvent = TypedEvent<[string, string, string], RoleRevokedEventObject>;
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
@@ -609,10 +379,7 @@ export interface TransferEventObject {
   to: string;
   value: BigNumber;
 }
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  TransferEventObject
->;
+export type TransferEvent = TypedEvent<[string, string, BigNumber], TransferEventObject>;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
@@ -620,13 +387,9 @@ export interface TrustedForwarderChangedEventObject {
   oldTF: string;
   newTF: string;
 }
-export type TrustedForwarderChangedEvent = TypedEvent<
-  [string, string],
-  TrustedForwarderChangedEventObject
->;
+export type TrustedForwarderChangedEvent = TypedEvent<[string, string], TrustedForwarderChangedEventObject>;
 
-export type TrustedForwarderChangedEventFilter =
-  TypedEventFilter<TrustedForwarderChangedEvent>;
+export type TrustedForwarderChangedEventFilter = TypedEventFilter<TrustedForwarderChangedEvent>;
 
 export interface UnpausedEventObject {
   account: string;
@@ -655,13 +418,9 @@ export interface MetaStudioToken extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -679,35 +438,28 @@ export interface MetaStudioToken extends BaseContract {
 
     PROXY_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
-    allowance(
-      holder: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    allowance(holder: string, spender: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     checkpoints(
       account: string,
@@ -720,12 +472,12 @@ export interface MetaStudioToken extends BaseContract {
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     delegate(
       delegatee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     delegateBySig(
@@ -735,80 +487,54 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     delegates(account: string, overrides?: CallOverrides): Promise<[string]>;
 
     getChainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPastTotalSupply(
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    getPastTotalSupply(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPastVotes(
-      account: string,
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    getPastVotes(account: string, blockNumber: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
-    getRoleMember(
-      role: BytesLike,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    getRoleMember(role: BytesLike, index: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
-    getRoleMemberCount(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    getRoleMemberCount(role: BytesLike, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getVotes(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     grantRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    hasRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     initialize(
       tokensOwner: string,
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    isTrustedForwarder(
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    isTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
     nonces(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    numCheckpoints(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
+    numCheckpoints(account: string, overrides?: CallOverrides): Promise<[number]>;
 
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -820,7 +546,7 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
@@ -828,24 +554,21 @@ export interface MetaStudioToken extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     revokeRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     setTrustedForwarder(
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<[boolean]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -854,57 +577,55 @@ export interface MetaStudioToken extends BaseContract {
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     transferFrom(
       holder: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
-    unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
 
     upgradeTo(
       newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     upgradeToAndCall(
       newImplementation: string,
       data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
   };
 
@@ -918,29 +639,25 @@ export interface MetaStudioToken extends BaseContract {
 
   PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
-  allowance(
-    holder: string,
-    spender: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  allowance(holder: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   approve(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "approveAndCall(address,uint256)"(
+  'approveAndCall(address,uint256)'(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "approveAndCall(address,uint256,bytes)"(
+  'approveAndCall(address,uint256,bytes)'(
     spender: string,
     amount: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -956,13 +673,10 @@ export interface MetaStudioToken extends BaseContract {
   decreaseAllowance(
     spender: string,
     subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  delegate(
-    delegatee: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  delegate(delegatee: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
 
   delegateBySig(
     delegatee: string,
@@ -971,67 +685,46 @@ export interface MetaStudioToken extends BaseContract {
     v: BigNumberish,
     r: BytesLike,
     s: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   delegates(account: string, overrides?: CallOverrides): Promise<string>;
 
   getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPastTotalSupply(
-    blockNumber: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getPastTotalSupply(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPastVotes(
-    account: string,
-    blockNumber: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getPastVotes(account: string, blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
-  getRoleMember(
-    role: BytesLike,
-    index: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  getRoleMember(role: BytesLike, index: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  getRoleMemberCount(
-    role: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getRoleMemberCount(role: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
   getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   grantRole(
     role: BytesLike,
     account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  hasRole(
-    role: BytesLike,
-    account: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  hasRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<boolean>;
 
   increaseAllowance(
     spender: string,
     addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   initialize(
     tokensOwner: string,
     forwarder: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  isTrustedForwarder(
-    forwarder: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  isTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<boolean>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -1039,9 +732,7 @@ export interface MetaStudioToken extends BaseContract {
 
   numCheckpoints(account: string, overrides?: CallOverrides): Promise<number>;
 
-  pause(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1053,7 +744,7 @@ export interface MetaStudioToken extends BaseContract {
     v: BigNumberish,
     r: BytesLike,
     s: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
@@ -1061,24 +752,21 @@ export interface MetaStudioToken extends BaseContract {
   renounceRole(
     role: BytesLike,
     account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   revokeRole(
     role: BytesLike,
     account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   setTrustedForwarder(
     forwarder: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -1087,57 +775,55 @@ export interface MetaStudioToken extends BaseContract {
   transfer(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferAndCall(address,uint256)"(
+  'transferAndCall(address,uint256)'(
     to: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferAndCall(address,uint256,bytes)"(
+  'transferAndCall(address,uint256,bytes)'(
     to: string,
     amount: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   transferFrom(
     holder: string,
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferFromAndCall(address,address,uint256,bytes)"(
+  'transferFromAndCall(address,address,uint256,bytes)'(
     from: string,
     to: string,
     amount: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  "transferFromAndCall(address,address,uint256)"(
+  'transferFromAndCall(address,address,uint256)'(
     from: string,
     to: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
-  unpause(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
 
   upgradeTo(
     newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   upgradeToAndCall(
     newImplementation: string,
     data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -1151,35 +837,24 @@ export interface MetaStudioToken extends BaseContract {
 
     PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
-    allowance(
-      holder: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    allowance(holder: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    approve(
+    approve(spender: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    'approveAndCall(address,uint256)'(
       spender: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "approveAndCall(address,uint256)"(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       amount: BigNumberish,
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1189,11 +864,7 @@ export interface MetaStudioToken extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
     delegate(delegatee: string, overrides?: CallOverrides): Promise<void>;
 
@@ -1211,60 +882,27 @@ export interface MetaStudioToken extends BaseContract {
 
     getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPastTotalSupply(
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getPastTotalSupply(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPastVotes(
-      account: string,
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getPastVotes(account: string, blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
-    getRoleMember(
-      role: BytesLike,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    getRoleMember(role: BytesLike, index: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    getRoleMemberCount(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getRoleMemberCount(role: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    grantRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<void>;
 
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    hasRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<boolean>;
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    initialize(
-      tokensOwner: string,
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    initialize(tokensOwner: string, forwarder: string, overrides?: CallOverrides): Promise<void>;
 
-    isTrustedForwarder(
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    isTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<boolean>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1289,59 +927,32 @@ export interface MetaStudioToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    renounceRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<void>;
 
-    revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    revokeRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<void>;
 
-    setTrustedForwarder(
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    setTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<void>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    transfer(recipient: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferAndCall(address,uint256)"(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    'transferAndCall(address,uint256)'(to: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       amount: BigNumberish,
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    transferFrom(
-      holder: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    transferFrom(holder: string, recipient: string, amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       amount: BigNumberish,
@@ -1349,7 +960,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       amount: BigNumberish,
@@ -1358,45 +969,26 @@ export interface MetaStudioToken extends BaseContract {
 
     unpause(overrides?: CallOverrides): Promise<void>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    upgradeTo(newImplementation: string, overrides?: CallOverrides): Promise<void>;
 
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    upgradeToAndCall(newImplementation: string, data: BytesLike, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
-    "AdminChanged(address,address)"(
-      previousAdmin?: null,
-      newAdmin?: null
-    ): AdminChangedEventFilter;
-    AdminChanged(
-      previousAdmin?: null,
-      newAdmin?: null
-    ): AdminChangedEventFilter;
+    'AdminChanged(address,address)'(previousAdmin?: null, newAdmin?: null): AdminChangedEventFilter;
+    AdminChanged(previousAdmin?: null, newAdmin?: null): AdminChangedEventFilter;
 
-    "Approval(address,address,uint256)"(
+    'Approval(address,address,uint256)'(
       owner?: string | null,
       spender?: string | null,
       value?: null
     ): ApprovalEventFilter;
-    Approval(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): ApprovalEventFilter;
+    Approval(owner?: string | null, spender?: string | null, value?: null): ApprovalEventFilter;
 
-    "BeaconUpgraded(address)"(
-      beacon?: string | null
-    ): BeaconUpgradedEventFilter;
+    'BeaconUpgraded(address)'(beacon?: string | null): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
-    "DelegateChanged(address,address,address)"(
+    'DelegateChanged(address,address,address)'(
       delegator?: string | null,
       fromDelegate?: string | null,
       toDelegate?: string | null
@@ -1407,7 +999,7 @@ export interface MetaStudioToken extends BaseContract {
       toDelegate?: string | null
     ): DelegateChangedEventFilter;
 
-    "DelegateVotesChanged(address,uint256,uint256)"(
+    'DelegateVotesChanged(address,uint256,uint256)'(
       delegate?: string | null,
       previousBalance?: null,
       newBalance?: null
@@ -1418,13 +1010,13 @@ export interface MetaStudioToken extends BaseContract {
       newBalance?: null
     ): DelegateVotesChangedEventFilter;
 
-    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    'Initialized(uint8)'(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "Paused(address)"(account?: null): PausedEventFilter;
+    'Paused(address)'(account?: null): PausedEventFilter;
     Paused(account?: null): PausedEventFilter;
 
-    "RoleAdminChanged(bytes32,bytes32,bytes32)"(
+    'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
       previousAdminRole?: BytesLike | null,
       newAdminRole?: BytesLike | null
@@ -1435,52 +1027,30 @@ export interface MetaStudioToken extends BaseContract {
       newAdminRole?: BytesLike | null
     ): RoleAdminChangedEventFilter;
 
-    "RoleGranted(bytes32,address,address)"(
+    'RoleGranted(bytes32,address,address)'(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
     ): RoleGrantedEventFilter;
-    RoleGranted(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): RoleGrantedEventFilter;
+    RoleGranted(role?: BytesLike | null, account?: string | null, sender?: string | null): RoleGrantedEventFilter;
 
-    "RoleRevoked(bytes32,address,address)"(
+    'RoleRevoked(bytes32,address,address)'(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
     ): RoleRevokedEventFilter;
-    RoleRevoked(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
-    ): RoleRevokedEventFilter;
+    RoleRevoked(role?: BytesLike | null, account?: string | null, sender?: string | null): RoleRevokedEventFilter;
 
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
+    'Transfer(address,address,uint256)'(from?: string | null, to?: string | null, value?: null): TransferEventFilter;
+    Transfer(from?: string | null, to?: string | null, value?: null): TransferEventFilter;
 
-    "TrustedForwarderChanged(address,address)"(
-      oldTF?: null,
-      newTF?: null
-    ): TrustedForwarderChangedEventFilter;
-    TrustedForwarderChanged(
-      oldTF?: null,
-      newTF?: null
-    ): TrustedForwarderChangedEventFilter;
+    'TrustedForwarderChanged(address,address)'(oldTF?: null, newTF?: null): TrustedForwarderChangedEventFilter;
+    TrustedForwarderChanged(oldTF?: null, newTF?: null): TrustedForwarderChangedEventFilter;
 
-    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    'Unpaused(address)'(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
+    'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
@@ -1495,54 +1065,40 @@ export interface MetaStudioToken extends BaseContract {
 
     PROXY_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    allowance(
-      holder: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    allowance(holder: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    checkpoints(account: string, pos: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    delegate(
-      delegatee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    delegate(delegatee: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
 
     delegateBySig(
       delegatee: string,
@@ -1551,83 +1107,54 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     delegates(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     getChainId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPastTotalSupply(
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getPastTotalSupply(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPastVotes(
-      account: string,
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getPastVotes(account: string, blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRoleAdmin(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRoleMember(
-      role: BytesLike,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getRoleMember(role: BytesLike, index: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRoleMemberCount(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getRoleMemberCount(role: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     getVotes(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     grantRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    hasRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     initialize(
       tokensOwner: string,
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    isTrustedForwarder(
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    isTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    numCheckpoints(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    numCheckpoints(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1639,7 +1166,7 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1647,24 +1174,21 @@ export interface MetaStudioToken extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     revokeRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     setTrustedForwarder(
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1673,64 +1197,57 @@ export interface MetaStudioToken extends BaseContract {
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     transferFrom(
       holder: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
-    unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    upgradeTo(newImplementation: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
 
     upgradeToAndCall(
       newImplementation: string,
       data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    DEFAULT_ADMIN_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1740,53 +1257,42 @@ export interface MetaStudioToken extends BaseContract {
 
     PROXY_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    allowance(
-      holder: string,
-      spender: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    allowance(holder: string, spender: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "approveAndCall(address,uint256)"(
+    'approveAndCall(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "approveAndCall(address,uint256,bytes)"(
+    'approveAndCall(address,uint256,bytes)'(
       spender: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    checkpoints(account: string, pos: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     delegate(
       delegatee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     delegateBySig(
@@ -1796,92 +1302,54 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    delegates(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    delegates(account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getChainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getPastTotalSupply(
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getPastTotalSupply(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getPastVotes(
-      account: string,
-      blockNumber: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getPastVotes(account: string, blockNumber: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getRoleAdmin(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getRoleMember(
-      role: BytesLike,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getRoleMember(role: BytesLike, index: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getRoleMemberCount(
-      role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getRoleMemberCount(role: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getVotes(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getVotes(account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     grantRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    hasRole(
-      role: BytesLike,
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    hasRole(role: BytesLike, account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     initialize(
       tokensOwner: string,
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    isTrustedForwarder(
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    isTrustedForwarder(forwarder: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    nonces(
-      owner: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    nonces(owner: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    numCheckpoints(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    numCheckpoints(account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1893,7 +1361,7 @@ export interface MetaStudioToken extends BaseContract {
       v: BigNumberish,
       r: BytesLike,
       s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1901,24 +1369,21 @@ export interface MetaStudioToken extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     revokeRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     setTrustedForwarder(
       forwarder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1927,57 +1392,55 @@ export interface MetaStudioToken extends BaseContract {
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferAndCall(address,uint256)"(
+    'transferAndCall(address,uint256)'(
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferAndCall(address,uint256,bytes)"(
+    'transferAndCall(address,uint256,bytes)'(
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       holder: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferFromAndCall(address,address,uint256,bytes)"(
+    'transferFromAndCall(address,address,uint256,bytes)'(
       from: string,
       to: string,
       amount: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    "transferFromAndCall(address,address,uint256)"(
+    'transferFromAndCall(address,address,uint256)'(
       from: string,
       to: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
-    unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>;
 
     upgradeTo(
       newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     upgradeToAndCall(
       newImplementation: string,
       data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
   };
 }
