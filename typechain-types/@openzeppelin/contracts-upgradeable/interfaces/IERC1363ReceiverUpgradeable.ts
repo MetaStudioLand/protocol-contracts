@@ -12,21 +12,32 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
-import type {FunctionFragment, Result} from '@ethersproject/abi';
-import type {Listener, Provider} from '@ethersproject/providers';
-import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../../common";
 
 export interface IERC1363ReceiverUpgradeableInterface extends utils.Interface {
   functions: {
-    'onTransferReceived(address,address,uint256,bytes)': FunctionFragment;
+    "onTransferReceived(address,address,uint256,bytes)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: 'onTransferReceived'): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "onTransferReceived"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'onTransferReceived', values: [string, string, BigNumberish, BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "onTransferReceived",
+    values: [string, string, BigNumberish, BytesLike]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'onTransferReceived', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "onTransferReceived",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -44,9 +55,13 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -59,7 +74,7 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
       from: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -68,7 +83,7 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
     from: string,
     value: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & {from?: string | Promise<string>}
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -89,7 +104,7 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
       from: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
@@ -99,7 +114,7 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
       from: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

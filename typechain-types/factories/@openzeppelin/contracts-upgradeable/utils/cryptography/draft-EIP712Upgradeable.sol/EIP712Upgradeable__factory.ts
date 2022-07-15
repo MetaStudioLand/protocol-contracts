@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import {Contract, Signer, utils} from 'ethers';
-import type {Provider} from '@ethersproject/providers';
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
 import type {
   EIP712Upgradeable,
   EIP712UpgradeableInterface,
-} from '../../../../../../@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol/EIP712Upgradeable';
+} from "../../../../../../@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol/EIP712Upgradeable";
 
 const _abi = [
   {
@@ -15,13 +15,13 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
       },
     ],
-    name: 'Initialized',
-    type: 'event',
+    name: "Initialized",
+    type: "event",
   },
 ];
 
@@ -30,7 +30,10 @@ export class EIP712Upgradeable__factory {
   static createInterface(): EIP712UpgradeableInterface {
     return new utils.Interface(_abi) as EIP712UpgradeableInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): EIP712Upgradeable {
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): EIP712Upgradeable {
     return new Contract(address, _abi, signerOrProvider) as EIP712Upgradeable;
   }
 }

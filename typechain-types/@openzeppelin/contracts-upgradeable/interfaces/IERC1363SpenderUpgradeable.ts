@@ -12,21 +12,32 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
-import type {FunctionFragment, Result} from '@ethersproject/abi';
-import type {Listener, Provider} from '@ethersproject/providers';
-import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../../common";
 
 export interface IERC1363SpenderUpgradeableInterface extends utils.Interface {
   functions: {
-    'onApprovalReceived(address,uint256,bytes)': FunctionFragment;
+    "onApprovalReceived(address,uint256,bytes)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: 'onApprovalReceived'): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "onApprovalReceived"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'onApprovalReceived', values: [string, BigNumberish, BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "onApprovalReceived",
+    values: [string, BigNumberish, BytesLike]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'onApprovalReceived', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "onApprovalReceived",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -44,9 +55,13 @@ export interface IERC1363SpenderUpgradeable extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -58,7 +73,7 @@ export interface IERC1363SpenderUpgradeable extends BaseContract {
       owner: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -66,11 +81,16 @@ export interface IERC1363SpenderUpgradeable extends BaseContract {
     owner: string,
     value: BigNumberish,
     data: BytesLike,
-    overrides?: Overrides & {from?: string | Promise<string>}
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    onApprovalReceived(owner: string, value: BigNumberish, data: BytesLike, overrides?: CallOverrides): Promise<string>;
+    onApprovalReceived(
+      owner: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
   };
 
   filters: {};
@@ -80,7 +100,7 @@ export interface IERC1363SpenderUpgradeable extends BaseContract {
       owner: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
@@ -89,7 +109,7 @@ export interface IERC1363SpenderUpgradeable extends BaseContract {
       owner: string,
       value: BigNumberish,
       data: BytesLike,
-      overrides?: Overrides & {from?: string | Promise<string>}
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

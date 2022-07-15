@@ -1,19 +1,14 @@
 {
-    "name": "template-ethereum-contracts",
-    "version": "0.1.0",
-    "description": "Template to develop ethereum smart contracts",
-    "private": true,
+    "name": "metastudio",
     "engines": {
-        "node": ">= 14.0.0"
+        "npm": "^8.9.0",
+        "node": "^16.9.0"
     },
-    "repository": "github:wighawag/template-ethereum-contracts",
-    "author": "wighawag",
     "license": "MIT",
     "keywords": [
         "ethereum",
         "smart-contracts",
-        "template",
-        "boilerplate",
+        "metastudio",
         "hardhat",
         "solidity"
     ],
@@ -55,29 +50,15 @@
         "typescript": "^4.6.3"
     },
     "scripts": {
-        "prepare": "node ./.setup.js && hardhat typechain",
-        "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
-        "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
-        "format": "prettier --check \"**/*.{ts,js,sol}\"",
-        "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
-        "compile": "hardhat compile",
-        "void:deploy": "hardhat deploy --report-gas",
-        "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
-        "gas": "cross-env REPORT_GAS=true hardhat test",
-        "coverage": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",
-        "dev:node": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0",
-        "dev": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0 --watch",
-        "local:dev": "hardhat --network localhost deploy --watch",
-        "execute": "node ./_scripts.js run",
-        "deploy": "node ./_scripts.js deploy",
-        "verify": "node ./_scripts.js verify",
-        "export": "node ./_scripts.js export",
-        "hardhat": "hardhat",
-        "fork:execute": "node ./_scripts.js fork:run",
-        "fork:deploy": "node ./_scripts.js fork:deploy",
-        "fork:dev": "node ./_scripts.js fork:dev",
-        "fork:node": "node ./_scripts.js fork:node",
-        "fork:test": "node ./_scripts.js fork:test",
-        "tenderly:push": "node ./_scripts.js tenderly:push"
+        "lint": "eslint '**/*.{js,ts}'",
+        "format": "prettier 'contracts/**/*.sol' --check",
+        "format-fix": "prettier 'contracts/**/*.sol' --write",
+        "solhint": "solhint 'contracts/**/*.sol'",
+        "test": "hardhat test",
+        "test-trace": "hardhat test --trace",
+        "test-fulltrace": "hardhat test --fulltrace",
+        "dodoc": "hardhat dodoc",
+        "slither": "yarn run hardhat clean && slither . --checklist > ./slither/slither.md",
+        "slither-inheritance": "slither . --print inheritance-graph && dot inheritance-graph.dot -Tsvg -o ./slither/inheritance-graph.svg"
     }
 }

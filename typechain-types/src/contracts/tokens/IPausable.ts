@@ -11,27 +11,34 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers';
-import type {FunctionFragment, Result} from '@ethersproject/abi';
-import type {Listener, Provider} from '@ethersproject/providers';
-import type {TypedEventFilter, TypedEvent, TypedListener, OnEvent} from '../../../common';
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../../common";
 
 export interface IPausableInterface extends utils.Interface {
   functions: {
-    'pause()': FunctionFragment;
-    'paused()': FunctionFragment;
-    'unpause()': FunctionFragment;
+    "pause()": FunctionFragment;
+    "paused()": FunctionFragment;
+    "unpause()": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: 'pause' | 'paused' | 'unpause'): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "pause" | "paused" | "unpause"
+  ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'pause', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'paused', values?: undefined): string;
-  encodeFunctionData(functionFragment: 'unpause', values?: undefined): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: 'pause', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'paused', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'unpause', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
 
   events: {};
 }
@@ -49,9 +56,13 @@ export interface IPausable extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -59,18 +70,26 @@ export interface IPausable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
-    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
-  pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
+  pause(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
-  unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>;
+  unpause(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     pause(overrides?: CallOverrides): Promise<void>;
@@ -83,18 +102,26 @@ export interface IPausable extends BaseContract {
   filters: {};
 
   estimateGas: {
-    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
-    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>;
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    pause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>;
+    pause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    unpause(overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>;
+    unpause(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }

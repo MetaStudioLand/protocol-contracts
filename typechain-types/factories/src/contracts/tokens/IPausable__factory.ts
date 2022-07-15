@@ -2,37 +2,40 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import {Contract, Signer, utils} from 'ethers';
-import type {Provider} from '@ethersproject/providers';
-import type {IPausable, IPausableInterface} from '../../../../src/contracts/tokens/IPausable';
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
+import type {
+  IPausable,
+  IPausableInterface,
+} from "../../../../src/contracts/tokens/IPausable";
 
 const _abi = [
   {
     inputs: [],
-    name: 'pause',
+    name: "pause",
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [],
-    name: 'paused',
+    name: "paused",
     outputs: [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [],
-    name: 'unpause',
+    name: "unpause",
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    stateMutability: "nonpayable",
+    type: "function",
   },
 ];
 
@@ -41,7 +44,10 @@ export class IPausable__factory {
   static createInterface(): IPausableInterface {
     return new utils.Interface(_abi) as IPausableInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): IPausable {
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): IPausable {
     return new Contract(address, _abi, signerOrProvider) as IPausable;
   }
 }
