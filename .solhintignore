@@ -1,1 +1,8 @@
-node_modules
+export/
+deployments/
+artifacts/
+cache/
+coverage/
+node_modules/
+typechain/
+dapp_test/test.sol

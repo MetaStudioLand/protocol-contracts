@@ -1,10 +1,10 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {expect} from "chai";
-import {BigNumber, ContractReceipt, ContractTransaction} from "ethers";
-import {ethers, network, tracer} from "hardhat";
-import {Context, Suite} from "mocha";
-import {promisify} from "util";
-import {NB_DECIMALS} from "./constants";
+import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/dist/src/signers';
+import {expect} from 'chai';
+import {BigNumber, ContractReceipt, ContractTransaction} from 'ethers';
+import {ethers, network} from 'hardhat';
+import {Context, Suite} from 'mocha';
+import {promisify} from 'util';
+import {NB_DECIMALS} from './constants';
 
 /**
  * Convert integer value into Tokens BigNumber (18 décimals)
@@ -30,11 +30,7 @@ export const getSuiteContext = (suite: Suite): Context => {
   return currSuite?.ctx?.signers ? currSuite.ctx : emptyContext;
 };
 
-export const functionCallEncodeABI = (
-  functionName: string,
-  functionParams: string,
-  paramsValues?: any[]
-) => {
+export const functionCallEncodeABI = (functionName: string, functionParams: string, paramsValues?: any[]) => {
   const ABI = [`function ${functionName}(${functionParams})`];
   // console.log(`ABI: ${ABI}`);
   const iface = new ethers.utils.Interface(ABI);
@@ -42,35 +38,25 @@ export const functionCallEncodeABI = (
 };
 
 export const logNameTags = () => {
-  console.log(`Names: ${JSON.stringify(tracer.nameTags, null, 3)}`);
+  console.log(`Names:`);
 };
 
-export const getAddress = (
-  accountOrAddress: SignerWithAddress | string
-): string => {
-  return typeof accountOrAddress === "string"
-    ? accountOrAddress
-    : accountOrAddress.address;
+export const getAddress = (accountOrAddress: SignerWithAddress | string): string => {
+  return typeof accountOrAddress === 'string' ? accountOrAddress : accountOrAddress.address;
 };
 
-export function waitFor(
-  p: Promise<ContractTransaction>
-): Promise<ContractReceipt> {
+export function waitFor(p: Promise<ContractTransaction>): Promise<ContractReceipt> {
   return p.then((tx) => tx.wait());
 }
 export const queue = promisify(setImmediate);
 export async function countPendingTransactions() {
-  return parseInt(
-    await network.provider.send("eth_getBlockTransactionCountByNumber", [
-      "pending",
-    ])
-  );
+  return parseInt(await network.provider.send('eth_getBlockTransactionCountByNumber', ['pending']));
 }
 
 export async function batchInBlock(txs: any[]) {
   try {
     // disable auto-mining
-    await network.provider.send("evm_setAutomine", [false]);
+    await network.provider.send('evm_setAutomine', [false]);
     // send all transactions
     const promises = txs.map((fn: () => any) => fn());
     // wait for node to have all pending transactions
@@ -78,7 +64,7 @@ export async function batchInBlock(txs: any[]) {
       await queue();
     }
     // mine one block
-    await network.provider.send("evm_mine");
+    await network.provider.send('evm_mine');
     // fetch receipts
     const receipts = await Promise.all(promises);
     // Sanity check, all tx should be in the same block
@@ -88,6 +74,6 @@ export async function batchInBlock(txs: any[]) {
     return receipts;
   } finally {
     // enable auto-mining
-    await network.provider.send("evm_setAutomine", [true]);
+    await network.provider.send('evm_setAutomine', [true]);
   }
 }

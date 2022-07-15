@@ -1,0 +1,13 @@
+{
+    "folders": [
+		{
+			"name": "template-ethereum-contracts",
+			"path": ".."
+		},
+		{
+			"name": "contracts",
+			"path": "..\\..\\MetaStudioProject\\protocol-contracts\\contracts"
+		}
+	],
+    "settings": {}
+}

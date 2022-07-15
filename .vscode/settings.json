@@ -1,8 +1,0 @@
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "solidity.compileUsingRemoteVersion": "v0.8.7+commit.e28d00a7"
-}
