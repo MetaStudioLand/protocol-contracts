@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import {deployments, ethers} from 'hardhat';
 import {FORWARDER_ROLE, PAUSER_ROLE} from '../shared/constants';
 import {baseContext} from '../shared/contexts';
 import {unitTestAccessControl} from './tests/AccessControl.test';
@@ -11,6 +12,30 @@ import {unitTestERC2771} from './tests/ERC2771.test';
 import {unitTestPausable} from './tests/Pausable.test';
 
 baseContext('MetaStudioToken', function () {
+  describe('======== MetaStudioToken: Creation test ================================================', function () {
+    it('Initial owner is mandatory', async function () {
+      const {deploy} = deployments;
+      expect(
+        deploy('Bad-MetaStudioToken', {
+          contract: 'MetaStudioToken',
+          from: this.signers.owner.address,
+          args: [],
+          proxy: {
+            proxyContract: 'ERC1967Proxy',
+            proxyArgs: ['{implementation}', '{data}'],
+            execute: {
+              init: {
+                methodName: 'initialize',
+                args: [ethers.constants.AddressZero, ethers.constants.AddressZero],
+              },
+            },
+          },
+          log: false,
+        })
+      ).to.be.revertedWith('tokensOwner is mandatory');
+    });
+  });
+
   unitTestERC165();
   unitTestERC20();
   unitTestAccessControl();
@@ -21,6 +46,12 @@ baseContext('MetaStudioToken', function () {
   unitTestERC20Permit();
 
   describe('======== MetaStudioToken: Specific tests ================================================', function () {
+    describe('Chain Id', function () {
+      it('get', async function () {
+        expect(await this.token.getChainId()).to.be.equal(this.chainId);
+      });
+    });
+
     describe('AccessControl', function () {
       describe('access control for Pause', function () {
         describe('role is not granted', function () {
@@ -88,5 +119,6 @@ baseContext('MetaStudioToken', function () {
       });
     });
   });
+  // Meta-Tx
   unitTestERC2771();
 });
