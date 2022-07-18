@@ -54,9 +54,9 @@
   },
   "scripts": {
     "lint": "eslint '**/*.{js,ts}'",
-    "format": "prettier 'contracts/**/*.sol' --check",
-    "format-fix": "prettier 'contracts/**/*.sol' --write",
-    "solhint": "solhint 'contracts/**/*.sol'",
+    "format": "prettier 'src/contracts/**/*.sol' --check",
+    "format-fix": "prettier 'src/contracts/**/*.sol' --write",
+    "solhint": "solhint 'src/contracts/**/*.sol'",
     "test": "hardhat test",
     "test-trace": "hardhat test --trace",
     "test-fulltrace": "hardhat test --fulltrace",
