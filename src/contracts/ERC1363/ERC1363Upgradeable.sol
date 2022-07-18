@@ -15,7 +15,9 @@ abstract contract ERC1363Upgradeable is Initializable, ERC20Upgradeable, IERC136
     using AddressUpgradeable for address;
 
     // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
-    function __ERC1363_init() internal view onlyInitializing {}
+    function __ERC1363_init() internal view onlyInitializing {
+        __ERC1363_init_unchained();
+    }
 
     // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
     function __ERC1363_init_unchained() internal view onlyInitializing {}
