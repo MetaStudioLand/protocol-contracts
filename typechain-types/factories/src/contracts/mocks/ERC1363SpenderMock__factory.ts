@@ -10,6 +10,7 @@ import {
   Overrides,
 } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
+import type { PromiseOrValue } from "../../../../common";
 import type {
   ERC1363SpenderMock,
   ERC1363SpenderMockInterface,
@@ -115,9 +116,9 @@ export class ERC1363SpenderMock__factory extends ContractFactory {
   }
 
   override deploy(
-    retval: BytesLike,
-    reverts: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    retval: PromiseOrValue<BytesLike>,
+    reverts: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ERC1363SpenderMock> {
     return super.deploy(
       retval,
@@ -126,9 +127,9 @@ export class ERC1363SpenderMock__factory extends ContractFactory {
     ) as Promise<ERC1363SpenderMock>;
   }
   override getDeployTransaction(
-    retval: BytesLike,
-    reverts: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    retval: PromiseOrValue<BytesLike>,
+    reverts: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): TransactionRequest {
     return super.getDeployTransaction(retval, reverts, overrides || {});
   }

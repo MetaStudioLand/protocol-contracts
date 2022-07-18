@@ -24,16 +24,17 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "../../../common";
 
 export declare namespace ERC2771ForwarderMock {
   export type ForwardRequestStruct = {
-    from: string;
-    to: string;
-    value: BigNumberish;
-    gas: BigNumberish;
-    nonce: BigNumberish;
-    data: BytesLike;
+    from: PromiseOrValue<string>;
+    to: PromiseOrValue<string>;
+    value: PromiseOrValue<BigNumberish>;
+    gas: PromiseOrValue<BigNumberish>;
+    nonce: PromiseOrValue<BigNumberish>;
+    data: PromiseOrValue<BytesLike>;
   };
 
   export type ForwardRequestStructOutput = [
@@ -65,7 +66,10 @@ export interface ERC2771ForwarderMockInterface extends utils.Interface {
     functionFragment: "execute",
     values: [ERC2771ForwarderMock.ForwardRequestStruct]
   ): string;
-  encodeFunctionData(functionFragment: "getNonce", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getNonce",
+    values: [PromiseOrValue<string>]
+  ): string;
 
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
@@ -117,18 +121,24 @@ export interface ERC2771ForwarderMock extends BaseContract {
   functions: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getNonce(from: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    getNonce(
+      from: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
   };
 
   execute(
     req: ERC2771ForwarderMock.ForwardRequestStruct,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
+  getNonce(
+    from: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   callStatic: {
     execute(
@@ -136,7 +146,10 @@ export interface ERC2771ForwarderMock extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean, string]>;
 
-    getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getNonce(
+      from: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   filters: {
@@ -147,20 +160,23 @@ export interface ERC2771ForwarderMock extends BaseContract {
   estimateGas: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getNonce(from: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getNonce(
+      from: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     execute(
       req: ERC2771ForwarderMock.ForwardRequestStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     getNonce(
-      from: string,
+      from: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

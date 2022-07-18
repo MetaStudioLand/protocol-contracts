@@ -10,6 +10,7 @@ import {
   BytesLike,
 } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
+import type { PromiseOrValue } from "../../../../../common";
 import type {
   ERC1967Proxy,
   ERC1967ProxyInterface,
@@ -108,9 +109,9 @@ export class ERC1967Proxy__factory extends ContractFactory {
   }
 
   override deploy(
-    _logic: string,
-    _data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    _logic: PromiseOrValue<string>,
+    _data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ERC1967Proxy> {
     return super.deploy(
       _logic,
@@ -119,9 +120,9 @@ export class ERC1967Proxy__factory extends ContractFactory {
     ) as Promise<ERC1967Proxy>;
   }
   override getDeployTransaction(
-    _logic: string,
-    _data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    _logic: PromiseOrValue<string>,
+    _data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): TransactionRequest {
     return super.getDeployTransaction(_logic, _data, overrides || {});
   }
