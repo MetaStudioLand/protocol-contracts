@@ -197,7 +197,11 @@ export function shouldBehaveLikeERC20TransferFrom(
           });
 
           it('emits an approval event', async function () {
-            await expect(doTransferFrom(this.token, spender, tokenOwner, to, amount, this.forwarder))
+            // here, we need to wait until transaction is mined
+            const tx = doTransferFrom(this.token, spender, tokenOwner, to, amount, this.forwarder);
+            await (await tx).wait();
+            // because Emit assertion used a token's method to get one of the test values
+            await expect(tx)
               .to.emit(this.token, 'Approval')
               .withArgs(
                 getAddress(tokenOwner),
