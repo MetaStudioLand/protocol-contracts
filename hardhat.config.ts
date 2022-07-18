@@ -1,15 +1,28 @@
-import 'dotenv/config';
-import {HardhatUserConfig} from 'hardhat/types';
-import 'hardhat-deploy';
 import '@nomiclabs/hardhat-ethers';
-import 'hardhat-gas-reporter';
+import '@primitivefi/hardhat-dodoc';
 import '@typechain/hardhat';
-import 'solidity-coverage';
-import 'hardhat-deploy-tenderly';
 import * as dotenv from 'dotenv';
+import 'dotenv/config';
+import 'hardhat-deploy';
+import 'hardhat-deploy-tenderly';
+import 'hardhat-gas-reporter';
+import 'hardhat-tracer';
+import {task} from 'hardhat/config';
+import {HardhatUserConfig} from 'hardhat/types';
+import 'solidity-coverage';
 
-import {node_url, accounts, addForkConfiguration} from './utils/network';
+import {accounts, addForkConfiguration, node_url} from './utils/network';
+
 dotenv.config();
+
+task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
+
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
+
 const config: HardhatUserConfig = {
   solidity: {
     compilers: [
@@ -27,10 +40,25 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: 0,
     initialHolder: 1,
+    forwarder: 2,
+  },
+  tracer: {
+    logs: true,
+    calls: true,
+    gasCost: true,
+    sloads: false,
+    sstores: false,
+  },
+  dodoc: {
+    runOnCompile: true,
+    include: ['tokens', 'metatx', 'ERC1363'],
+    exclude: ['mocks', 'elin', 'IERC2771Upgradeable'],
+    debugMode: false,
   },
   networks: addForkConfiguration({
     hardhat: {
-      initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
+      initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see
+      // https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
     },
     localhost: {
       url: node_url('localhost'),
