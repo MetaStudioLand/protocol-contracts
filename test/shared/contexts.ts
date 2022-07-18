@@ -1,41 +1,39 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {ethers, tracer, upgrades} from "hardhat";
-import {Suite} from "mocha";
-import {Signers} from "./types";
-import {tokens} from "./utils";
+import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/dist/src/signers';
+import {deployments, ethers, tracer} from 'hardhat';
+import 'hardhat-deploy';
+import {Suite} from 'mocha';
+import {Signers} from './types';
+import {tokens} from './utils';
 
-export async function baseContext(
-  description: string,
-  hooks: () => void
-): Promise<void> {
+export async function baseContext(description: string, hooks: () => void): Promise<void> {
   /*
     Getting Signers to put them into main Suite Context
    */
   const accounts: SignerWithAddress[] = await ethers.getSigners();
   const signers = {} as Signers;
   signers.owner = accounts[0];
-  tracer.nameTags[signers.owner.address] = "Owner";
+  tracer.nameTags[signers.owner.address] = 'Deployer';
   signers.initialHolder = accounts[1];
-  tracer.nameTags[signers.initialHolder.address] = "Initial Holder";
+  tracer.nameTags[signers.initialHolder.address] = 'Initial Holder';
   signers.recipient = accounts[2];
-  tracer.nameTags[signers.recipient.address] = "Recipient";
+  tracer.nameTags[signers.recipient.address] = 'Recipient';
   signers.anotherAccount = accounts[3];
-  tracer.nameTags[signers.anotherAccount.address] = "Another Account";
+  tracer.nameTags[signers.anotherAccount.address] = 'Another Account';
   signers.forwarder = accounts[4];
-  tracer.nameTags[signers.forwarder.address] = "Forwarder";
+  tracer.nameTags[signers.forwarder.address] = 'Forwarder';
   signers.spender = accounts[5];
-  tracer.nameTags[signers.spender.address] = "Spender";
+  tracer.nameTags[signers.spender.address] = 'Spender';
 
-  const name = "METAS";
-  const symbol = "METAS";
+  const name = 'METAS';
+  const symbol = 'METAS';
   const initialSupply = tokens(5_000_000_000);
 
   /**
    * Main Suite
    */
   describe(description, function (this: Suite) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const rootSuite = this;
-    // @ts-ignore
     rootSuite.ctx.signers = signers;
     rootSuite.ctx.name = name;
     rootSuite.ctx.symbol = symbol;
@@ -43,7 +41,6 @@ export async function baseContext(
 
     before(async function () {
       const network = await ethers.provider.getNetwork();
-      console.log(`network: ${JSON.stringify(network)}`);
       this.chainId = network.chainId;
       this.name = name;
       this.symbol = symbol;
@@ -52,15 +49,10 @@ export async function baseContext(
     });
 
     beforeEach(async function () {
-      const Factory = await ethers.getContractFactory("MetaStudioToken");
-      const proxyContract = await upgrades.deployProxy(
-        Factory,
-        [this.signers.initialHolder.address, ethers.constants.AddressZero],
-        {kind: "uups"}
-      );
-      await proxyContract.deployed();
-      this.token = proxyContract;
-      tracer.nameTags[this.token.address] = "Contract: METAS";
+      await deployments.fixture(['MetaStudioToken'], {keepExistingDeployments: false});
+
+      this.token = await ethers.getContract('MetaStudioToken');
+      tracer.nameTags[this.token.address] = 'Contract:MetaStudioToken';
     });
 
     afterEach(async function () {

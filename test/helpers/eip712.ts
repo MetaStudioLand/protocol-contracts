@@ -1,5 +1,4 @@
-import * as ethSigUtil from "eth-sig-util";
-
+import * as ethSigUtil from 'eth-sig-util';
 type MessagePermit = {
   owner: string;
   spender: string;
@@ -8,33 +7,33 @@ type MessagePermit = {
   deadline: string;
 };
 type MessageDelegation = {
-  delegatee: any;
-  nonce: any;
-  expiry: any;
+  delegatee: string;
+  nonce: string;
+  expiry: string;
 };
 type Contract = {
   address: string;
 };
 
 const EIP712Domain = [
-  {name: "name", type: "string"},
-  {name: "version", type: "string"},
-  {name: "chainId", type: "uint256"},
-  {name: "verifyingContract", type: "address"},
+  {name: 'name', type: 'string'},
+  {name: 'version', type: 'string'},
+  {name: 'chainId', type: 'uint256'},
+  {name: 'verifyingContract', type: 'address'},
 ];
 
 const _Permit = [
-  {name: "owner", type: "address"},
-  {name: "spender", type: "address"},
-  {name: "value", type: "uint256"},
-  {name: "nonce", type: "uint256"},
-  {name: "deadline", type: "uint256"},
+  {name: 'owner', type: 'address'},
+  {name: 'spender', type: 'address'},
+  {name: 'value', type: 'uint256'},
+  {name: 'nonce', type: 'uint256'},
+  {name: 'deadline', type: 'uint256'},
 ];
 
 const _Delegation = [
-  {name: "delegatee", type: "address"},
-  {name: "nonce", type: "uint256"},
-  {name: "expiry", type: "uint256"},
+  {name: 'delegatee', type: 'address'},
+  {name: 'nonce', type: 'uint256'},
+  {name: 'expiry', type: 'uint256'},
 ];
 
 export const getData712ForPermit = function (
@@ -48,10 +47,10 @@ export const getData712ForPermit = function (
       EIP712Domain: EIP712Domain,
       Permit: _Permit,
     },
-    primaryType: "Permit",
+    primaryType: 'Permit',
     domain: {
       name: name,
-      version: "1",
+      version: '1',
       chainId: chainId,
       verifyingContract: verifyingContract.address,
     },
@@ -70,10 +69,10 @@ export const getData712ForDelegation = function (
       EIP712Domain: EIP712Domain,
       Delegation: _Delegation,
     },
-    primaryType: "Delegation",
+    primaryType: 'Delegation',
     domain: {
       name: name,
-      version: "1",
+      version: '1',
       chainId: chainId,
       verifyingContract: verifyingContract.address,
     },
@@ -81,18 +80,13 @@ export const getData712ForDelegation = function (
   };
 };
 
-export async function domainSeparator(
-  name: string,
-  version: string,
-  chainId: number,
-  verifyingContract: Contract
-) {
+export async function domainSeparator(name: string, version: string, chainId: number, verifyingContract: Contract) {
   return (
-    "0x" +
+    '0x' +
     ethSigUtil.TypedDataUtils.hashStruct(
-      "EIP712Domain",
+      'EIP712Domain',
       {name, version, chainId, verifyingContract: verifyingContract.address},
       {EIP712Domain}
-    ).toString("hex")
+    ).toString('hex')
   );
 }

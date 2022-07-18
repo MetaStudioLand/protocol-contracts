@@ -1,17 +1,13 @@
-import {expect} from "chai";
-import {BigNumber} from "ethers";
-import {ethers} from "hardhat";
-import {NB_DECIMALS} from "../../shared/constants";
-import {getSuiteContext} from "../../shared/utils";
-
-import {shouldBehaveLikeERC20} from "./behaviors/ERC20.behavior";
-
+import {expect} from 'chai';
+import {BigNumber, ethers} from 'ethers';
+import {NB_DECIMALS} from '../../shared/constants';
+import {getSuiteContext} from '../../shared/utils';
+import {shouldBehaveLikeERC20} from './behaviors/ERC20.behavior';
 export function unitTestERC20(): void {
-  describe("======== Contract: ERC20 ================================================", function () {
+  describe('======== Contract: ERC20 ================================================', function () {
     it(`has the good name`, async function () {
       expect(await this.token.name()).to.equal(this.name);
     });
-
     it(`has the good symbol`, async function () {
       expect(await this.token.symbol()).to.equal(this.symbol);
     });
@@ -21,27 +17,20 @@ export function unitTestERC20(): void {
     });
 
     const {signers, initialSupply} = getSuiteContext(this);
-    shouldBehaveLikeERC20(
-      initialSupply,
-      signers.initialHolder,
-      signers.recipient,
-      signers.anotherAccount
-    );
+    shouldBehaveLikeERC20(initialSupply, signers.initialHolder, signers.recipient, signers.anotherAccount);
 
-    describe("decrease allowance", function () {
-      describe("when the spender is not the zero address", function () {
+    describe('decrease allowance', function () {
+      describe('when the spender is not the zero address', function () {
         const shouldDecreaseApproval = function (amount: BigNumber) {
-          describe("when there was no approved amount before", function () {
-            it("reverts", async function () {
+          describe('when there was no approved amount before', function () {
+            it('reverts', async function () {
               await expect(
-                this.token
-                  .connect(this.signers.initialHolder)
-                  .decreaseAllowance(this.signers.spender.address, amount)
-              ).to.be.revertedWith("ERC20: decreased allowance below zero");
+                this.token.connect(this.signers.initialHolder).decreaseAllowance(this.signers.spender.address, amount)
+              ).to.be.revertedWith('ERC20: decreased allowance below zero');
             });
           });
 
-          describe("when the spender had an approved amount", function () {
+          describe('when the spender had an approved amount', function () {
             const approvedAmount = amount;
 
             beforeEach(async function () {
@@ -50,210 +39,160 @@ export function unitTestERC20(): void {
                 .approve(this.signers.spender.address, approvedAmount);
             });
 
-            it("emits an approval event", async function () {
-              await expect(
+            it('emits an approval event', async function () {
+              expect(
                 this.token
                   .connect(this.signers.initialHolder)
-                  .decreaseAllowance(
-                    this.signers.spender.address,
-                    approvedAmount
-                  )
+                  .decreaseAllowance(this.signers.spender.address, approvedAmount)
               )
-                .to.emit(this.token, "Approval")
-                .withArgs(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address,
-                  BigNumber.from(0)
-                );
+                .to.emit(this.token, 'Approval')
+                .withArgs(this.signers.initialHolder.address, this.signers.spender.address, BigNumber.from(0));
             });
 
-            it("decreases the spender allowance subtracting the requested amount", async function () {
+            it('decreases the spender allowance subtracting the requested amount', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
-                .decreaseAllowance(
-                  this.signers.spender.address,
-                  approvedAmount.sub(1)
-                );
+                .decreaseAllowance(this.signers.spender.address, approvedAmount.sub(1));
 
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(1);
             });
 
-            it("sets the allowance to zero when all allowance is removed", async function () {
+            it('sets the allowance to zero when all allowance is removed', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
-                .decreaseAllowance(
-                  this.signers.spender.address,
-                  approvedAmount
-                );
+                .decreaseAllowance(this.signers.spender.address, approvedAmount);
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(0);
             });
 
-            it("reverts when more than the full allowance is removed", async function () {
+            it('reverts when more than the full allowance is removed', async function () {
               await expect(
                 this.token
                   .connect(this.signers.initialHolder)
-                  .decreaseAllowance(
-                    this.signers.spender.address,
-                    approvedAmount.add(1)
-                  )
-              ).to.be.revertedWith("ERC20: decreased allowance below zero");
+                  .decreaseAllowance(this.signers.spender.address, approvedAmount.add(1))
+              ).to.be.revertedWith('ERC20: decreased allowance below zero');
             });
           });
         };
 
-        describe("when the sender has enough balance", function () {
+        describe('when the sender has enough balance', function () {
           shouldDecreaseApproval(initialSupply);
         });
 
-        describe("when the sender does not have enough balance", function () {
+        describe('when the sender does not have enough balance', function () {
           const amount = initialSupply.add(1);
           shouldDecreaseApproval(amount);
         });
       });
 
-      describe("when the spender is the zero address", function () {
+      describe('when the spender is the zero address', function () {
         const amount = initialSupply;
         const spender = ethers.constants.AddressZero;
 
-        it("reverts", async function () {
+        it('reverts', async function () {
           await expect(
-            this.token
-              .connect(this.signers.initialHolder)
-              .decreaseAllowance(spender, amount)
-          ).to.be.revertedWith("ERC20: decreased allowance below zero");
+            this.token.connect(this.signers.initialHolder).decreaseAllowance(spender, amount)
+          ).to.be.revertedWith('ERC20: decreased allowance below zero');
         });
       });
     });
 
-    describe("increase allowance", function () {
+    describe('increase allowance', function () {
       const amount = initialSupply;
-      describe("when the spender is not the zero address", function () {
-        describe("when the sender has enough balance", function () {
-          it("emits an approval event", async function () {
+      describe('when the spender is not the zero address', function () {
+        describe('when the sender has enough balance', function () {
+          it('emits an approval event', async function () {
             await expect(
-              await this.token
-                .connect(this.signers.initialHolder)
-                .increaseAllowance(this.signers.spender.address, amount)
+              this.token.connect(this.signers.initialHolder).increaseAllowance(this.signers.spender.address, amount)
             )
-              .to.emit(this.token, "Approval")
-              .withArgs(
-                this.signers.initialHolder.address,
-                this.signers.spender.address,
-                amount
-              );
+              .to.emit(this.token, 'Approval')
+              .withArgs(this.signers.initialHolder.address, this.signers.spender.address, amount);
           });
 
-          describe("when there was no approved amount before", function () {
-            it("approves the requested amount", async function () {
+          describe('when there was no approved amount before', function () {
+            it('approves the requested amount', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .increaseAllowance(this.signers.spender.address, amount);
 
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(amount);
             });
           });
 
-          describe("when the spender had an approved amount", function () {
+          describe('when the spender had an approved amount', function () {
             beforeEach(async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .approve(this.signers.spender.address, BigNumber.from(1));
             });
 
-            it("increases the spender allowance adding the requested amount", async function () {
+            it('increases the spender allowance adding the requested amount', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .increaseAllowance(this.signers.spender.address, amount);
 
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(amount.add(1));
             });
           });
         });
 
-        describe("when the sender does not have enough balance", function () {
+        describe('when the sender does not have enough balance', function () {
           const amount = initialSupply.add(1);
 
-          it("emits an approval event", async function () {
+          it('emits an approval event', async function () {
             await expect(
-              this.token
-                .connect(this.signers.initialHolder)
-                .increaseAllowance(this.signers.spender.address, amount)
+              this.token.connect(this.signers.initialHolder).increaseAllowance(this.signers.spender.address, amount)
             )
-              .to.emit(this.token, "Approval")
-              .withArgs(
-                this.signers.initialHolder.address,
-                this.signers.spender.address,
-                amount
-              );
+              .to.emit(this.token, 'Approval')
+              .withArgs(this.signers.initialHolder.address, this.signers.spender.address, amount);
           });
 
-          describe("when there was no approved amount before", function () {
-            it("approves the requested amount", async function () {
+          describe('when there was no approved amount before', function () {
+            it('approves the requested amount', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .increaseAllowance(this.signers.spender.address, amount);
 
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(amount);
             });
           });
 
-          describe("when the spender had an approved amount", function () {
+          describe('when the spender had an approved amount', function () {
             beforeEach(async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .approve(this.signers.spender.address, BigNumber.from(1));
             });
 
-            it("increases the spender allowance adding the requested amount", async function () {
+            it('increases the spender allowance adding the requested amount', async function () {
               await this.token
                 .connect(this.signers.initialHolder)
                 .increaseAllowance(this.signers.spender.address, amount);
 
               expect(
-                await this.token.allowance(
-                  this.signers.initialHolder.address,
-                  this.signers.spender.address
-                )
+                await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
               ).to.be.equal(amount.add(1));
             });
           });
         });
       });
 
-      describe("when the spender is the zero address", function () {
+      describe('when the spender is the zero address', function () {
         const spender = ethers.constants.AddressZero;
 
-        it("reverts", async function () {
+        it('reverts', async function () {
           await expect(
-            this.token
-              .connect(this.signers.initialHolder)
-              .increaseAllowance(spender, amount)
-          ).to.be.revertedWith("ERC20: approve to the zero address");
+            this.token.connect(this.signers.initialHolder).increaseAllowance(spender, amount)
+          ).to.be.revertedWith('ERC20: approve to the zero address');
         });
       });
     });

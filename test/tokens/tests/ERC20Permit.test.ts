@@ -1,32 +1,25 @@
-import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {expect} from "chai";
-import {BigNumber, constants, Signature} from "ethers";
-import {splitSignature} from "ethers/lib/utils";
-import {ethers} from "hardhat";
-import {Context} from "mocha";
-import {domainSeparator, getData712ForPermit} from "../../helpers/eip712";
-import {DOMAIN_VERSION} from "../../shared/constants";
-import {waitFor} from "../../shared/utils";
+import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/dist/src/signers';
+import {expect} from 'chai';
+import {BigNumber, constants, Signature} from 'ethers';
+import {splitSignature} from 'ethers/lib/utils';
+import {ethers} from 'hardhat';
+import {Context} from 'mocha';
+import {domainSeparator, getData712ForPermit} from '../../helpers/eip712';
+import {DOMAIN_VERSION} from '../../shared/constants';
+import {waitFor} from '../../shared/utils';
 
 export function unitTestERC20Permit(): void {
-  describe("======== Contract: ERC20 Permit ================================================", function () {
-    const nonce = BigNumber.from("0");
+  describe('======== Contract: ERC20 Permit ================================================', function () {
+    const nonce = BigNumber.from('0');
     const deadline = ethers.constants.MaxUint256;
 
-    it("initial nonce is 0", async function () {
-      expect(
-        await this.token.nonces(this.signers.initialHolder.address)
-      ).to.be.equal(BigNumber.from("0"));
+    it('initial nonce is 0', async function () {
+      expect(await this.token.nonces(this.signers.initialHolder.address)).to.be.equal(BigNumber.from('0'));
     });
 
-    it("domain separator", async function () {
+    it('domain separator', async function () {
       expect(await this.token.DOMAIN_SEPARATOR()).to.equal(
-        await domainSeparator(
-          this.name,
-          DOMAIN_VERSION,
-          this.chainId,
-          this.token
-        )
+        await domainSeparator(this.name, DOMAIN_VERSION, this.chainId, this.token)
       );
     });
 
@@ -46,21 +39,13 @@ export function unitTestERC20Permit(): void {
         deadline: deadline._hex,
       };
 
-      const permitData712 = getData712ForPermit(
-        context.name,
-        context.chainId,
-        context.token,
-        msgToSign
-      );
-      const flatSig = await ethers.provider.send("eth_signTypedData_v4", [
-        owner.address,
-        permitData712,
-      ]);
+      const permitData712 = getData712ForPermit(context.name, context.chainId, context.token, msgToSign);
+      const flatSig = await ethers.provider.send('eth_signTypedData_v4', [owner.address, permitData712]);
       return splitSignature(flatSig);
     }
 
-    describe("when msg signer == owner", function () {
-      it("ERC20 Approval event is emitted", async function () {
+    describe('when msg signer == owner', function () {
+      it('ERC20 Approval event is emitted', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -70,7 +55,7 @@ export function unitTestERC20Permit(): void {
           deadline
         );
 
-        const receipt = await waitFor(
+        const receipt = waitFor(
           this.token.permit(
             this.signers.initialHolder.address,
             this.signers.spender.address,
@@ -83,15 +68,11 @@ export function unitTestERC20Permit(): void {
         );
 
         expect(receipt)
-          .to.emit(this.token, "Approval")
-          .withArgs([
-            this.signers.initialHolder.address,
-            this.signers.spender.address,
-            this.initialSupply,
-          ]);
+          .to.emit(this.token, 'Approval')
+          .withArgs([this.signers.initialHolder.address, this.signers.spender.address, this.initialSupply]);
       });
 
-      it("nonce for owner should be incremented by 1", async function () {
+      it('nonce for owner should be incremented by 1', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -111,12 +92,10 @@ export function unitTestERC20Permit(): void {
             sig.s
           )
         );
-        expect(
-          await this.token.nonces(this.signers.initialHolder.address)
-        ).to.be.equal("1");
+        expect(await this.token.nonces(this.signers.initialHolder.address)).to.be.equal('1');
       });
 
-      it("Allowance(owner, spender) should be equal to value", async function () {
+      it('Allowance(owner, spender) should be equal to value', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -136,14 +115,11 @@ export function unitTestERC20Permit(): void {
           )
         );
         expect(
-          await this.token.allowance(
-            this.signers.initialHolder.address,
-            this.signers.spender.address
-          )
+          await this.token.allowance(this.signers.initialHolder.address, this.signers.spender.address)
         ).to.be.equal(this.initialSupply);
       });
 
-      it("rejects reused signature", async function () {
+      it('rejects reused signature', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -173,10 +149,10 @@ export function unitTestERC20Permit(): void {
             sig.r,
             sig.s
           )
-        ).to.be.revertedWith("ERC20Permit: invalid signature");
+        ).to.be.revertedWith('ERC20Permit: invalid signature');
       });
 
-      it("rejects expired permit", async function () {
+      it('rejects expired permit', async function () {
         const deadline = BigNumber.from(1382718400);
 
         const sig = await _buildSignature(
@@ -197,12 +173,12 @@ export function unitTestERC20Permit(): void {
             sig.r,
             sig.s
           )
-        ).to.be.revertedWith("ERC20Permit: expired deadline");
+        ).to.be.revertedWith('ERC20Permit: expired deadline');
       });
     });
 
-    describe("when msg signer != owner", function () {
-      it("rejects other signature", async function () {
+    describe('when msg signer != owner', function () {
+      it('rejects other signature', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.anotherAccount,
@@ -220,10 +196,10 @@ export function unitTestERC20Permit(): void {
             sig.r,
             sig.s
           )
-        ).to.be.revertedWith("ERC20Permit: invalid signature");
+        ).to.be.revertedWith('ERC20Permit: invalid signature');
       });
 
-      it("reverts if owner is zeroAddress", async function () {
+      it('reverts if owner is zeroAddress', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -241,10 +217,10 @@ export function unitTestERC20Permit(): void {
             sig.r,
             sig.s
           )
-        ).to.be.revertedWith("ERC20Permit: invalid signature");
+        ).to.be.revertedWith('ERC20Permit: invalid signature');
       });
 
-      it("reverts if spender is not the approved spender", async function () {
+      it('reverts if spender is not the approved spender', async function () {
         const sig = await _buildSignature(
           this,
           this.signers.initialHolder,
@@ -262,7 +238,7 @@ export function unitTestERC20Permit(): void {
             sig.r,
             sig.s
           )
-        ).to.be.revertedWith("ERC20Permit: invalid signature");
+        ).to.be.revertedWith('ERC20Permit: invalid signature');
       });
     });
   });

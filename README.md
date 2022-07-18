@@ -1,79 +1,147 @@
-# Configuring DEV Env
+# Boilerplate for ethereum solidity smart contract development
 
-## Installing Node 16
+## INSTALL
 
-Install `nvm` (Node Version Manager) Check the following [link](https://github.com/nvm-sh/nvm) for latest version
-
-After installing nvm, use it to install the latest 16th version of `node`
-
-```shell
-nvm install 16
+```bash
+yarn
 ```
 
-## Installing Yarn 1
+## TEST
 
-```shell
-npm install -g yarn
-yarn policies set-version 1.23.0
+There are 3 flavors of tests: hardhat, dapptools and forge
+
+### hardhat
+
+- One using hardhat that can leverage hardhat-deploy to reuse deployment procedures and named accounts:
+
+```bash
+yarn test
 ```
 
-## How to upgrade dependencies
+### [dapptools](https://dapp.tools)
 
-```shell
-yarn upgrade-interactive
+```bash
+dapp test
 ```
 
-# Advanced Sample Hardhat Project
+The latter requires additional step to set up your machine:
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+Install dapptools (Following instruction [here](https://github.com/dapphub/dapptools#installation)):
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+```bash
+# user must be in sudoers
+curl -L https://nixos.org/nix/install | sh
 
-Try running some of the following tasks:
+# Run this or login again to use Nix
+. "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
-```shell
-yarn run hardhat accounts
-yarn run hardhat compile
-yarn run hardhat clean
-yarn run hardhat test
-yarn run hardhat node
-yarn run hardhat help
-REPORT_GAS=true yarn run hardhat test
-yarn run hardhat coverage
-yarn run hardhat run scripts/deploy.ts
-TS_NODE_FILES=true yarn run ts-node scripts/deploy.ts
-yarn run eslint '**/*.{js,ts}'
-yarn run eslint '**/*.{js,ts}' --fix
-yarn run prettier '**/*.{json,sol,md}' --check
-yarn run prettier '**/*.{json,sol,md}' --write
-yarn run solhint 'contracts/**/*.sol'
-yarn run solhint 'contracts/**/*.sol' --fix
+curl https://dapp.tools/install | sh
 ```
 
-# Etherscan verification
+Then install solc with the correct version:
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.ts
+```bash
+nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions.solc_0_8_9
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+### forge
 
-```shell
-yarn run hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+```bash
+forge test
 ```
 
-# Performance optimizations
+This require the installation of forge (see [foundry](https://github.com/gakonst/foundry))
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+## SCRIPTS
 
-# Slither, the Solidity source analyzer
+Here is the list of npm scripts you can execute:
 
-@see [Slither](https://github.com/crytic/slither)
+Some of them relies on [./\_scripts.js](./_scripts.js) to allow parameterizing it via command line argument (have a look inside if you need modifications)
+<br/><br/>
 
-```shell
-slither . --checklist > slither.md
-```
+### `yarn prepare`
+
+As a standard lifecycle npm script, it is executed automatically upon install. It generate config file and typechain to get you started with type safe contract interactions
+<br/><br/>
+
+### `yarn lint`, `yarn lint:fix`, `yarn format` and `yarn format:fix`
+
+These will lint and format check your code. the `:fix` version will modifiy the files to match the requirement specified in `.eslintrc` and `.prettierrc.`
+<br/><br/>
+
+### `yarn compile`
+
+These will compile your contracts
+<br/><br/>
+
+### `yarn void:deploy`
+
+This will deploy your contracts on the in-memory hardhat network and exit, leaving no trace. quick way to ensure deployments work as intended without consequences
+<br/><br/>
+
+### `yarn test [mocha args...]`
+
+These will execute your tests using mocha. you can pass extra arguments to mocha
+<br/><br/>
+
+### `yarn coverage`
+
+These will produce a coverage report in the `coverage/` folder
+<br/><br/>
+
+### `yarn gas`
+
+These will produce a gas report for function used in the tests
+<br/><br/>
+
+### `yarn dev`
+
+These will run a local hardhat network on `localhost:8545` and deploy your contracts on it. Plus it will watch for any changes and redeploy them.
+<br/><br/>
+
+### `yarn local:dev`
+
+This assumes a local node it running on `localhost:8545`. It will deploy your contracts on it. Plus it will watch for any changes and redeploy them.
+<br/><br/>
+
+### `yarn execute <network> <file.ts> [args...]`
+
+This will execute the script `<file.ts>` against the specified network
+<br/><br/>
+
+### `yarn deploy <network> [args...]`
+
+This will deploy the contract on the specified network.
+
+Behind the scene it uses `hardhat deploy` command so you can append any argument for it
+<br/><br/>
+
+### `yarn export <network> <file.json>`
+
+This will export the abi+address of deployed contract to `<file.json>`
+<br/><br/>
+
+### `yarn fork:execute <network> [--blockNumber <blockNumber>] [--deploy] <file.ts> [args...]`
+
+This will execute the script `<file.ts>` against a temporary fork of the specified network
+
+if `--deploy` is used, deploy scripts will be executed
+<br/><br/>
+
+### `yarn fork:deploy <network> [--blockNumber <blockNumber>] [args...]`
+
+This will deploy the contract against a temporary fork of the specified network.
+
+Behind the scene it uses `hardhat deploy` command so you can append any argument for it
+<br/><br/>
+
+### `yarn fork:test <network> [--blockNumber <blockNumber>] [mocha args...]`
+
+This will test the contract against a temporary fork of the specified network.
+<br/><br/>
+
+### `yarn fork:dev <network> [--blockNumber <blockNumber>] [args...]`
+
+This will deploy the contract against a fork of the specified network and it will keep running as a node.
+
+Behind the scene it uses `hardhat node` command so you can append any argument for it
