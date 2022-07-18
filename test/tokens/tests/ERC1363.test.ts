@@ -2,7 +2,7 @@
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/dist/src/signers';
 import {expect} from 'chai';
 import {BigNumber, Contract} from 'ethers';
-import {ethers} from 'hardhat';
+import {ethers, tracer} from 'hardhat';
 import {Address} from 'hardhat-deploy/dist/types';
 import {DATA, RECEIVER_MAGIC_VALUE, SPENDER_MAGIC_VALUE} from '../../shared/constants';
 import {getSuiteContext} from '../../shared/utils';
@@ -36,10 +36,8 @@ export function unitTestERC1363(): void {
             const FactoryERC1363Receiver = await ethers.getContractFactory('ERC1363ReceiverMock');
             const contextMockFactoryERC1363Receiver = await FactoryERC1363Receiver.deploy(RECEIVER_MAGIC_VALUE, false);
             await contextMockFactoryERC1363Receiver.deployed();
-            const erc1363Receiver = contextMockFactoryERC1363Receiver;
-            this.erc1363Receiver = erc1363Receiver;
-            // tracer.nameTags[this.erc1363Receiver.address] =
-            //   "Contract: erc1363Receiver";
+            this.erc1363Receiver = contextMockFactoryERC1363Receiver;
+            tracer.nameTags[this.erc1363Receiver.address] = 'Contract:ERC1363Receiver';
           });
 
           it('should call onTransferReceived', async function () {
