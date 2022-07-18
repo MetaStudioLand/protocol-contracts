@@ -1,7 +1,6 @@
 // import {expect} from "chai";
 import {expect} from 'chai';
-import {ethers} from 'hardhat';
-import {after} from 'mocha';
+import {ethers, tracer} from 'hardhat';
 import {getSuiteContext} from '../../shared/utils';
 import {shouldBehaveLikeForwardedRegularERC20} from './behaviors/ERC2771-ERC20.behavior';
 
@@ -22,20 +21,19 @@ export function unitTestERC2771() {
     });
 
     describe('a trusted forwarder is defined', function () {
-      before(async function () {
+      beforeEach(async function () {
         const Factory = await ethers.getContractFactory('ERC2771ForwarderMock');
         const minimalForwarder = await Factory.deploy();
         await minimalForwarder.deployed();
         this.forwarder = minimalForwarder;
-        // tracer.nameTags[this.forwarder.address] = "Contract: Forwarder";
-      });
-      after(function () {
-        if (this.forwarder) {
-          // delete tracer.nameTags[this.forwarder.address];
-        }
-      });
-      beforeEach(async function () {
+        tracer.nameTags[this.forwarder.address] = 'Contract:ERC2771Forwarder';
+        // Affectation du trusted forwarder
         await this.token.connect(this.signers.initialHolder).setTrustedForwarder(this.forwarder.address);
+      });
+      afterEach(function () {
+        if (this.forwarder) {
+          delete tracer.nameTags[this.forwarder.address];
+        }
       });
 
       it('recognize trusted forwarder', async function () {
