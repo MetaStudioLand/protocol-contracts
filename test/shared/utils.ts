@@ -32,13 +32,8 @@ export const getSuiteContext = (suite: Suite): Context => {
 
 export const functionCallEncodeABI = (functionName: string, functionParams: string, paramsValues?: any[]) => {
   const ABI = [`function ${functionName}(${functionParams})`];
-  // console.log(`ABI: ${ABI}`);
   const iface = new ethers.utils.Interface(ABI);
   return iface.encodeFunctionData(functionName, paramsValues);
-};
-
-export const logNameTags = () => {
-  console.log(`Names:`);
 };
 
 export const getAddress = (accountOrAddress: SignerWithAddress | string): string => {
