@@ -21,9 +21,12 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
         amount: BigNumber,
         forwarder: Contract | null
       ) {
+        if (!forwarder) {
+          // in ERC2771 forwarder is required
+          throw new Error('forwarder required');
+        }
         const data = functionCallEncodeABI('transfer', 'address,uint256', [getAddress(to), amount]);
         const fromAddress = getAddress(from);
-        // @ts-ignore
         const nonce = await forwarder.getNonce(fromAddress);
         const req = {
           from: fromAddress,
@@ -33,7 +36,6 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
           nonce: nonce.toString(),
           data,
         };
-        // @ts-ignore
         return forwarder.connect(from).execute(req);
       }
     );
@@ -53,12 +55,15 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
         amount: BigNumber,
         forwarder: Contract | null
       ) {
+        if (!forwarder) {
+          // in ERC2771 forwarder is required
+          throw new Error('forwarder required');
+        }
         const data = functionCallEncodeABI('transferFrom', 'address,address,uint256', [
           getAddress(tokenOwner),
           getAddress(to),
           amount,
         ]);
-        // @ts-ignore
         const nonce = await forwarder.getNonce(getAddress(spender));
         const req = {
           from: getAddress(spender),
@@ -68,7 +73,7 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
           nonce: nonce.toString(),
           data,
         };
-        // @ts-ignore
+        // x@ts-ignore
         return forwarder.connect(spender).execute(req);
       }
     );
@@ -86,9 +91,12 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
         amount: BigNumber,
         forwarder: Contract | null
       ) {
+        if (!forwarder) {
+          // in ERC2771 forwarder is required
+          throw new Error('forwarder required');
+        }
         const data = functionCallEncodeABI('approve', 'address,uint256', [getAddress(spender), amount]);
         const fromAddress = getAddress(owner);
-        // @ts-ignore
         const nonce = await forwarder.getNonce(fromAddress);
         const req = {
           from: fromAddress,
@@ -98,7 +106,6 @@ export function shouldBehaveLikeForwardedRegularERC20(signers: Signers, initialS
           nonce: nonce.toString(),
           data,
         };
-        // @ts-ignore
         return forwarder.connect(owner).execute(req);
       }
     );
