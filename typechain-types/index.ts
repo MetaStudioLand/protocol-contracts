@@ -34,8 +34,6 @@ export type { UUPSUpgradeable } from "./@openzeppelin/contracts-upgradeable/prox
 export { UUPSUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable__factory";
 export type { PausableUpgradeable } from "./@openzeppelin/contracts-upgradeable/security/PausableUpgradeable";
 export { PausableUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/security/PausableUpgradeable__factory";
-export type { ReentrancyGuardUpgradeable } from "./@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable";
-export { ReentrancyGuardUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable__factory";
 export type { ERC20Upgradeable } from "./@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable";
 export { ERC20Upgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable__factory";
 export type { ERC20PermitUpgradeable } from "./@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol/ERC20PermitUpgradeable";
@@ -66,8 +64,6 @@ export type { ERC1967Upgrade } from "./@openzeppelin/contracts/proxy/ERC1967/ERC
 export { ERC1967Upgrade__factory } from "./factories/@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade__factory";
 export type { Proxy } from "./@openzeppelin/contracts/proxy/Proxy";
 export { Proxy__factory } from "./factories/@openzeppelin/contracts/proxy/Proxy__factory";
-export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
-export { IERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/IERC20__factory";
 export type { ERC1363Upgradeable } from "./src/contracts/ERC1363/ERC1363Upgradeable";
 export { ERC1363Upgradeable__factory } from "./factories/src/contracts/ERC1363/ERC1363Upgradeable__factory";
 export type { ERC2771ContextUpgradeable } from "./src/contracts/metatx/ERC2771ContextUpgradeable";
