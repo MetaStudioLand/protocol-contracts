@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity 0.8.7;
 
 /// @title Mock class using IERC2771Upgradeable
 /// @dev Simple minimal forwarder to be used together with an ERC2771 compatible contract. See {ERC2771Context}.

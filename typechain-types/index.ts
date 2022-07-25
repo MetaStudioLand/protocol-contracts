@@ -66,8 +66,6 @@ export type { ERC1967Upgrade } from "./@openzeppelin/contracts/proxy/ERC1967/ERC
 export { ERC1967Upgrade__factory } from "./factories/@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade__factory";
 export type { Proxy } from "./@openzeppelin/contracts/proxy/Proxy";
 export { Proxy__factory } from "./factories/@openzeppelin/contracts/proxy/Proxy__factory";
-export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
-export { IERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/IERC20__factory";
 export type { ERC1363Upgradeable } from "./src/contracts/ERC1363/ERC1363Upgradeable";
 export { ERC1363Upgradeable__factory } from "./factories/src/contracts/ERC1363/ERC1363Upgradeable__factory";
 export type { ERC2771ContextUpgradeable } from "./src/contracts/metatx/ERC2771ContextUpgradeable";
