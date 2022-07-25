@@ -21,7 +21,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../common";
 
 export interface ERC2771ContextUpgradeableInterface extends utils.Interface {
@@ -33,7 +32,7 @@ export interface ERC2771ContextUpgradeableInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "isTrustedForwarder",
-    values: [PromiseOrValue<string>]
+    values: [string]
   ): string;
 
   decodeFunctionResult(
@@ -97,19 +96,19 @@ export interface ERC2771ContextUpgradeable extends BaseContract {
 
   functions: {
     isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+      forwarder: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
   isTrustedForwarder(
-    forwarder: PromiseOrValue<string>,
+    forwarder: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
     isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+      forwarder: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -130,14 +129,14 @@ export interface ERC2771ContextUpgradeable extends BaseContract {
 
   estimateGas: {
     isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+      forwarder: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     isTrustedForwarder(
-      forwarder: PromiseOrValue<string>,
+      forwarder: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

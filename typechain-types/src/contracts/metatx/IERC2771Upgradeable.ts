@@ -17,7 +17,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../common";
 
 export interface IERC2771UpgradeableInterface extends utils.Interface {
@@ -29,7 +28,7 @@ export interface IERC2771UpgradeableInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "isTrustedForwarder",
-    values: [PromiseOrValue<string>]
+    values: [string]
   ): string;
 
   decodeFunctionResult(
@@ -68,19 +67,16 @@ export interface IERC2771Upgradeable extends BaseContract {
 
   functions: {
     isTrustedForwarder(
-      addr: PromiseOrValue<string>,
+      addr: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  isTrustedForwarder(
-    addr: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  isTrustedForwarder(addr: string, overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
     isTrustedForwarder(
-      addr: PromiseOrValue<string>,
+      addr: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -89,14 +85,14 @@ export interface IERC2771Upgradeable extends BaseContract {
 
   estimateGas: {
     isTrustedForwarder(
-      addr: PromiseOrValue<string>,
+      addr: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     isTrustedForwarder(
-      addr: PromiseOrValue<string>,
+      addr: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

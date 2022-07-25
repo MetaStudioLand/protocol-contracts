@@ -20,7 +20,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../common";
 
 export interface IERC1363ReceiverUpgradeableInterface extends utils.Interface {
@@ -32,12 +31,7 @@ export interface IERC1363ReceiverUpgradeableInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "onTransferReceived",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>
-    ]
+    values: [string, string, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -76,28 +70,28 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
 
   functions: {
     onTransferReceived(
-      operator: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      operator: string,
+      from: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   onTransferReceived(
-    operator: PromiseOrValue<string>,
-    from: PromiseOrValue<string>,
-    value: PromiseOrValue<BigNumberish>,
-    data: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    operator: string,
+    from: string,
+    value: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     onTransferReceived(
-      operator: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
+      operator: string,
+      from: string,
+      value: BigNumberish,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
   };
@@ -106,21 +100,21 @@ export interface IERC1363ReceiverUpgradeable extends BaseContract {
 
   estimateGas: {
     onTransferReceived(
-      operator: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      operator: string,
+      from: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     onTransferReceived(
-      operator: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      operator: string,
+      from: string,
+      value: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
