@@ -64,6 +64,8 @@ contract MetaStudioToken is
     function initialize(address tokensOwner, address forwarder) external initializer {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
         __ERC20_init("METAS", "METAS");
+        __Context_init();
+        __UUPSUpgradeable_init();
         __AccessControlEnumerable_init();
         __ReentrancyGuard_init();
         __ERC2771_init(forwarder);
