@@ -1204,7 +1204,7 @@ event Transfer(address indexed from, address indexed to, uint256 value)
 ### TrustedForwarderChanged
 
 ```solidity
-event TrustedForwarderChanged(address oldTF, address newTF)
+event TrustedForwarderChanged(address indexed oldTF, address indexed newTF)
 ```
 
 Emitted when the trusted forwarder has been successfully changed
@@ -1215,8 +1215,8 @@ Emitted when the trusted forwarder has been successfully changed
 
 | Name | Type | Description |
 |---|---|---|
-| oldTF  | address | undefined |
-| newTF  | address | undefined |
+| oldTF `indexed` | address | undefined |
+| newTF `indexed` | address | undefined |
 
 ### Unpaused
 

@@ -1469,12 +1469,12 @@ export interface MetaStudioToken extends BaseContract {
     ): TransferEventFilter;
 
     "TrustedForwarderChanged(address,address)"(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
     TrustedForwarderChanged(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;

@@ -118,12 +118,12 @@ export interface ERC2771ContextUpgradeable extends BaseContract {
     Initialized(version?: null): InitializedEventFilter;
 
     "TrustedForwarderChanged(address,address)"(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
     TrustedForwarderChanged(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
   };
 
