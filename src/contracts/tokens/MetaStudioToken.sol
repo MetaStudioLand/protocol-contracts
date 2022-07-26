@@ -58,16 +58,11 @@ contract MetaStudioToken is
         _disableInitializers();
     }
 
-    /// @notice Contract initialization. 5_000_000_000 tokens are minted
-    /// @dev Initialization of the contract required by the `proxy pattern` replacing the `constructor`
-    /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
-    /// @param forwarder Initial ERC2771 trusted forwarder
-    function initialize(address tokensOwner, address forwarder) external initializer {
+    function initialize(address tokensOwner) external initializer {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
         __ERC20_init("METAS", "METAS");
         __AccessControlEnumerable_init();
         __ReentrancyGuard_init();
-        __ERC2771_init(forwarder);
         __Pausable_init();
         __ERC20Permit_init("METAS");
         __ERC20Votes_init();
@@ -108,9 +103,7 @@ contract MetaStudioToken is
             interfaceId == type(IERC1363Upgradeable).interfaceId ||
             interfaceId == type(IAccessControlUpgradeable).interfaceId ||
             interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId ||
-            interfaceId == type(IVotesUpgradeable).interfaceId 
-            
-            ;
+            interfaceId == type(IVotesUpgradeable).interfaceId;
     }
 
     /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`

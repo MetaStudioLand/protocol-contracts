@@ -67,7 +67,7 @@ export interface MetaStudioTokenInterface extends utils.Interface {
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
+    "initialize(address)": FunctionFragment;
     "isTrustedForwarder(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -243,10 +243,7 @@ export interface MetaStudioTokenInterface extends utils.Interface {
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string]
-  ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "isTrustedForwarder",
     values: [string]
@@ -785,7 +782,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1021,7 +1017,6 @@ export interface MetaStudioToken extends BaseContract {
 
   initialize(
     tokensOwner: string,
-    forwarder: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1249,11 +1244,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    initialize(
-      tokensOwner: string,
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    initialize(tokensOwner: string, overrides?: CallOverrides): Promise<void>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -1598,7 +1589,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1849,7 +1839,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

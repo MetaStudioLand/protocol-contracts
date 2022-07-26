@@ -17,13 +17,6 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
     /// @param newTF new registered trusted forwarder
     event TrustedForwarderChanged(address indexed oldTF, address indexed newTF);
 
-    // solhint-disable-next-line func-name-mixedcase
-    function __ERC2771_init(address forwarder) internal onlyInitializing {
-        if (forwarder != address(0)) {
-            _setTrustedForwarder(forwarder);
-        }
-    }
-
     /// @notice Checks if the address is the current trusted forwarder.
     /// @dev ERC2771 implementation
     /// @param forwarder address to check

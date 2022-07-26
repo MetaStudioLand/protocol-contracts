@@ -16,7 +16,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       execute: {
         init: {
           methodName: 'initialize',
-          args: [initialHolder, ethers.constants.AddressZero],
+          args: [initialHolder],
         },
       },
     },

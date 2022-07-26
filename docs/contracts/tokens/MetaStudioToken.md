@@ -549,19 +549,18 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 ### initialize
 
 ```solidity
-function initialize(address tokensOwner, address forwarder) external nonpayable
+function initialize(address tokensOwner) external nonpayable
 ```
 
-Contract initialization. 5_000_000_000 tokens are minted
 
-*Initialization of the contract required by the `proxy pattern` replacing the `constructor`*
+
+
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| tokensOwner | address | Admin of the contract &amp; recipient address of the minted tokens |
-| forwarder | address | Initial ERC2771 trusted forwarder |
+| tokensOwner | address | undefined |
 
 ### isTrustedForwarder
 
