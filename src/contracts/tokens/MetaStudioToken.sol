@@ -109,7 +109,7 @@ contract MetaStudioToken is
             interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId;
     }
 
-    /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
+    /// @notice Pause is an emergency stop mechanism that stops transfer-related actions
     /// @dev Only owner can pause
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
@@ -131,6 +131,7 @@ contract MetaStudioToken is
     }
 
     // @dev only PROXY_ROLE granted address can upgrade
+    /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address)
         internal
         view
