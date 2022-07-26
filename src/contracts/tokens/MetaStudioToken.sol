@@ -9,6 +9,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -106,7 +107,10 @@ contract MetaStudioToken is
             interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
             interfaceId == type(IERC1363Upgradeable).interfaceId ||
             interfaceId == type(IAccessControlUpgradeable).interfaceId ||
-            interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId;
+            interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId ||
+            interfaceId == type(IVotesUpgradeable).interfaceId 
+            
+            ;
     }
 
     /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
@@ -158,55 +162,6 @@ contract MetaStudioToken is
     /// @inheritdoc ERC20Upgradeable
     function _burn(address account, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
         super._burn(account, amount);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function approve(address spender, uint256 amount) public virtual override(ERC20Upgradeable) returns (bool) {
-        return super.approve(spender, amount);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function allowance(address holder, address spender) public view override(ERC20Upgradeable) returns (uint256) {
-        return super.allowance(holder, spender);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function balanceOf(address tokenHolder) public view override(ERC20Upgradeable) returns (uint256) {
-        return super.balanceOf(tokenHolder);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function decimals() public pure override(ERC20Upgradeable) returns (uint8) {
-        return 18;
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function name() public view override(ERC20Upgradeable) returns (string memory) {
-        return super.name();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function symbol() public view override(ERC20Upgradeable) returns (string memory) {
-        return super.symbol();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function totalSupply() public view override(ERC20Upgradeable) returns (uint256) {
-        return super.totalSupply();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function transfer(address recipient, uint256 amount) public override(ERC20Upgradeable) returns (bool) {
-        return super.transfer(recipient, amount);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function transferFrom(
-        address holder,
-        address recipient,
-        uint256 amount
-    ) public override(ERC20Upgradeable) returns (bool) {
-        return super.transferFrom(holder, recipient, amount);
     }
 
     /*

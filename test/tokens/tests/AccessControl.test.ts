@@ -12,14 +12,10 @@ export function unitTestAccessControl(): void {
       signers.initialHolder,
       signers.owner,
       signers.spender,
-      signers.recipient
     );
     shouldBehaveLikeAccessControlEnumerable(
-      'AccessControl',
       signers.initialHolder,
       signers.owner,
-      signers.spender,
-      signers.recipient
     );
   });
 }

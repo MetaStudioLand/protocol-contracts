@@ -680,7 +680,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -704,10 +704,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     checkpoints(
       account: string,
@@ -852,7 +849,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -871,8 +868,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -919,7 +916,7 @@ export interface MetaStudioToken extends BaseContract {
   PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
   allowance(
-    holder: string,
+    owner: string,
     spender: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -943,7 +940,7 @@ export interface MetaStudioToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<BigNumber>;
+  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   checkpoints(
     account: string,
@@ -1085,7 +1082,7 @@ export interface MetaStudioToken extends BaseContract {
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
-    recipient: string,
+    to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1104,8 +1101,8 @@ export interface MetaStudioToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   transferFrom(
-    holder: string,
-    recipient: string,
+    from: string,
+    to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1152,7 +1149,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1176,10 +1173,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1316,7 +1310,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -1335,8 +1329,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<boolean>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -1496,7 +1490,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1520,10 +1514,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1671,7 +1662,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1690,8 +1681,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<BigNumber>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1741,7 +1732,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1766,7 +1757,7 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      tokenHolder: string,
+      account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1925,7 +1916,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1944,8 +1935,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
