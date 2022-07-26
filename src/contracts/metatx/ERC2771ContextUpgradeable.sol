@@ -6,6 +6,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 
+import "hardhat/console.sol";
+
 /// @title Implementation of ERC2771 standard
 /// @notice `Meta Transactions` implementation
 /// @dev Implementing an updatable `trusted forwarder`
@@ -45,11 +47,7 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
     }
 
     function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
-        if (isTrustedForwarder(msg.sender)) {
-            return msg.data[:msg.data.length - 20];
-        } else {
-            return super._msgData();
-        }
+        return super._msgData();
     }
 
     /**

@@ -64,5 +64,8 @@
     "dodoc": "hardhat dodoc",
     "slither": "yarn run hardhat clean && slither . --checklist > ./slither/slither.md",
     "slither-inheritance": "slither . --print inheritance-graph && dot inheritance-graph.dot -Tsvg -o ./slither/inheritance-graph.svg"
+  },
+  "dependencies": {
+    "hardhat-contract-sizer": "^2.6.1"
   }
 }
