@@ -130,7 +130,7 @@ contract MetaStudioToken is
         super._beforeTokenTransfer(from, to, amount);
     }
 
-    // @dev only PROXY_ROLE granted address can upgrade
+    /// @dev only PROXY_ROLE granted address can upgrade
     /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address)
         internal
