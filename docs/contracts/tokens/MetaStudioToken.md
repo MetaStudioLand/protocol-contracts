@@ -552,15 +552,15 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 function initialize(address tokensOwner) external nonpayable
 ```
 
+Contract initialization. 5_000_000_000 tokens are minted
 
-
-
+*Initialization of the contract required by the `proxy pattern` replacing the `constructor`*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| tokensOwner | address | undefined |
+| tokensOwner | address | Admin of the contract &amp; recipient address of the minted tokens |
 
 ### isTrustedForwarder
 

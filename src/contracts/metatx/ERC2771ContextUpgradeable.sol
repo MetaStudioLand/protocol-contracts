@@ -6,8 +6,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "./IERC2771Upgradeable.sol";
 
-import "hardhat/console.sol";
-
 /// @title Implementation of ERC2771 standard
 /// @notice `Meta Transactions` implementation
 /// @dev Implementing an updatable `trusted forwarder`
@@ -18,6 +16,14 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
     /// @param oldTF previous trusted forwader
     /// @param newTF new registered trusted forwarder
     event TrustedForwarderChanged(address indexed oldTF, address indexed newTF);
+
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init() internal view onlyInitializing {
+        __ERC2771_init_unchained();
+    }
+
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init_unchained() internal view onlyInitializing {}
 
     /// @notice Checks if the address is the current trusted forwarder.
     /// @dev ERC2771 implementation

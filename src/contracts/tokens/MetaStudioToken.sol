@@ -58,6 +58,9 @@ contract MetaStudioToken is
         _disableInitializers();
     }
 
+    /// @notice Contract initialization. 5_000_000_000 tokens are minted
+    /// @dev Initialization of the contract required by the `proxy pattern` replacing the `constructor`
+    /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
     function initialize(address tokensOwner) external initializer {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
         __ERC20_init("METAS", "METAS");
@@ -67,6 +70,7 @@ contract MetaStudioToken is
         __ERC20Permit_init("METAS");
         __ERC20Votes_init();
         __ERC1363_init();
+        __ERC2771_init();
 
         /// @dev Defining default roles: The token Owner is granted to all roles
         _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
