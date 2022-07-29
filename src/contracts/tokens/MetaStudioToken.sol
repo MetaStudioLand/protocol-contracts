@@ -9,6 +9,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
@@ -58,18 +59,17 @@ contract MetaStudioToken is
     /// @notice Contract initialization. 5_000_000_000 tokens are minted
     /// @dev Initialization of the contract required by the `proxy pattern` replacing the `constructor`
     /// @param tokensOwner Admin of the contract & recipient address of the minted tokens
-    /// @param forwarder Initial ERC2771 trusted forwarder
-    function initialize(address tokensOwner, address forwarder) external initializer {
+    function initialize(address tokensOwner) external initializer {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
         __ERC20_init("METAS", "METAS");
         __Context_init();
         __UUPSUpgradeable_init();
         __AccessControlEnumerable_init();
-        __ERC2771_init(forwarder);
         __Pausable_init();
         __ERC20Permit_init("METAS");
         __ERC20Votes_init();
         __ERC1363_init();
+        __ERC2771_init();
 
         /// @dev Defining default roles: The token Owner is granted to all roles
         _grantRole(DEFAULT_ADMIN_ROLE, tokensOwner);
@@ -105,7 +105,8 @@ contract MetaStudioToken is
             interfaceId == type(IERC20PermitUpgradeable).interfaceId ||
             interfaceId == type(IERC1363Upgradeable).interfaceId ||
             interfaceId == type(IAccessControlUpgradeable).interfaceId ||
-            interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId;
+            interfaceId == type(IAccessControlEnumerableUpgradeable).interfaceId ||
+            interfaceId == type(IVotesUpgradeable).interfaceId;
     }
 
     /// @notice Pause is an emergency stop mechanism that stops transfer-related actions
@@ -160,55 +161,6 @@ contract MetaStudioToken is
         super._burn(account, amount);
     }
 
-    /// @inheritdoc ERC20Upgradeable
-    function approve(address spender, uint256 amount) public virtual override(ERC20Upgradeable) returns (bool) {
-        return super.approve(spender, amount);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function allowance(address holder, address spender) public view override(ERC20Upgradeable) returns (uint256) {
-        return super.allowance(holder, spender);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function balanceOf(address tokenHolder) public view override(ERC20Upgradeable) returns (uint256) {
-        return super.balanceOf(tokenHolder);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function decimals() public pure override(ERC20Upgradeable) returns (uint8) {
-        return 18;
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function name() public view override(ERC20Upgradeable) returns (string memory) {
-        return super.name();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function symbol() public view override(ERC20Upgradeable) returns (string memory) {
-        return super.symbol();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function totalSupply() public view override(ERC20Upgradeable) returns (uint256) {
-        return super.totalSupply();
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function transfer(address recipient, uint256 amount) public override(ERC20Upgradeable) returns (bool) {
-        return super.transfer(recipient, amount);
-    }
-
-    /// @inheritdoc ERC20Upgradeable
-    function transferFrom(
-        address holder,
-        address recipient,
-        uint256 amount
-    ) public override(ERC20Upgradeable) returns (bool) {
-        return super.transferFrom(holder, recipient, amount);
-    }
-
     /*
     Extended ERC2771
    */
@@ -228,15 +180,5 @@ contract MetaStudioToken is
         returns (address sender)
     {
         return ERC2771ContextUpgradeable._msgSender();
-    }
-
-    function _msgData()
-        internal
-        view
-        virtual
-        override(ContextUpgradeable, ERC2771ContextUpgradeable)
-        returns (bytes calldata)
-    {
-        return ERC2771ContextUpgradeable._msgData();
     }
 }

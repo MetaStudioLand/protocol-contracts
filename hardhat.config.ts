@@ -10,7 +10,7 @@ import 'hardhat-tracer';
 import {task} from 'hardhat/config';
 import {HardhatUserConfig} from 'hardhat/types';
 import 'solidity-coverage';
-
+import 'hardhat-contract-sizer'
 import {accounts, addForkConfiguration, node_url} from './utils/network';
 
 dotenv.config();

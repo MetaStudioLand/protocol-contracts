@@ -67,7 +67,7 @@ export interface MetaStudioTokenInterface extends utils.Interface {
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
+    "initialize(address)": FunctionFragment;
     "isTrustedForwarder(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -243,10 +243,7 @@ export interface MetaStudioTokenInterface extends utils.Interface {
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string]
-  ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "isTrustedForwarder",
     values: [string]
@@ -680,7 +677,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -704,10 +701,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     checkpoints(
       account: string,
@@ -788,7 +782,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -852,7 +845,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -871,8 +864,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -919,7 +912,7 @@ export interface MetaStudioToken extends BaseContract {
   PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
   allowance(
-    holder: string,
+    owner: string,
     spender: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -943,7 +936,7 @@ export interface MetaStudioToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  balanceOf(tokenHolder: string, overrides?: CallOverrides): Promise<BigNumber>;
+  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   checkpoints(
     account: string,
@@ -1024,7 +1017,6 @@ export interface MetaStudioToken extends BaseContract {
 
   initialize(
     tokensOwner: string,
-    forwarder: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1085,7 +1077,7 @@ export interface MetaStudioToken extends BaseContract {
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
-    recipient: string,
+    to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1104,8 +1096,8 @@ export interface MetaStudioToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   transferFrom(
-    holder: string,
-    recipient: string,
+    from: string,
+    to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1152,7 +1144,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<string>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1176,10 +1168,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1255,11 +1244,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    initialize(
-      tokensOwner: string,
-      forwarder: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    initialize(tokensOwner: string, overrides?: CallOverrides): Promise<void>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -1316,7 +1301,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -1335,8 +1320,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<boolean>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -1469,12 +1454,12 @@ export interface MetaStudioToken extends BaseContract {
     ): TransferEventFilter;
 
     "TrustedForwarderChanged(address,address)"(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
     TrustedForwarderChanged(
-      oldTF?: null,
-      newTF?: null
+      oldTF?: string | null,
+      newTF?: string | null
     ): TrustedForwarderChangedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
@@ -1496,7 +1481,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1520,10 +1505,7 @@ export interface MetaStudioToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    balanceOf(
-      tokenHolder: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     checkpoints(
       account: string,
@@ -1607,7 +1589,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1671,7 +1652,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1690,8 +1671,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<BigNumber>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1741,7 +1722,7 @@ export interface MetaStudioToken extends BaseContract {
     PROXY_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
-      holder: string,
+      owner: string,
       spender: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1766,7 +1747,7 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      tokenHolder: string,
+      account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1858,7 +1839,6 @@ export interface MetaStudioToken extends BaseContract {
 
     initialize(
       tokensOwner: string,
-      forwarder: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1925,7 +1905,7 @@ export interface MetaStudioToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
-      recipient: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1944,8 +1924,8 @@ export interface MetaStudioToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
-      holder: string,
-      recipient: string,
+      from: string,
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

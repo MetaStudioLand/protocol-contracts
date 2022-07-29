@@ -98,7 +98,7 @@ Role allowed to update implementation behind Proxy
 ### allowance
 
 ```solidity
-function allowance(address holder, address spender) external view returns (uint256)
+function allowance(address owner, address spender) external view returns (uint256)
 ```
 
 
@@ -109,7 +109,7 @@ function allowance(address holder, address spender) external view returns (uint2
 
 | Name | Type | Description |
 |---|---|---|
-| holder | address | undefined |
+| owner | address | undefined |
 | spender | address | undefined |
 
 #### Returns
@@ -191,7 +191,7 @@ function approveAndCall(address spender, uint256 amount, bytes data) external no
 ### balanceOf
 
 ```solidity
-function balanceOf(address tokenHolder) external view returns (uint256)
+function balanceOf(address account) external view returns (uint256)
 ```
 
 
@@ -202,7 +202,7 @@ function balanceOf(address tokenHolder) external view returns (uint256)
 
 | Name | Type | Description |
 |---|---|---|
-| tokenHolder | address | undefined |
+| account | address | undefined |
 
 #### Returns
 
@@ -236,7 +236,7 @@ function checkpoints(address account, uint32 pos) external view returns (struct 
 ### decimals
 
 ```solidity
-function decimals() external pure returns (uint8)
+function decimals() external view returns (uint8)
 ```
 
 
@@ -549,7 +549,7 @@ function increaseAllowance(address spender, uint256 addedValue) external nonpaya
 ### initialize
 
 ```solidity
-function initialize(address tokensOwner, address forwarder) external nonpayable
+function initialize(address tokensOwner) external nonpayable
 ```
 
 Contract initialization. 5_000_000_000 tokens are minted
@@ -561,7 +561,6 @@ Contract initialization. 5_000_000_000 tokens are minted
 | Name | Type | Description |
 |---|---|---|
 | tokensOwner | address | Admin of the contract &amp; recipient address of the minted tokens |
-| forwarder | address | Initial ERC2771 trusted forwarder |
 
 ### isTrustedForwarder
 
@@ -822,7 +821,7 @@ function totalSupply() external view returns (uint256)
 ### transfer
 
 ```solidity
-function transfer(address recipient, uint256 amount) external nonpayable returns (bool)
+function transfer(address to, uint256 amount) external nonpayable returns (bool)
 ```
 
 
@@ -833,7 +832,7 @@ function transfer(address recipient, uint256 amount) external nonpayable returns
 
 | Name | Type | Description |
 |---|---|---|
-| recipient | address | undefined |
+| to | address | undefined |
 | amount | uint256 | undefined |
 
 #### Returns
@@ -892,7 +891,7 @@ function transferAndCall(address to, uint256 amount, bytes data) external nonpay
 ### transferFrom
 
 ```solidity
-function transferFrom(address holder, address recipient, uint256 amount) external nonpayable returns (bool)
+function transferFrom(address from, address to, uint256 amount) external nonpayable returns (bool)
 ```
 
 
@@ -903,8 +902,8 @@ function transferFrom(address holder, address recipient, uint256 amount) externa
 
 | Name | Type | Description |
 |---|---|---|
-| holder | address | undefined |
-| recipient | address | undefined |
+| from | address | undefined |
+| to | address | undefined |
 | amount | uint256 | undefined |
 
 #### Returns
@@ -1204,7 +1203,7 @@ event Transfer(address indexed from, address indexed to, uint256 value)
 ### TrustedForwarderChanged
 
 ```solidity
-event TrustedForwarderChanged(address oldTF, address newTF)
+event TrustedForwarderChanged(address indexed oldTF, address indexed newTF)
 ```
 
 Emitted when the trusted forwarder has been successfully changed
@@ -1215,8 +1214,8 @@ Emitted when the trusted forwarder has been successfully changed
 
 | Name | Type | Description |
 |---|---|---|
-| oldTF  | address | undefined |
-| newTF  | address | undefined |
+| oldTF `indexed` | address | undefined |
+| newTF `indexed` | address | undefined |
 
 ### Unpaused
 

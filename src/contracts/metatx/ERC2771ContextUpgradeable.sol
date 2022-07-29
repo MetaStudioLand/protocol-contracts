@@ -15,14 +15,15 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
     /// @notice Emitted when the trusted forwarder has been successfully changed
     /// @param oldTF previous trusted forwader
     /// @param newTF new registered trusted forwarder
-    event TrustedForwarderChanged(address oldTF, address newTF);
+    event TrustedForwarderChanged(address indexed oldTF, address indexed newTF);
 
-    // solhint-disable-next-line func-name-mixedcase
-    function __ERC2771_init(address forwarder) internal onlyInitializing {
-        if (forwarder != address(0)) {
-            _setTrustedForwarder(forwarder);
-        }
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init() internal view onlyInitializing {
+        __ERC2771_init_unchained();
     }
+
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init_unchained() internal view onlyInitializing {}
 
     /// @notice Checks if the address is the current trusted forwarder.
     /// @dev ERC2771 implementation
@@ -48,14 +49,6 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
             return sender;
         } else {
             return super._msgSender();
-        }
-    }
-
-    function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
-        if (isTrustedForwarder(msg.sender)) {
-            return msg.data[:msg.data.length - 20];
-        } else {
-            return super._msgData();
         }
     }
 

@@ -9,7 +9,6 @@ export function shouldBehaveLikeAccessControl(
   tokenOwner: SignerWithAddress,
   authorized: SignerWithAddress,
   other: SignerWithAddress,
-  otherAdmin: SignerWithAddress
 ) {
   shouldSupportInterface('AccessControl');
 
@@ -154,11 +153,9 @@ export function shouldBehaveLikeAccessControl(
 }
 
 export function shouldBehaveLikeAccessControlEnumerable(
-  errorPrefix: string,
   tokenOwner: SignerWithAddress,
   authorized: SignerWithAddress,
-  other: SignerWithAddress,
-  otherAuthorized: SignerWithAddress
+
 ) {
   shouldSupportInterface('AccessControlEnumerable');
 
