@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity 0.8.7;
 
 /// @title IERC2771Upgradeable
 /// @dev Definition of IERC2771Upgradeable Interface
