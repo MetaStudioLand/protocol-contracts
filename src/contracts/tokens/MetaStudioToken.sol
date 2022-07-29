@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
@@ -11,7 +11,6 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20Pe
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/governance/utils/IVotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
@@ -30,7 +29,6 @@ contract MetaStudioToken is
     IERC165Upgradeable,
     ERC20Upgradeable,
     ERC1363Upgradeable,
-    ReentrancyGuardUpgradeable,
     AccessControlEnumerableUpgradeable,
     PausableUpgradeable,
     ERC20PermitUpgradeable,
@@ -64,8 +62,9 @@ contract MetaStudioToken is
     function initialize(address tokensOwner) external initializer {
         require(tokensOwner != address(0), "tokensOwner is mandatory");
         __ERC20_init("METAS", "METAS");
+        __Context_init();
+        __UUPSUpgradeable_init();
         __AccessControlEnumerable_init();
-        __ReentrancyGuard_init();
         __Pausable_init();
         __ERC20Permit_init("METAS");
         __ERC20Votes_init();
@@ -110,7 +109,7 @@ contract MetaStudioToken is
             interfaceId == type(IVotesUpgradeable).interfaceId;
     }
 
-    /// @notice Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
+    /// @notice Pause is an emergency stop mechanism that stops transfer-related actions
     /// @dev Only owner can pause
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
@@ -127,11 +126,12 @@ contract MetaStudioToken is
         address from,
         address to,
         uint256 amount
-    ) internal override whenNotPaused nonReentrant {
+    ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
     }
 
-    // @dev only PROXY_ROLE granted address can upgrade
+    /// @dev only PROXY_ROLE granted address can upgrade
+    /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address)
         internal
         view

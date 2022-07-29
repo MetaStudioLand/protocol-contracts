@@ -651,7 +651,7 @@ function numCheckpoints(address account) external view returns (uint32)
 function pause() external nonpayable
 ```
 
-Pause the contract aka `Emergency Stop Mechanism`. No action available on the contract except `unpause`
+Pause is an emergency stop mechanism that stops transfer-related actions
 
 *Only owner can pause*
 
