@@ -181,14 +181,4 @@ contract MetaStudioToken is
     {
         return ERC2771ContextUpgradeable._msgSender();
     }
-
-    function _msgData()
-        internal
-        view
-        virtual
-        override(ContextUpgradeable, ERC2771ContextUpgradeable)
-        returns (bytes calldata)
-    {
-        return ERC2771ContextUpgradeable._msgData();
-    }
 }
