@@ -2,4 +2,3 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { PausableUpgradeable } from "./PausableUpgradeable";
-export type { ReentrancyGuardUpgradeable } from "./ReentrancyGuardUpgradeable";
