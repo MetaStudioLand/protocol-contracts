@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
@@ -10,7 +10,6 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC165Upgradeable.sol";
 import "../metatx/ERC2771ContextUpgradeable.sol";
@@ -29,7 +28,6 @@ contract MetaStudioToken is
     IERC165Upgradeable,
     ERC20Upgradeable,
     ERC1363Upgradeable,
-    ReentrancyGuardUpgradeable,
     AccessControlEnumerableUpgradeable,
     PausableUpgradeable,
     ERC20PermitUpgradeable,
@@ -67,7 +65,6 @@ contract MetaStudioToken is
         __Context_init();
         __UUPSUpgradeable_init();
         __AccessControlEnumerable_init();
-        __ReentrancyGuard_init();
         __ERC2771_init(forwarder);
         __Pausable_init();
         __ERC20Permit_init("METAS");
@@ -128,7 +125,7 @@ contract MetaStudioToken is
         address from,
         address to,
         uint256 amount
-    ) internal override whenNotPaused nonReentrant {
+    ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
     }
 
