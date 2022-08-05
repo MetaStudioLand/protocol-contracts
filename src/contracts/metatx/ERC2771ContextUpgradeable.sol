@@ -33,12 +33,18 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         return forwarder == _trustedForwarder;
     }
 
+    /// @notice internal methode to set a trusted forwarder
+    /// @dev set an address as a trusted forwarder and emit TrustedForwarderChanged event
+    /// @param forwarder address to check
     function _setTrustedForwarder(address forwarder) internal {
         address currentTrustedForwarder = _trustedForwarder;
         _trustedForwarder = forwarder;
         emit TrustedForwarderChanged(currentTrustedForwarder, forwarder);
     }
 
+    /// @notice send message according to the caller address type
+    /// @dev _msgSender implementation
+    /// @return sender or msg.data
     function _msgSender() internal view virtual override(ContextUpgradeable) returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
@@ -52,6 +58,9 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         }
     }
 
+    /// @notice Send message data according to the caller address type and return a message data
+    /// @dev _msgData implementation
+    /// @return bytes of the message data
     function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
         if (isTrustedForwarder(msg.sender)) {
             return msg.data[:msg.data.length - 20];
