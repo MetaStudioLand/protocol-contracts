@@ -52,6 +52,14 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         }
     }
 
+    function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
+        if (isTrustedForwarder(msg.sender)) {
+            return msg.data[:msg.data.length - 20];
+        } else {
+            return super._msgData();
+        }
+    }
+
     /**
      * @dev This empty reserved space is put in place to allow future versions to add new
      * variables without shifting down storage in the inheritance chain.
