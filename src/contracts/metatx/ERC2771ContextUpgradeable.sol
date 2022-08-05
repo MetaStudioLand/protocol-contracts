@@ -33,7 +33,7 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         return forwarder == _trustedForwarder;
     }
 
-    /// @notice internal methode to set a trusted forwarder
+    /// @notice internal method to set a trusted forwarder
     /// @dev set an address as a trusted forwarder and emit TrustedForwarderChanged event
     /// @param forwarder address to check
     function _setTrustedForwarder(address forwarder) internal {
