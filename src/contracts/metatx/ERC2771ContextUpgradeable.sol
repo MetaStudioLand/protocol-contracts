@@ -44,7 +44,7 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
 
     /// @notice send message according to the caller address type
     /// @dev _msgSender implementation
-    /// @return sender or msg.data
+    /// @return sender address if the caller is a trusted forwarder otherwise return msg.data
     function _msgSender() internal view virtual override(ContextUpgradeable) returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
