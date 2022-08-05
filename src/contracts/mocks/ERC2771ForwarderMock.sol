@@ -17,7 +17,7 @@ contract ERC2771ForwarderMock {
     mapping(address => uint256) private _nonces;
 
     /// @dev Get nonce implementation
-    /// @param from addresswhere to get the Nonce
+    /// @param from address where to get the Nonce
     /// @return a number representing the nonce
     function getNonce(address from) public view returns (uint256) {
         return _nonces[from];

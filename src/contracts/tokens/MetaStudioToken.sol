@@ -172,6 +172,7 @@ contract MetaStudioToken is
         super._setTrustedForwarder(forwarder);
     }
 
+    /// @inheritdoc ERC2771ContextUpgradeable
     function _msgSender()
         internal
         view
@@ -180,5 +181,16 @@ contract MetaStudioToken is
         returns (address sender)
     {
         return ERC2771ContextUpgradeable._msgSender();
+    }
+
+    /// @inheritdoc ERC2771ContextUpgradeable
+    function _msgData()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable, ERC2771ContextUpgradeable)
+        returns (bytes calldata)
+    {
+        return ERC2771ContextUpgradeable._msgData();
     }
 }
