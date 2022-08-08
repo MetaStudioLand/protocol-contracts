@@ -9,7 +9,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../../common";
 
 export interface ERC1967UpgradeInterface extends utils.Interface {
@@ -95,18 +94,12 @@ export interface ERC1967Upgrade extends BaseContract {
     ): AdminChangedEventFilter;
 
     "BeaconUpgraded(address)"(
-      beacon?: PromiseOrValue<string> | null
+      beacon?: string | null
     ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(
-      beacon?: PromiseOrValue<string> | null
-    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
-    "Upgraded(address)"(
-      implementation?: PromiseOrValue<string> | null
-    ): UpgradedEventFilter;
-    Upgraded(
-      implementation?: PromiseOrValue<string> | null
-    ): UpgradedEventFilter;
+    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {};

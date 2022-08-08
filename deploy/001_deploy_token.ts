@@ -1,4 +1,3 @@
-import {ethers} from 'hardhat';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
@@ -16,7 +15,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       execute: {
         init: {
           methodName: 'initialize',
-          args: [initialHolder, ethers.constants.AddressZero],
+          args: [initialHolder],
         },
       },
     },

@@ -40,7 +40,6 @@ export function shouldBehaveLikeERC20(
         from: SignerWithAddress | string,
         to: SignerWithAddress | string,
         amount: BigNumber,
-        forwarder: Contract | null
       ) {
         return token.connect(from).transfer(getAddress(to), amount);
       }
@@ -59,7 +58,6 @@ export function shouldBehaveLikeERC20(
         tokenOwner: SignerWithAddress | string,
         to: SignerWithAddress | string,
         amount: BigNumber,
-        forwarder: Contract | null
       ) {
         return token.connect(spender).transferFrom(getAddress(tokenOwner), getAddress(to), amount);
       }
@@ -76,7 +74,6 @@ export function shouldBehaveLikeERC20(
         owner: SignerWithAddress | string,
         spender: SignerWithAddress | string,
         amount: BigNumber,
-        forwarder: Contract | null
       ) {
         return token.connect(owner).approve(getAddress(spender), amount);
       }

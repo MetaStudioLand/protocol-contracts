@@ -24,7 +24,6 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
 } from "../../../common";
 
 export interface ERC1363ReceiverMockInterface extends utils.Interface {
@@ -36,12 +35,7 @@ export interface ERC1363ReceiverMockInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "onTransferReceived",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>
-    ]
+    values: [string, string, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -98,28 +92,28 @@ export interface ERC1363ReceiverMock extends BaseContract {
 
   functions: {
     onTransferReceived(
-      spender: PromiseOrValue<string>,
-      sender: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      spender: string,
+      sender: string,
+      amount: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   onTransferReceived(
-    spender: PromiseOrValue<string>,
-    sender: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    data: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    spender: string,
+    sender: string,
+    amount: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     onTransferReceived(
-      spender: PromiseOrValue<string>,
-      sender: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
+      spender: string,
+      sender: string,
+      amount: BigNumberish,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
   };
@@ -143,21 +137,21 @@ export interface ERC1363ReceiverMock extends BaseContract {
 
   estimateGas: {
     onTransferReceived(
-      spender: PromiseOrValue<string>,
-      sender: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      spender: string,
+      sender: string,
+      amount: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     onTransferReceived(
-      spender: PromiseOrValue<string>,
-      sender: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      spender: string,
+      sender: string,
+      amount: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

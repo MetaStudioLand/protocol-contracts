@@ -55,7 +55,7 @@ event Initialized(uint8 version)
 ### TrustedForwarderChanged
 
 ```solidity
-event TrustedForwarderChanged(address oldTF, address newTF)
+event TrustedForwarderChanged(address indexed oldTF, address indexed newTF)
 ```
 
 Emitted when the trusted forwarder has been successfully changed
@@ -66,8 +66,8 @@ Emitted when the trusted forwarder has been successfully changed
 
 | Name | Type | Description |
 |---|---|---|
-| oldTF  | address | previous trusted forwader |
-| newTF  | address | new registered trusted forwarder |
+| oldTF `indexed` | address | previous trusted forwader |
+| newTF `indexed` | address | new registered trusted forwarder |
 
 
 

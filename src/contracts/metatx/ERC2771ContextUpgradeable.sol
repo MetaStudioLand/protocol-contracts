@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
@@ -15,14 +15,15 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
     /// @notice Emitted when the trusted forwarder has been successfully changed
     /// @param oldTF previous trusted forwader
     /// @param newTF new registered trusted forwarder
-    event TrustedForwarderChanged(address oldTF, address newTF);
+    event TrustedForwarderChanged(address indexed oldTF, address indexed newTF);
 
-    // solhint-disable-next-line func-name-mixedcase
-    function __ERC2771_init(address forwarder) internal onlyInitializing {
-        if (forwarder != address(0)) {
-            _setTrustedForwarder(forwarder);
-        }
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init() internal view onlyInitializing {
+        __ERC2771_init_unchained();
     }
+
+    // solhint-disable-next-line func-name-mixedcase, no-empty-blocks
+    function __ERC2771_init_unchained() internal view onlyInitializing {}
 
     /// @notice Checks if the address is the current trusted forwarder.
     /// @dev ERC2771 implementation
@@ -32,12 +33,18 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         return forwarder == _trustedForwarder;
     }
 
+    /// @notice internal method to set a trusted forwarder
+    /// @dev set an address as a trusted forwarder and emit TrustedForwarderChanged event
+    /// @param forwarder address to check
     function _setTrustedForwarder(address forwarder) internal {
         address currentTrustedForwarder = _trustedForwarder;
         _trustedForwarder = forwarder;
         emit TrustedForwarderChanged(currentTrustedForwarder, forwarder);
     }
 
+    /// @notice send message according to the caller address type
+    /// @dev _msgSender implementation
+    /// @return sender address if the caller is a trusted forwarder otherwise return msg.data
     function _msgSender() internal view virtual override(ContextUpgradeable) returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
@@ -51,6 +58,9 @@ contract ERC2771ContextUpgradeable is Initializable, ContextUpgradeable, IERC277
         }
     }
 
+    /// @notice Send message data according to the caller address type and return a message data
+    /// @dev _msgData implementation
+    /// @return bytes of the message data
     function _msgData() internal view virtual override(ContextUpgradeable) returns (bytes calldata) {
         if (isTrustedForwarder(msg.sender)) {
             return msg.data[:msg.data.length - 20];
