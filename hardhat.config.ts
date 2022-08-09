@@ -73,8 +73,11 @@ const config: HardhatUserConfig = {
       accounts: accounts('mainnet'),
     },
     mainnet: {
-      url: node_url('mainnet'),
-      accounts: accounts('mainnet'),
+      url: process.env.MAINNET_URL || "",
+      accounts:
+        process.env.MAINNET_PRIVATE_KEY !== undefined
+          ? [process.env.MAINNET_PRIVATE_KEY]
+          : [],
     },
     rinkeby: {
       url: node_url('rinkeby'),
