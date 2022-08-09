@@ -39,7 +39,10 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: {
     deployer: 0,
-    initialHolder: 1,
+    initialHolder: {
+      default: 1,
+      137: '0xB14419e095d7D5765eB108e84A817241FE4CE49a'
+    },
     forwarder: 2,
   },
   tracer: {
@@ -64,29 +67,21 @@ const config: HardhatUserConfig = {
       url: node_url('localhost'),
       accounts: accounts(),
     },
-    staging: {
-      url: node_url('rinkeby'),
-      accounts: accounts('rinkeby'),
-    },
-    production: {
-      url: node_url('mainnet'),
-      accounts: accounts('mainnet'),
-    },
-    mainnet: {
-      url: node_url('mainnet'),
-      accounts: accounts('mainnet'),
-    },
     rinkeby: {
       url: node_url('rinkeby'),
       accounts: accounts('rinkeby'),
     },
-    kovan: {
-      url: node_url('kovan'),
-      accounts: accounts('kovan'),
-    },
     goerli: {
       url: node_url('goerli'),
       accounts: accounts('goerli'),
+    },
+    mumbai: {
+      url: node_url('mumbai'),
+      accounts: accounts('mumbai'),
+    },
+    polygon: {
+      url: node_url('polygon'),
+      accounts: accounts('polygon'),
     },
   }),
   paths: {
