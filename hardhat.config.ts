@@ -60,36 +60,12 @@ const config: HardhatUserConfig = {
       initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see
       // https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
     },
-    localhost: {
-      url: node_url('localhost'),
-      accounts: accounts(),
-    },
-    staging: {
-      url: node_url('rinkeby'),
-      accounts: accounts('rinkeby'),
-    },
-    production: {
-      url: node_url('mainnet'),
-      accounts: accounts('mainnet'),
-    },
     mainnet: {
       url: process.env.MAINNET_URL || "",
       accounts:
         process.env.MAINNET_PRIVATE_KEY !== undefined
           ? [process.env.MAINNET_PRIVATE_KEY]
           : [],
-    },
-    rinkeby: {
-      url: node_url('rinkeby'),
-      accounts: accounts('rinkeby'),
-    },
-    kovan: {
-      url: node_url('kovan'),
-      accounts: accounts('kovan'),
-    },
-    goerli: {
-      url: node_url('goerli'),
-      accounts: accounts('goerli'),
     },
   }),
   paths: {

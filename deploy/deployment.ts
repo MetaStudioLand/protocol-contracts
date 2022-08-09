@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const {ethers, upgrades} = require("hardhat");
 
 async function main() {
@@ -6,14 +7,10 @@ async function main() {
   const MetaStudioToken = await ethers.getContractFactory(
     "MetaStudioToken",
     deployer
-  );
-  console.log("-_-_-");
-  
+  );  
   const mc = await upgrades.deployProxy(MetaStudioToken, [
     deployer.address,
-  ]);
-  console.log("__________________________________________");
-  
+  ]);  
   await mc.deployed();
 
   console.log("MetaStudioToken deployed to:", mc.address);
