@@ -84,7 +84,7 @@ const config: HardhatUserConfig = {
     polygon: {
       url: node_url('polygon'),
       accounts: accounts('polygon'),
-      gasPrice:200000000000
+      gasPrice: 200000000000
     },
   }),
   paths: {
