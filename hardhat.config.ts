@@ -11,6 +11,7 @@ import {task} from 'hardhat/config';
 import {HardhatUserConfig} from 'hardhat/types';
 import 'solidity-coverage';
 import 'hardhat-contract-sizer'
+import "@nomiclabs/hardhat-etherscan";
 import {accounts, addForkConfiguration, node_url} from './utils/network';
 
 dotenv.config();
@@ -41,7 +42,8 @@ const config: HardhatUserConfig = {
     deployer: 0,
     initialHolder: {
       default: 1,
-      137: '0xB14419e095d7D5765eB108e84A817241FE4CE49a'
+      "mumbai": '0x5Bd37f8c00fa19CE149018C7Fcc99448da8C84cb',
+      "polygon": '0xB14419e095d7D5765eB108e84A817241FE4CE49a',
     },
     forwarder: 2,
   },
@@ -97,6 +99,12 @@ const config: HardhatUserConfig = {
   mocha: {
     timeout: 0,
   },
+  etherscan: {
+    apiKey: {
+      polygonMumbai: process.env.ETHERSCAN_API_KEY as string
+    }
+  },
+
   external: process.env.HARDHAT_FORK
     ? {
         deployments: {
