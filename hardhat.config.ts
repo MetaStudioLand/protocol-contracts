@@ -44,6 +44,7 @@ const config: HardhatUserConfig = {
       default: 1,
       "mumbai": '0x5Bd37f8c00fa19CE149018C7Fcc99448da8C84cb',
       "polygon": '0xB14419e095d7D5765eB108e84A817241FE4CE49a',
+      "goerli": '0xc1895D76528CAe865f1D71E101308606a534c35E',
     },
     forwarder: 2,
   },
@@ -103,7 +104,8 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       polygonMumbai: process.env.ETHERSCAN_API_KEY as string,
-      polygon: process.env.ETHERSCAN_API_KEY as string
+      polygon: process.env.ETHERSCAN_API_KEY as string,
+      goerli: process.env.ETHERSCAN_API_KEY as string,
     }
   },
 
